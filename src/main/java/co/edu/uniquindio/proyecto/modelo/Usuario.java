@@ -1,9 +1,8 @@
 package co.edu.uniquindio.proyecto.modelo;
 
-import jakarta.persistence.Entity;
-import lombok.*;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
@@ -11,12 +10,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Usuario extends Admin implements Serializable {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Usuario extends Cuenta{
 
+    @Column
     private String nombre, telefono, foto;
 
+    @Column
     private Ciudad ciudad;
 
+    @Column
     private Estado estado;
-
 }

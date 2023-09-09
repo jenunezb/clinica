@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
@@ -13,14 +12,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Admin implements Serializable {
-
-    @Id
-    @EqualsAndHashCode.Include
-    private int id;
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Cuenta extends Administrador {
 
     @Email
+    @Column
     private String email;
 
+    @Column
     private String password;
+
 }
