@@ -1,6 +1,8 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
 
+import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
+import co.edu.uniquindio.proyecto.modelo.enums.Estado;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,12 +15,12 @@ import lombok.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Usuario extends Cuenta{
 
-    @Column
+    @Column(nullable = false)
     private String nombre, telefono, foto;
 
-    @Column
+    @Column(nullable = false)
     private Ciudad ciudad;
 
-    @Column
+    @Column(nullable = false)
     private Estado estado;
 }

@@ -1,15 +1,12 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,10 +16,13 @@ import java.util.List;
 public class DiaLibre implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @Column(nullable = false)
     private LocalDate dia;
 
     @ManyToOne
+    @Column(nullable = false)
     public Medico medico;
 }

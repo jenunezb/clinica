@@ -1,9 +1,6 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +16,15 @@ import java.io.Serializable;
 public class Mensaje implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @Column(nullable = false)
     private String contenido;
 
     @ManyToOne
+    @Column(nullable = false)
     private Pqrs pqrs;
-
 
     @OneToOne
     private Mensaje mensaje;

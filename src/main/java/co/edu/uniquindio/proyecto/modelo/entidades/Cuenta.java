@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -14,13 +14,14 @@ import lombok.*;
 public class Cuenta {
 
     @Id
+
     private int codigo;
 
     @Email
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
 }

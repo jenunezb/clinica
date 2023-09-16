@@ -1,8 +1,6 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,11 +14,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class Atencion implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @Column(nullable = false)
     private String tratamiento, notasMedicas, diagnostico;
 
     @OneToOne
+    @Column(nullable = false)
     private Cita cita;
 }

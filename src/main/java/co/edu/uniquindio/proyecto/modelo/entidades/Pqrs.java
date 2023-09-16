@@ -1,8 +1,7 @@
-package co.edu.uniquindio.proyecto.modelo;
+package co.edu.uniquindio.proyecto.modelo.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +18,17 @@ import java.time.LocalDateTime;
 public class Pqrs implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @Column(nullable = false)
     private LocalDateTime fechaCreacion, tipo, motivo;
 
     @ManyToOne
+    @Column(nullable = false)
     private Cita cita;
 
+    @Column(nullable = false)
     private EstadoPQRS estadoPQRS;
 
 }
