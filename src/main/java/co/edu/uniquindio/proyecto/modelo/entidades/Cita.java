@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,12 +30,14 @@ public class Cita implements Serializable {
     private String motivo;
 
     @ManyToOne
-    @Column(nullable = false)
     private Paciente paciente;
 
     @ManyToOne
-    @Column(nullable = false)
     private Medico medico;
+
+    @OneToMany(mappedBy = "cita")
+    private List<Pqrs> pqrs;
+
 
     @Column(nullable = false)
     private EstadoCita estadoCita;

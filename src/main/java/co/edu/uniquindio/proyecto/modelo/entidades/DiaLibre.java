@@ -21,8 +21,8 @@ public class DiaLibre implements Serializable {
 
     @Column(nullable = false)
     private LocalDate dia;
-
-    @ManyToOne
-    @Column(nullable = false)
-    public Medico medico;
+//
+//    @ManyToOne
+//    @Column(nullable = false)
+//    public Medico medico;
 }

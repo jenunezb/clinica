@@ -26,6 +26,6 @@ public class Horario implements Serializable {
     private LocalDateTime horaFin;
 
     @ManyToOne
-    public Medico medico;
+    private Medico medico;
 
 }

@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyecto.modelo.entidades;
 
 
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
-import co.edu.uniquindio.proyecto.modelo.enums.Estado;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +21,5 @@ public class Usuario extends Cuenta{
     private Ciudad ciudad;
 
     @Column(nullable = false)
-    private Estado estado;
+    private boolean estado;
 }

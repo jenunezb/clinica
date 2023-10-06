@@ -21,8 +21,11 @@ public class Medico extends Usuario implements Serializable {
     private Especialidad especialidad;
 
     @OneToMany(mappedBy = "medico")
+    private List<Horario> horarios;
+
+    private String urlFoto;
+
+    @OneToMany(mappedBy = "medico")
     private List<Cita> citas;
-
-
 
 }
