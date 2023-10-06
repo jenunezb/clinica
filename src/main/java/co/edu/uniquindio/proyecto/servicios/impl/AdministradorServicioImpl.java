@@ -10,6 +10,7 @@ import co.edu.uniquindio.proyecto.modelo.entidades.Pqrs;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
+import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     private final PqrsRepo pqrsRepo;
     private final CitaRepo citaRepo;
     private final MensajeRepo mensajeRepo;
+    private EmailServicio emailServicio;
 
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
@@ -40,6 +42,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setEstado(true);
 
         Medico medicoNuevo = medicoRepo.save(medico);
+
         return medicoNuevo.getCodigo();
     }
 
@@ -61,6 +64,9 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setUrlFoto(medicoDTO.urlFoto());
 
         Medico medicoNuevo = medicoRepo.save(medico);
+
+       // emailServicio.enviarCorreo(new EmailDTO("Asunto", "Cuerpo mensaje", "Correo destino"));
+
         return medicoNuevo.getCodigo();
 
     }
