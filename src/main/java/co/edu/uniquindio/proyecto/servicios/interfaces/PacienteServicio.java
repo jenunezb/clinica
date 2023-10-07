@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PacienteServicio {
 
-    int registrarse(RegistroPacienteDTO registroPacienteDTO); // Método para que un paciente se registre en el sistema.
+    int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception; // Método para que un paciente se registre en el sistema.
 
     int editarPerfil(int codigoPaciente); // Método para que un paciente edite su perfil.
 

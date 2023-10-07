@@ -18,9 +18,9 @@ public class ImagenServicioImpl implements ImagenServicio {
 
     public ImagenServicioImpl(){
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", "SU_CLOUD_NAME");
-        config.put("api_key", "SU_API_KEY");
-        config.put("api_secret", "SU_API_SECRET");
+        config.put("cloud_name", "julian");
+        config.put("api_key", "145922535687464");
+        config.put("api_secret", "y-ERrv3N_tpHMLvHYlNiRhnBUUs");
         cloudinary = new Cloudinary(config);
     }
 
@@ -28,7 +28,7 @@ public class ImagenServicioImpl implements ImagenServicio {
     public Map subirImagen(MultipartFile imagen) throws Exception {
         File file = convertir(imagen);
         return cloudinary.uploader().upload(file, ObjectUtils.asMap("folder",
-                "uniquindio/proyecto/fotos"));
+                "clinica"));
     }
 
     @Override

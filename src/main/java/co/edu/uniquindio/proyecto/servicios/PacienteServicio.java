@@ -2,7 +2,7 @@ package co.edu.uniquindio.proyecto.servicios;
 
 public interface PacienteServicio {
 
-    void registrarse(); // Método para que un paciente se registre en el sistema.
+    void registrarse() throws Exception; // Método para que un paciente se registre en el sistema.
 
     void editarPerfil(); // Método para que un paciente edite su perfil.
 

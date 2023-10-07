@@ -234,10 +234,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         if(opcional.isEmpty()){
             throw new Exception("El código" +codigoPQRS+" no está asociado a ningún PQRS");
         }
-
         Pqrs pqrs = opcional.get();
         pqrs.setEstado(estadoPQRS);
-
         pqrsRepo.save(pqrs);
     }
 }

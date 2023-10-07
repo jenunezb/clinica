@@ -1,4 +1,23 @@
 package co.edu.uniquindio.proyecto.dto.paciente;
 
-public record DetallePacienteDTO() {
+import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
+import co.edu.uniquindio.proyecto.modelo.enums.Eps;
+import co.edu.uniquindio.proyecto.modelo.enums.TipoSangre;
+
+import java.time.LocalDate;
+
+public record DetallePacienteDTO(
+        int codigo,
+        String cedula,
+        String nombre,
+        String telefono,
+        String urlFoto,
+        Ciudad ciudad,
+        LocalDate fechaNacimiento,
+        String alergias,
+        Eps eps,
+        TipoSangre tipoSangre,
+        String correo
+) {
+
 }

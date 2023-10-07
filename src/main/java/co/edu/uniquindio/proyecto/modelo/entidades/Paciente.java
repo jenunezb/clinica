@@ -28,4 +28,7 @@ public class Paciente extends Usuario implements Serializable {
 
     @Column(nullable = false)
     private Alergia alergia;
+
+    @Column(nullable = false)
+    private String UrlFoto;
 }

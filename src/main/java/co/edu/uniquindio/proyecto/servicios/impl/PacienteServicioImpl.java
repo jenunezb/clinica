@@ -7,16 +7,42 @@ import co.edu.uniquindio.proyecto.dto.paciente.DetallePacienteDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.RegistroCitaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.RegistroPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.RegistroPacienteDTO;
+import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
+import co.edu.uniquindio.proyecto.repositorios.PacienteRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class PacienteServicioImpl implements PacienteServicio {
+
+    private final PacienteRepo pacienteRepo;
+
+
     @Override
-    public int registrarse(RegistroPacienteDTO registroPacienteDTO) {
-        return 0;
+    public int registrarse(RegistroPacienteDTO pacienteDTO) throws Exception{
+        Paciente paciente = new Paciente();
+//Datos de la Cuenta
+        paciente.setEmail( pacienteDTO.correo() );
+        paciente.setPassword( pacienteDTO.password() );
+//Datos del Usuario
+        paciente.setNombre( pacienteDTO.nombre() );
+        paciente.setCodigo( pacienteDTO.cedula() );
+        paciente.setTelefono( pacienteDTO.telefono() );
+        paciente.setCiudad( pacienteDTO.ciudad() );
+        paciente.setUrlFoto( pacienteDTO.urlFoto() );
+//Datos del Paciente
+        paciente.setFechaNacimiento( pacienteDTO.fechaNacimiento() );
+        paciente.setEps( pacienteDTO.eps() );
+        paciente.setAlergia( pacienteDTO.alergias() );
+        paciente.setTipoSangre( pacienteDTO.tipoSangre() );
+        Paciente pacienteCreado = pacienteRepo.save( paciente );
+        return pacienteCreado.getCodigo();
     }
 
     @Override

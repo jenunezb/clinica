@@ -14,7 +14,6 @@ import lombok.*;
 public class Cuenta {
 
     @Id
-
     private int codigo;
 
     @Email
