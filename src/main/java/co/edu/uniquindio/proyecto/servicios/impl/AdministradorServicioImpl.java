@@ -32,7 +32,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
         Medico medico = new Medico();
-        medico.setCodigo(medicoDTO.cedula());
+        medico.setCedula(medicoDTO.cedula());
         medico.setTelefono(medicoDTO.telefono());
         medico.setNombre(medicoDTO.nombre());
         medico.setEspecialidad(medicoDTO.codigoEspecialidad());
@@ -43,7 +43,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
         Medico medicoNuevo = medicoRepo.save(medico);
 
-        return medicoNuevo.getCodigo();
+        return medicoNuevo.getCedula();
     }
 
     @Override
@@ -55,19 +55,19 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         }
 
         Medico medico = buscado.get();
-        medico.setCodigo(medicoDTO.cedula() );
+        medico.setCedula(medicoDTO.cedula() );
         medico.setTelefono(medicoDTO.telefono());
         medico.setNombre(medicoDTO.nombre() );
         medico.setEspecialidad( medicoDTO.codigoEspecialidad() );
         medico.setCiudad(medicoDTO.codigoCiudad());
-        medico.setEmail(medicoDTO.correo() );
+        medico.setCorreo(medicoDTO.correo() );
         medico.setUrlFoto(medicoDTO.urlFoto());
 
         Medico medicoNuevo = medicoRepo.save(medico);
 
        // emailServicio.enviarCorreo(new EmailDTO("Asunto", "Cuerpo mensaje", "Correo destino"));
 
-        return medicoNuevo.getCodigo();
+        return medicoNuevo.getCedula();
 
     }
 
@@ -99,7 +99,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         for(Medico medico : medicos){
             if(medico.isEstado()) {
                 respuesta.add(new ItemMedicoDTO(
-                        medico.getCodigo(),
+                        medico.getCedula(),
                         medico.getNombre(),
                         medico.getUrlFoto(),
                         medico.getEspecialidad()));
@@ -123,11 +123,11 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         DetalleMedicoDTO detalleMedicoDTO = new DetalleMedicoDTO(
 
                 obtenido.getNombre(),
-                obtenido.getCodigo(),
+                obtenido.getCedula(),
                 obtenido.getCiudad(),
                 obtenido.getEspecialidad(),
                 obtenido.getTelefono(),
-                obtenido.getEmail(),
+                obtenido.getCorreo(),
                 obtenido.getUrlFoto(),
                 new ArrayList<>()
         );
@@ -215,7 +215,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
              ) {
             respuesta.add( new ItemCitaAdminDTO(
                     c.getCodigo(),
-                    c.getPaciente().getCodigo(),
+                    c.getPaciente().getCedula(),
                     c.getPaciente().getNombre(),
                     c.getMedico().getNombre(),
                     c.getMedico().getEspecialidad(),

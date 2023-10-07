@@ -3,10 +3,7 @@ package co.edu.uniquindio.proyecto.servicios.interfaces;
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.itemCitaDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.DetallePacienteDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.RegistroCitaDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.RegistroPQRSDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.RegistroPacienteDTO;
+import co.edu.uniquindio.proyecto.dto.paciente.*;
 
 import java.util.List;
 
@@ -16,9 +13,11 @@ public interface PacienteServicio {
 
     int editarPerfil(int codigoPaciente); // Método para que un paciente edite su perfil.
 
+    int editarPerfil(DetallePacienteDTO pacienteDTO) throws Exception;
+
     void eliminarCuenta(int codigoPaciente) throws Exception; // Método para que un paciente elimine su cuenta.
 
-    DetallePacienteDTO detallePaciente() throws Exception; //Ver los detalles del paciente. para hacer modificaciones
+    DetallePacienteDTO verDetallePaciente(int codigo) throws Exception; //Ver los detalles del paciente. para hacer modificaciones
 
     void enviarLinkRecuperacion( String email) throws Exception; // Método para enviar un enlace de recuperación de contraseña al paciente.
 
@@ -30,7 +29,7 @@ public interface PacienteServicio {
 
     void responderPQRS(); // Método para que un paciente responda a una PQRS.
 
-    List<itemCitaDTO> listarCitasPaciente(); // Método para listar las citas médicas agendadas por el paciente.
+    List<ItemPacienteDTO> listarTodos(); // Método para listar las citas médicas agendadas por el paciente.
 
     void filtrarCitasPorFecha(); // Método para filtrar las citas médicas por fecha.
 

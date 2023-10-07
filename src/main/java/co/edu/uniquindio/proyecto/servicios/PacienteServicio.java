@@ -1,10 +1,12 @@
 package co.edu.uniquindio.proyecto.servicios;
 
-public interface PacienteServicio {
+import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PacienteServicio extends JpaRepository<Paciente, Integer> {
+
 
     void registrarse() throws Exception; // Método para que un paciente se registre en el sistema.
-
-    void editarPerfil(); // Método para que un paciente edite su perfil.
 
     void eliminarCuenta(); // Método para que un paciente elimine su cuenta.
 

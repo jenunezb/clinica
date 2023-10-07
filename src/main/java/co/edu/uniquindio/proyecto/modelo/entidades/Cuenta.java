@@ -14,11 +14,11 @@ import lombok.*;
 public class Cuenta {
 
     @Id
-    private int codigo;
+    private int cedula;
 
     @Email
     @Column(nullable = false)
-    private String email;
+    private String correo;
 
     @Column(nullable = false)
     private String password;
