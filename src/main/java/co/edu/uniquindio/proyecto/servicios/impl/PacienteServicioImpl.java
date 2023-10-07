@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
-import co.edu.uniquindio.proyecto.dto.itemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
 import co.edu.uniquindio.proyecto.repositorios.PacienteRepo;
@@ -90,7 +89,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         pacienteRepo.delete( pacienteBuscado.get() );
     }
 
-
     @Override
     public DetallePacienteDTO verDetallePaciente(int codigo) throws Exception {
         Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
@@ -156,15 +154,20 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     @Override
     public DetalleAtencionMedicaDTO verDetalleCita() {
+
         return null;
     }
 
     public boolean estaRepetidaCedula(int id) {
-            return pacienteRepo.existsById(id);
-        }
+        return pacienteRepo.existsById(id);
+    }
 
     public boolean estaRepetidoCorreo(String correo){
         return pacienteRepo.findByCorreo(correo);
     }
 
+    void listarPQRSPaciente(){
+
+    }
 }
+

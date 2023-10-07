@@ -33,4 +33,8 @@ public interface AdministradorServicio {
 
     void cambiarEstadoPQRS(int codigoPQRS, EstadoPQRS estadoPQRS)throws Exception;
 
+    boolean estaRepetidaCedula(int id);
+
+    boolean estaRepetidoCorreo(String correo);
+
 }

@@ -3,14 +3,11 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
-import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
-import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
-import co.edu.uniquindio.proyecto.modelo.entidades.Mensaje;
-import co.edu.uniquindio.proyecto.modelo.entidades.Pqrs;
+import co.edu.uniquindio.proyecto.excepciones.Excepciones;
+import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
-import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,21 +24,39 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     private final PqrsRepo pqrsRepo;
     private final CitaRepo citaRepo;
     private final MensajeRepo mensajeRepo;
-    private EmailServicio emailServicio;
+    private final HorarioRepo horarioRepo;
 
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
+
+
+        if( estaRepetidaCedula(medicoDTO.cedula()) ){
+            throw new Excepciones("La cédula ya se encuentra registrada");
+        }
+
+        if( estaRepetidoCorreo(medicoDTO.correo()) ) {
+            throw new Excepciones("El correo ya se encuentra registrado");
+        }
+
         Medico medico = new Medico();
+
         medico.setCedula(medicoDTO.cedula());
         medico.setTelefono(medicoDTO.telefono());
         medico.setNombre(medicoDTO.nombre());
-        medico.setEspecialidad(medicoDTO.codigoEspecialidad());
-        medico.setCiudad(medicoDTO.codigoCiudad());
+        medico.setEspecialidad(medicoDTO.especialidad());
+        medico.setCiudad(medicoDTO.ciudad());
         medico.setPassword(medicoDTO.password());
-        medico.setUrlFoto(medicoDTO.urlFoto());
+        medico.setFoto(medicoDTO.urlFoto());
+        medico.setCorreo(medicoDTO.correo());
         medico.setEstado(true);
 
         Medico medicoNuevo = medicoRepo.save(medico);
+
+        Horario horario=new Horario();
+        horario.setMedico(medicoNuevo);
+        horario.setHoraInicio(medicoDTO.horaInicioJornada());
+        horario.setHoraFin(medicoDTO.horaFinJornada());
+        horarioRepo.save(horario);
 
         return medicoNuevo.getCedula();
     }
@@ -58,10 +73,10 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setCedula(medicoDTO.cedula() );
         medico.setTelefono(medicoDTO.telefono());
         medico.setNombre(medicoDTO.nombre() );
-        medico.setEspecialidad( medicoDTO.codigoEspecialidad() );
-        medico.setCiudad(medicoDTO.codigoCiudad());
+        medico.setEspecialidad( medicoDTO.especialidad() );
+        medico.setCiudad(medicoDTO.ciudad());
         medico.setCorreo(medicoDTO.correo() );
-        medico.setUrlFoto(medicoDTO.urlFoto());
+        medico.setFoto(medicoDTO.urlFoto());
 
         Medico medicoNuevo = medicoRepo.save(medico);
 
@@ -101,7 +116,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                 respuesta.add(new ItemMedicoDTO(
                         medico.getCedula(),
                         medico.getNombre(),
-                        medico.getUrlFoto(),
+                        medico.getFoto(),
                         medico.getEspecialidad()));
             }
         }
@@ -128,7 +143,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                 obtenido.getEspecialidad(),
                 obtenido.getTelefono(),
                 obtenido.getCorreo(),
-                obtenido.getUrlFoto(),
+                obtenido.getFoto(),
                 new ArrayList<>()
         );
 
@@ -238,4 +253,16 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         pqrs.setEstado(estadoPQRS);
         pqrsRepo.save(pqrs);
     }
+
+    public boolean estaRepetidaCedula(int id) {
+        return medicoRepo.existsById(id);
+    }
+
+    public boolean estaRepetidoCorreo(String correo)
+    {
+        Medico medico = medicoRepo.findByCorreo(correo);
+
+        return medico != null;
+    }
+
 }

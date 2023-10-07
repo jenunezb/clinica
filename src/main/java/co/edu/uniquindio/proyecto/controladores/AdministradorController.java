@@ -20,9 +20,15 @@ public class AdministradorController {
     private final AdministradorServicio administradorServicio;
 
     @PostMapping("/registro")
-    public ResponseEntity<MensajeDTO> crearMedico(@Valid @RequestBody MedicoDTO medico) throws Exception {
-        administradorServicio.crearMedico(medico);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
-                false, "Medico creado correctamente"));
+    public ResponseEntity<MensajeDTO> crearMedico(@Valid @RequestBody MedicoDTO medico) {
+        try {
+            administradorServicio.crearMedico(medico);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
+                    false, "Médico creado correctamente"));
+        } catch (Exception e) {
+            // Maneja la excepción aquí y crea una respuesta adecuada
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+                    true, e.getMessage()));
+        }
     }
 }

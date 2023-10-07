@@ -5,13 +5,13 @@ import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public class Usuario extends Cuenta{
 
     @Column(nullable = false)
