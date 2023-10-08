@@ -62,6 +62,32 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     }
 
     @Override
+    public DetalleMedicoDTO obtenerMedico(int codigo) throws Exception {
+        Optional<Medico> buscado = medicoRepo.findById(codigo);
+
+        if(buscado.isEmpty() ){
+            throw new Exception("El código "+codigo+" no existe");
+        }
+
+        Medico obtenido = buscado.get();
+
+        DetalleMedicoDTO detalleMedicoDTO = new DetalleMedicoDTO(
+
+                obtenido.getNombre(),
+                obtenido.getCedula(),
+                obtenido.getCiudad(),
+                obtenido.getEspecialidad(),
+                obtenido.getTelefono(),
+                obtenido.getCorreo(),
+                obtenido.getFoto(),
+                new ArrayList<>()
+        );
+
+        return detalleMedicoDTO;
+
+    }
+
+    @Override
     public int actualizarMedico(int codigo, MedicoDTO medicoDTO) throws Exception {
         Optional<Medico> buscado = medicoRepo.findById(medicoDTO.cedula());
 
@@ -89,15 +115,17 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     @Override
     public void eliminarMedico(int codigo) throws Exception {
 
-
         Optional<Medico> buscado = medicoRepo.findById(codigo);
 
-        if(buscado.isEmpty() ){
+        if(buscado.isEmpty()){
             throw new Exception("El cóodigo "+codigo+" no existe");
         }
 
         //medicoRepo.delete( buscado.get() );
         Medico obtenido = buscado.get();
+        if(!obtenido.isEstado()){
+            throw new Exception("El cóodigo "+codigo+" no existe");
+        }
         obtenido.setEstado( false );
 
         medicoRepo.save(obtenido);
@@ -120,36 +148,10 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                         medico.getEspecialidad()));
             }
         }
-
         return respuesta;
-
     }
 
-    @Override
-    public DetalleMedicoDTO obtenerMedico(int codigo) throws Exception {
-        Optional<Medico> buscado = medicoRepo.findById(codigo);
 
-        if(buscado.isEmpty() ){
-            throw new Exception("El cÃ³digo "+codigo+" no existe");
-        }
-
-        Medico obtenido = buscado.get();
-
-        DetalleMedicoDTO detalleMedicoDTO = new DetalleMedicoDTO(
-
-                obtenido.getNombre(),
-                obtenido.getCedula(),
-                obtenido.getCiudad(),
-                obtenido.getEspecialidad(),
-                obtenido.getTelefono(),
-                obtenido.getCorreo(),
-                obtenido.getFoto(),
-                new ArrayList<>()
-        );
-
-        return detalleMedicoDTO;
-
-    }
 
     @Override
     public List<ItemPQRSDTO> listarPQRS() throws Exception {
