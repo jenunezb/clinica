@@ -22,13 +22,17 @@ public class Pqrs implements Serializable {
     private int codigo;
 
     @Column(nullable = false)
-    private LocalDateTime fechaCreacion, tipo, motivo;
+    private LocalDateTime fechaCreacion, tipo;
+
+    private String motivo;
+
+    @Column(nullable = false)
+    private EstadoPQRS estado;
 
     @ManyToOne
-    @Column(nullable = false)
     private Cita cita;
 
-    @Column(nullable = false)
-    private EstadoPQRS estadoPQRS;
+//    @Column(nullable = false)
+//    private EstadoPQRS estadoPQRS;
 
 }
