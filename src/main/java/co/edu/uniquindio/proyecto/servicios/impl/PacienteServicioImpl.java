@@ -1,14 +1,19 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
+import co.edu.uniquindio.proyecto.dto.MedicoDTO;
+import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
+import co.edu.uniquindio.proyecto.modelo.entidades.Horario;
 import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
 import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
+import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
 import co.edu.uniquindio.proyecto.repositorios.CitaRepo;
+import co.edu.uniquindio.proyecto.repositorios.HorarioRepo;
 import co.edu.uniquindio.proyecto.repositorios.MedicoRepo;
 import co.edu.uniquindio.proyecto.repositorios.PacienteRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
@@ -17,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +35,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final PacienteRepo pacienteRepo;
     private final CitaRepo citaRepo;
     private final MedicoRepo medicoRepo;
+    private final HorarioRepo horarioRepo;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -94,7 +101,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         return paciente.getCedula();
     }
 
-
     @Override
     public void eliminarCuenta(int codigo) throws Exception {
         Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
@@ -149,7 +155,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         cita.setPaciente(paciente);
         cita.setMedico(medico);
         cita.setFechaCreacion(LocalDateTime.now());
-        cita.setFechaCita(registroCitaDTO.fechaCita());
         cita.setMotivo(registroCitaDTO.motivo());
         cita.setEstadoCita(EstadoCita.ASIGNADA);
 
@@ -196,6 +201,42 @@ public class PacienteServicioImpl implements PacienteServicio {
     public DetalleAtencionMedicaDTO verDetalleCita() {
 
         return null;
+    }
+
+    @Override
+    public List<MedicoPostDTO> mostrarMedicosDisponibles(LocalTime hora, Especialidad especialidad) throws Exception{
+
+        List<MedicoPostDTO> medicoPostDTOList = new ArrayList<>();
+
+        //Traigo la lista de horarios de los médicos
+        List<Horario> listaHorariosMedicos = horarioRepo.findAll();
+
+        //Convierto la fecha de la cita médica a un LocalTime
+        LocalTime time = hora;
+
+        for(int i=0;i<listaHorariosMedicos.size();i++){
+
+            //Hago variables para comparar si la hora está fuera del rango para registrarla
+        int comparacion1 = time.compareTo(listaHorariosMedicos.get(i).getHoraInicio());
+        int comparacion2 = time.compareTo(listaHorariosMedicos.get(i).getHoraFin());
+
+        System.out.println(time);
+        System.out.println(listaHorariosMedicos.get(i).getHoraInicio()+" hora inicio");
+        System.out.println(listaHorariosMedicos.get(i).getHoraFin()+" hora fin");
+        System.out.println(comparacion1);
+        System.out.println(comparacion2);
+
+        if (comparacion1 > 0 && comparacion2 <0) {
+            System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+" está disponible");
+            MedicoPostDTO medicoPostDTO = new MedicoPostDTO(listaHorariosMedicos.get(i).getMedico().getNombre(), especialidad);
+            medicoPostDTOList.add(medicoPostDTO);
+        } else {
+            System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+ " no está disponible");
+        }
+
+        }
+
+        return medicoPostDTOList;
     }
 
     public boolean estaRepetidaCedula(int id) {

@@ -3,7 +3,7 @@ package co.edu.uniquindio.proyecto.dto;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record MedicoDTO (
 
@@ -14,8 +14,8 @@ public record MedicoDTO (
     String telefono,
     String correo,
     String password,
-    LocalDateTime horaInicioJornada,
-    LocalDateTime horaFinJornada,
+    LocalTime horaInicioJornada,
+    LocalTime horaFinJornada,
     String urlFoto
 
 ){

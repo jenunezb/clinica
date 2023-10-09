@@ -1,10 +1,11 @@
 package co.edu.uniquindio.proyecto.servicios.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
-import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
-import co.edu.uniquindio.proyecto.dto.itemCitaDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
+import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
+import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface PacienteServicio {
@@ -36,4 +37,6 @@ public interface PacienteServicio {
     void filtrarCitasPorMedico(); // Método para filtrar las citas médicas por médico.
 
     DetalleAtencionMedicaDTO verDetalleCita(); // Método para ver el detalle de una cita médica.
+
+    List<MedicoPostDTO> mostrarMedicosDisponibles(LocalTime hora, Especialidad especialidad)throws Exception;
 }

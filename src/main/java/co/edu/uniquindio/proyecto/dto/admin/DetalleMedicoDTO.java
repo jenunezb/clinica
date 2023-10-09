@@ -13,8 +13,7 @@ public record DetalleMedicoDTO(
         Especialidad especialidad,
         String telefono,
         String correo,
-        String urlFoto,
-        List<HorarioDTO> horarios
+        String urlFoto
 ) {
 }
 

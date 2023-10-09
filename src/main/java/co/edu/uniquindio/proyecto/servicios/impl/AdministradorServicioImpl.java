@@ -79,8 +79,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                 obtenido.getEspecialidad(),
                 obtenido.getTelefono(),
                 obtenido.getCorreo(),
-                obtenido.getFoto(),
-                new ArrayList<>()
+                obtenido.getFoto()
         );
 
         return detalleMedicoDTO;
@@ -134,7 +133,6 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
     @Override
     public List<ItemMedicoDTO> listarMedicos() throws Exception {
-
 
         List<Medico> medicos = medicoRepo.findAll();
         List<ItemMedicoDTO> respuesta = new ArrayList<>();
