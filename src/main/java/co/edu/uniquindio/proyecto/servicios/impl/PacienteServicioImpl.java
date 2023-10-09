@@ -3,13 +3,20 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
+import co.edu.uniquindio.proyecto.excepciones.Excepciones;
+import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
+import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
 import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
+import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
+import co.edu.uniquindio.proyecto.repositorios.CitaRepo;
+import co.edu.uniquindio.proyecto.repositorios.MedicoRepo;
 import co.edu.uniquindio.proyecto.repositorios.PacienteRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,31 +27,39 @@ import java.util.Optional;
 public class PacienteServicioImpl implements PacienteServicio {
 
     private final PacienteRepo pacienteRepo;
+    private final CitaRepo citaRepo;
+    private final MedicoRepo medicoRepo;
 
     @Override
-    public int registrarse(RegistroPacienteDTO pacienteDTO) throws Exception{
-        if( estaRepetidaCedula(pacienteDTO.cedula()) ){
-            throw new Exception("La cédula ya se encuentra registrada");
+    public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
+        if( estaRepetidaCedula(registroPacienteDTO.cedula()) ){
+            throw new Excepciones("La cédula ya se encuentra registrada");
         }
-        if( estaRepetidoCorreo(pacienteDTO.correo()) ) {
-            throw new Exception("El correo ya se encuentra registrado");
+
+        if( estaRepetidoCorreo(registroPacienteDTO.correo()) ) {
+            throw new Excepciones("El correo ya se encuentra registrado");
         }
+
         Paciente paciente = new Paciente();
 //Datos de la Cuenta
-        paciente.setCorreo( pacienteDTO.correo() );
-        paciente.setPassword( pacienteDTO.password() );
+        paciente.setCorreo( registroPacienteDTO.correo() );
+        paciente.setPassword( registroPacienteDTO.password() );
+        paciente.setEstado(true);
 //Datos del Usuario
-        paciente.setNombre( pacienteDTO.nombre() );
-        paciente.setCedula( pacienteDTO.cedula() );
-        paciente.setTelefono( pacienteDTO.telefono() );
-        paciente.setCiudad( pacienteDTO.ciudad() );
-        paciente.setUrlFoto( pacienteDTO.urlFoto() );
+        paciente.setNombre( registroPacienteDTO.nombre() );
+        paciente.setCedula( registroPacienteDTO.cedula() );
+        paciente.setTelefono( registroPacienteDTO.telefono() );
+        paciente.setCiudad( registroPacienteDTO.ciudad() );
+        paciente.setFoto( registroPacienteDTO.urlFoto() );
 //Datos del Paciente
-        paciente.setFechaNacimiento( pacienteDTO.fechaNacimiento() );
-        paciente.setEps( pacienteDTO.eps() );
-        paciente.setAlergias( pacienteDTO.alergias() );
-        paciente.setTipoSangre( pacienteDTO.tipoSangre() );
+        paciente.setFechaNacimiento( registroPacienteDTO.fechaNacimiento() );
+        paciente.setEps( registroPacienteDTO.eps() );
+        paciente.setAlergias( registroPacienteDTO.alergias() );
+        paciente.setTipoSangre( registroPacienteDTO.tipoSangre() );
+
+//Guardo el paciente
         Paciente pacienteCreado = pacienteRepo.save( paciente );
+
         return pacienteCreado.getCedula();
     }
 
@@ -67,7 +82,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         paciente.setCedula( pacienteDTO.cedula() );
         paciente.setTelefono( pacienteDTO.telefono() );
         paciente.setCiudad( pacienteDTO.ciudad() );
-        paciente.setUrlFoto( pacienteDTO.urlFoto() );
+        paciente.setFoto( pacienteDTO.urlFoto() );
 //Datos del Paciente
         paciente.setFechaNacimiento( pacienteDTO.fechaNacimiento() );
         paciente.setEps( pacienteDTO.eps() );
@@ -98,7 +113,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         Paciente paciente = pacienteBuscado.get();
 //Hacemos un mapeo de un objeto de tipo Paciente a un objeto de tipo DetallePacienteDTO
         return new DetallePacienteDTO( paciente.getCedula(),
-                paciente.getNombre(), paciente.getTelefono(), paciente.getUrlFoto(), paciente.getCiudad(),
+                paciente.getNombre(), paciente.getTelefono(), paciente.getFoto(), paciente.getCiudad(),
                 paciente.getFechaNacimiento(), paciente.getAlergias(), paciente.getEps(),
                 paciente.getTipoSangre(), paciente.getCorreo() );
     }
@@ -115,7 +130,32 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     @Override
     public int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception {
-        return 0;
+
+        Cita cita = new Cita();
+
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(registroCitaDTO.idPaciente());
+        if( pacienteBuscado.isEmpty() ){
+            throw new Exception("No existe un paciente con el código "+registroCitaDTO.idPaciente());
+        }
+
+        Optional<Medico> medicoBuscado = medicoRepo.findById(registroCitaDTO.idMedico());
+        if( medicoBuscado.isEmpty() ){
+            throw new Exception("No existe un medico con el código "+registroCitaDTO.idMedico());
+        }
+
+        Paciente paciente = pacienteBuscado.get();
+        Medico medico = medicoBuscado.get();
+
+        cita.setPaciente(paciente);
+        cita.setMedico(medico);
+        cita.setFechaCreacion(LocalDateTime.now());
+        cita.setFechaCita(registroCitaDTO.fechaCita());
+        cita.setMotivo(registroCitaDTO.motivo());
+        cita.setEstadoCita(EstadoCita.ASIGNADA);
+
+        citaRepo.save(cita);
+
+        return cita.getCodigo();
     }
 
     @Override
@@ -163,7 +203,10 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     public boolean estaRepetidoCorreo(String correo){
-        return pacienteRepo.findByCorreo(correo);
+
+        Paciente paciente = pacienteRepo.findByCorreo(correo);
+
+        return paciente != null;
     }
 
     void listarPQRSPaciente(){
