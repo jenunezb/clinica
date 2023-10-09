@@ -186,7 +186,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         return repuesta;
     }
 
-
     @Override
     public void filtrarCitasPorFecha() {
 
