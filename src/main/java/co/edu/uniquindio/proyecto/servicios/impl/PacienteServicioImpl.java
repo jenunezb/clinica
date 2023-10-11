@@ -6,21 +6,16 @@ import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
-import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
-import co.edu.uniquindio.proyecto.modelo.entidades.Horario;
-import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
-import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
+import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
-import co.edu.uniquindio.proyecto.repositorios.CitaRepo;
-import co.edu.uniquindio.proyecto.repositorios.HorarioRepo;
-import co.edu.uniquindio.proyecto.repositorios.MedicoRepo;
-import co.edu.uniquindio.proyecto.repositorios.PacienteRepo;
+import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -36,6 +31,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final CitaRepo citaRepo;
     private final MedicoRepo medicoRepo;
     private final HorarioRepo horarioRepo;
+    private final DiaLibreRepo diaLibreRepo;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -139,6 +135,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         Cita cita = new Cita();
 
+        //Verifico que el paciente esté en el sistema
         Optional<Paciente> pacienteBuscado = pacienteRepo.findById(registroCitaDTO.idPaciente());
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+registroCitaDTO.idPaciente());
@@ -167,7 +164,6 @@ public class PacienteServicioImpl implements PacienteServicio {
     public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) {
 
     }
-
 
     @Override
     public void responderPQRS() {
@@ -203,7 +199,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<MedicoPostDTO> mostrarMedicosDisponibles(LocalTime hora, Especialidad especialidad) throws Exception{
+    public List<MedicoPostDTO> mostrarMedicosDisponibles(LocalDateTime fecha, Especialidad especialidad) throws Exception{
 
         List<MedicoPostDTO> medicoPostDTOList = new ArrayList<>();
 
@@ -211,29 +207,29 @@ public class PacienteServicioImpl implements PacienteServicio {
         List<Horario> listaHorariosMedicos = horarioRepo.findAll();
 
         //Convierto la fecha de la cita médica a un LocalTime
-        LocalTime time = hora;
-
-        for(int i=0;i<listaHorariosMedicos.size();i++){
+        LocalTime time = fecha.toLocalTime();
+        LocalDate fechaPaciente = fecha.toLocalDate();
 
             //Hago variables para comparar si la hora está fuera del rango para registrarla
-        int comparacion1 = time.compareTo(listaHorariosMedicos.get(i).getHoraInicio());
-        int comparacion2 = time.compareTo(listaHorariosMedicos.get(i).getHoraFin());
+        List<DiaLibre> listaDiasLibresMedicos = diaLibreRepo.findAll();
 
-        System.out.println(time);
-        System.out.println(listaHorariosMedicos.get(i).getHoraInicio()+" hora inicio");
-        System.out.println(listaHorariosMedicos.get(i).getHoraFin()+" hora fin");
-        System.out.println(comparacion1);
-        System.out.println(comparacion2);
+        for (int i=0; i<listaDiasLibresMedicos.size();i++){
+            for(int j=0; j<listaHorariosMedicos.size();j++){
+                if(listaDiasLibresMedicos.get(i).getMedico().getCedula()!=listaHorariosMedicos.get(j).getMedico().getCedula() && !fechaPaciente.isEqual(listaDiasLibresMedicos.get(i).getDia())){
+                    int comparacion1 = time.compareTo(listaHorariosMedicos.get(i).getHoraInicio());
+                    int comparacion2 = time.compareTo(listaHorariosMedicos.get(i).getHoraFin());
 
-        if (comparacion1 > 0 && comparacion2 <0) {
-            System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+" está disponible");
-            MedicoPostDTO medicoPostDTO = new MedicoPostDTO(listaHorariosMedicos.get(i).getMedico().getNombre(), especialidad);
-            medicoPostDTOList.add(medicoPostDTO);
-        } else {
-            System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+ " no está disponible");
-        }
+                    if (comparacion1 > 0 && comparacion2 <0) {
+                        System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+" está disponible");
+                        MedicoPostDTO medicoPostDTO = new MedicoPostDTO(listaHorariosMedicos.get(i).getMedico().getNombre(), especialidad);
+                        medicoPostDTOList.add(medicoPostDTO);
+                    } else {
+                        System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+ " no está disponible");
+                    }
 
-        }
+                }
+                }
+            }
 
         return medicoPostDTOList;
     }

@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -38,5 +39,5 @@ public interface PacienteServicio {
 
     DetalleAtencionMedicaDTO verDetalleCita(); // Método para ver el detalle de una cita médica.
 
-    List<MedicoPostDTO> mostrarMedicosDisponibles(LocalTime hora, Especialidad especialidad)throws Exception;
+    List<MedicoPostDTO> mostrarMedicosDisponibles(LocalDateTime hora, Especialidad especialidad)throws Exception;
 }
