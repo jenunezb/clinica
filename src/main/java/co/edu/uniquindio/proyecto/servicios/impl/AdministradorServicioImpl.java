@@ -68,7 +68,9 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         if(buscado.isEmpty() ){
             throw new Exception("El código "+codigo+" no existe");
         }
-
+        if(!buscado.get().isEstado()){
+            throw new Exception("El cóodigo "+codigo+" no existe");
+        }
         Medico obtenido = buscado.get();
 
         DetalleMedicoDTO detalleMedicoDTO = new DetalleMedicoDTO(
@@ -87,21 +89,25 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     }
 
     @Override
-    public int actualizarMedico(int codigo, MedicoDTO medicoDTO) throws Exception {
-        Optional<Medico> buscado = medicoRepo.findById(medicoDTO.cedula());
+    public int actualizarMedico(DetalleMedicoDTO detalleMedicoDTO) throws Exception {
+        Optional<Medico> buscado = medicoRepo.findById(detalleMedicoDTO.cedula());
 
         if(buscado.isEmpty() ){
-            throw new Exception("El código "+medicoDTO.cedula()+" no existe");
+            throw new Exception("El código "+detalleMedicoDTO.cedula()+" no existe");
+        }
+
+        if(!buscado.get().isEstado()){
+            throw new Exception("El cóodigo "+detalleMedicoDTO.cedula()+" no existe");
         }
 
         Medico medico = buscado.get();
-        medico.setCedula(medicoDTO.cedula() );
-        medico.setTelefono(medicoDTO.telefono());
-        medico.setNombre(medicoDTO.nombre() );
-        medico.setEspecialidad( medicoDTO.especialidad() );
-        medico.setCiudad(medicoDTO.ciudad());
-        medico.setCorreo(medicoDTO.correo() );
-        medico.setFoto(medicoDTO.urlFoto());
+        medico.setCedula(detalleMedicoDTO.cedula() );
+        medico.setTelefono(detalleMedicoDTO.telefono());
+        medico.setNombre(detalleMedicoDTO.nombre() );
+        medico.setEspecialidad( detalleMedicoDTO.especialidad() );
+        medico.setCiudad(detalleMedicoDTO.ciudad());
+        medico.setCorreo(detalleMedicoDTO.correo() );
+        medico.setFoto(detalleMedicoDTO.urlFoto());
 
         Medico medicoNuevo = medicoRepo.save(medico);
 

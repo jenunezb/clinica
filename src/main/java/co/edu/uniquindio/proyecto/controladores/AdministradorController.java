@@ -45,9 +45,9 @@ public class AdministradorController {
     }
 
     @PutMapping
-    public ResponseEntity<MensajeDTO> actualizarMedico(@Valid @RequestBody MedicoDTO medico, int codigo) {
+    public ResponseEntity<MensajeDTO> actualizarMedico(@Valid @RequestBody DetalleMedicoDTO medico, int codigo) {
         try {
-            int codigon=administradorServicio.actualizarMedico(codigo, medico);
+            int codigon=administradorServicio.actualizarMedico(medico);
             return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
                     false, "Médico "+ codigon+" modificado correctamente"));
         } catch (Exception e) {
