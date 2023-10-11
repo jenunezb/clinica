@@ -20,5 +20,9 @@ insert into medico values(4, 'andresramirez@clinicadelcarmen.com', 'securepass',
 insert into medico values(5, 'monicavargas@clinicadelcarmen.com', 'mysecretpw', 12, false, 'monica.jpg', 'Monica Vargas', '317890123', 9 );
 insert into medico values(6, 'joseperez@clinicadelcarmen.com', 'josepass', 15, true, 'jose.jpg', 'Jose Perez', '310001122', 5 );
 
-
+insert into cita value (4, '1', '2023-11-12 20:40', '2023-10-10 23:44', 'odontología', 3, 4 );
+insert into cita values (5, '1', '2023-11-15 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
+insert into cita values (6, '1', '2023-11-20 14:00', '2023-10-15 17:00', 'dermatología', 3, 7);
+insert into cita values (7, '1', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 4);
+insert into cita values (8, '1', '2023-11-25 11:30', '2023-10-20 13:45', 'neurología', 2, 10);
 

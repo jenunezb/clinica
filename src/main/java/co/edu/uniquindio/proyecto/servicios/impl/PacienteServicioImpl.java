@@ -148,13 +148,12 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         Paciente paciente = pacienteBuscado.get();
         Medico medico = medicoBuscado.get();
-
         cita.setPaciente(paciente);
         cita.setMedico(medico);
         cita.setFechaCreacion(LocalDateTime.now());
         cita.setMotivo(registroCitaDTO.motivo());
         cita.setEstadoCita(EstadoCita.ASIGNADA);
-
+        cita.setFechaCita(registroCitaDTO.fechaCita());
         citaRepo.save(cita);
 
         return cita.getCodigo();

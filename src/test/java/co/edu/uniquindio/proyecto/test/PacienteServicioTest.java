@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.test;
 import co.edu.uniquindio.proyecto.dto.paciente.DetallePacienteDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.ItemPacienteDTO;
+import co.edu.uniquindio.proyecto.dto.paciente.RegistroCitaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.RegistroPacienteDTO;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Eps;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -23,7 +25,7 @@ public class PacienteServicioTest {
 
     @Test
     @Sql("classpath:dataset.sql" )
-    public void registrarTest() throws Exception{
+    public void registrarPacienteTest() throws Exception{
 //Creamos un objeto con los datos del paciente
         RegistroPacienteDTO pacienteDTO = new RegistroPacienteDTO(
                 "pepitoperez@email.com",
@@ -39,7 +41,7 @@ public class PacienteServicioTest {
 
     @Test
     @Sql("classpath:dataset.sql" )
-    public void actualizarTest() throws Exception{
+    public void actualizarPacienteTest() throws Exception{
 //Para actualizar el paciente primero lo obtenemos
         DetallePacienteDTO guardado = pacienteServicio.verDetallePaciente(1);
 //Le modificamos el número de teléfono, lo demás lo dejamos igual
@@ -63,7 +65,7 @@ public class PacienteServicioTest {
     }
     @Test
     @Sql("classpath:dataset.sql" )
-    public void eliminarTest() throws Exception{
+    public void eliminarPacienteTest() throws Exception{
 //Se borra por ejemplo el paciente con el código 1
         pacienteServicio.eliminarCuenta(1);
 //Si intentamos buscar un paciente con el código del paciente borrado debemos obtener una
@@ -72,11 +74,24 @@ public class PacienteServicioTest {
     }
     @Test
     @Sql("classpath:dataset.sql" )
-    public void listarTest(){
+    public void listarPacientesTest(){
 //Obtenemos la lista de todos los pacientes
         List<ItemPacienteDTO> lista = pacienteServicio.listarTodos();
         lista.forEach(System.out::println);
 //Si en el dataset creamos 2 pacientes, entonces el tamaño de la lista debe ser 2
         Assertions.assertEquals(2, lista.size());
+    }
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void agendarCita() throws Exception{
+        RegistroCitaDTO registroCitaDTO = new RegistroCitaDTO(
+                LocalDateTime.of(2023,9,18,5,00),
+                "Odontologia",
+                1,
+                4
+        );
+        int codigo=pacienteServicio.agendarCita(registroCitaDTO);
+
+        Assertions.assertEquals(3,3);
     }
 }
