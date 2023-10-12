@@ -1,7 +1,6 @@
 insert into administrador values(1, 'pepito@email.com', '123');
 insert into administrador values(2, 'juanita@email.com', '234');
 
-
 insert into paciente values(1, 'juanitalopez@gmail.com', '1', 5, false, 'url_fot', 'juanita lopez', '345154888', 'Sin alergias', 2, '1995-11-28', 1);
 insert into paciente values(2, 'pedrogonzalez@gmail.com', '2', 3, true, 'url_foto_2', 'pedro gonzalez', '555123456', 'alergia al polen', 1, '1990-08-15', 1);
 insert into paciente values(3, 'mariaperez@gmail.com', '3', 4, false, 'url_foto_3', 'maria perez', '789987654', 'sin alergias conocidas', 3, '1988-03-20', 2);
@@ -22,7 +21,12 @@ insert into medico values(6, 'joseperez@clinicadelcarmen.com', 'josepass', 15, t
 
 insert into cita value (4, '1', '2023-11-12 14:30', '2023-10-10 23:44', 'odontología', 3, 4 );
 insert into cita values (5, '1', '2023-11-15 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
-insert into cita values (6, '1', '2023-11-20 09:00', '2023-10-15 17:00', 'dermatología', 3, 7);
-insert into cita values (7, '1', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 4);
-insert into cita values (8, '1', '2023-11-25 11:30', '2023-10-20 13:45', 'neurología', 2, 10);
+insert into cita values (6, '1', '2023-11-20 09:00', '2023-10-15 17:00', 'dermatología', 3, 8);
+insert into cita values (7, '1', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
+insert into cita values (8, '1', '2023-11-25 11:30', '2023-10-20 13:45', 'neurología', 2, 8);
 
+insert into pqrs values (1, 1, '2023-11-10', 'El doctor fue grosero 1', 6);
+insert into pqrs values (2, 3, '2023-11-10', 'El doctor fue grosero 2', 7);
+insert into pqrs values (3, 4, '2023-11-10', 'El doctor fue grosero 3', 8);
+insert into pqrs values (4, 8, '2023-11-10', 'El doctor fue grosero 4', 4);
+insert into pqrs values (5, 9, '2023-11-10', 'El doctor fue grosero 5', 5);

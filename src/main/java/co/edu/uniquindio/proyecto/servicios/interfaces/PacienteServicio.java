@@ -13,8 +13,6 @@ public interface PacienteServicio {
 
     int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception; // Método para que un paciente se registre en el sistema.
 
-    int editarPerfil(int codigoPaciente); // Método para que un paciente edite su perfil.
-
     int editarPerfil(DetallePacienteDTO pacienteDTO) throws Exception;
 
     void eliminarCuenta(int codigoPaciente) throws Exception; // Método para que un paciente elimine su cuenta.
@@ -27,9 +25,9 @@ public interface PacienteServicio {
 
     int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception; // Método para que un paciente agende una cita médica.
 
-    void crearPQRS(RegistroPQRSDTO registroPQRSDTO); // Método para que un paciente cree una PQRS (Peticiones, Quejas, Reclamos y Sugerencias).
+    void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception; // Método para que un paciente cree una PQRS (Peticiones, Quejas, Reclamos y Sugerencias).
 
-    void responderPQRS(); // Método para que un paciente responda a una PQRS.
+    void responderPQRS(int codigoPQRS); // Método para que un paciente responda a una PQRS.
 
     List<ItemPacienteDTO> listarTodos(); // Método para listar las citas médicas agendadas por el paciente.
 

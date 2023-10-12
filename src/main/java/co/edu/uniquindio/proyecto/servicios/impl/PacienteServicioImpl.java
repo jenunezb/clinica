@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
-import co.edu.uniquindio.proyecto.dto.MedicoDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
@@ -9,6 +8,7 @@ import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
+import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import jakarta.transaction.Transactional;
@@ -32,6 +32,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final MedicoRepo medicoRepo;
     private final HorarioRepo horarioRepo;
     private final DiaLibreRepo diaLibreRepo;
+    private final PqrsRepo pqrsRepo;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -64,11 +65,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         Paciente pacienteCreado = pacienteRepo.save( paciente );
 
         return pacienteCreado.getCedula();
-    }
-
-    @Override
-    public int editarPerfil(int codigoPaciente) {
-        return 0;
     }
 
     @Override
@@ -146,6 +142,15 @@ public class PacienteServicioImpl implements PacienteServicio {
             throw new Exception("No existe un medico con el código "+registroCitaDTO.idMedico());
         }
 
+        //Debo validar que el paciente no tenga mas de 3 citas activas
+
+        List<Cita> citasPorPaciente= citaRepo.findCitasByClienteId(registroCitaDTO.idPaciente());
+
+        if(citasPorPaciente.size()==3){
+            throw new Excepciones("No es posible agendar más citas, puesto que ya tiene 3 citas activas");
+        }
+
+        //Creamos la cita con los datos de entrada
         Paciente paciente = pacienteBuscado.get();
         Medico medico = medicoBuscado.get();
         cita.setPaciente(paciente);
@@ -160,13 +165,33 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) {
+    public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception{
+
+        Pqrs pqrsNuevo = new Pqrs();
+        Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.CodigoCita());
+
+        if( citaBuscada.isEmpty() ){
+            throw new Excepciones("No existe una cita con el código ");
+        }
+
+        List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(registroPQRSDTO.codigoPaciente());
+        if(pqrsPacienteList.size()==3){
+            throw new Excepciones("Usted ya tiene 3 PQRS en el sistema, no es posible crear otro");
+        }
+        Cita cita = citaBuscada.get();
+        pqrsNuevo.setFechaCreacion(LocalDate.now());
+        pqrsNuevo.setEstado(EstadoPQRS.ASIGNADA);
+        pqrsNuevo.setMotivo(registroPQRSDTO.movito());
+        pqrsNuevo.setCita(cita);
+
+        pqrsRepo.save(pqrsNuevo);
 
     }
 
     @Override
-    public void responderPQRS() {
-
+    public void responderPQRS(int codigoPQRS)
+    {
+        pqrsRepo.findById(codigoPQRS);
     }
 
     @Override

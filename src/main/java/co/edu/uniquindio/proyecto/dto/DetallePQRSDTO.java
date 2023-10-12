@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.dto;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public record DetallePQRSDTO(
         String nombrePaciente,
         String medico,
         Especialidad especialidad,
-        LocalDateTime fecha,
+        LocalDate fecha,
         List<RespuestaDTO> mensajes
 ) {
 }

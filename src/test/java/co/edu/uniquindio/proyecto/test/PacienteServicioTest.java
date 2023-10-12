@@ -1,8 +1,5 @@
 package co.edu.uniquindio.proyecto.test;
-import co.edu.uniquindio.proyecto.dto.paciente.DetallePacienteDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.ItemPacienteDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.RegistroCitaDTO;
-import co.edu.uniquindio.proyecto.dto.paciente.RegistroPacienteDTO;
+import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Eps;
 import co.edu.uniquindio.proyecto.modelo.enums.TipoSangre;
@@ -87,11 +84,21 @@ public class PacienteServicioTest {
         RegistroCitaDTO registroCitaDTO = new RegistroCitaDTO(
                 LocalDateTime.of(2023,9,18,5,00),
                 "Odontologia",
-                1,
-                4
+                8,
+                5
         );
         int codigo=pacienteServicio.agendarCita(registroCitaDTO);
 
         Assertions.assertEquals(3,3);
+    }
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void crearPQRS() throws Exception{
+        RegistroPQRSDTO registroPQRSDTO = new RegistroPQRSDTO(
+                4,
+                "El doctor fue muy grosero",
+                4
+        );
+        pacienteServicio.crearPQRS(registroPQRSDTO);
     }
 }

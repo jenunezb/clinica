@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,7 +23,7 @@ public class Pqrs implements Serializable {
     private int codigo;
 
     @Column(nullable = false)
-    private LocalDateTime fechaCreacion, tipo;
+    private LocalDate fechaCreacion;
 
     private String motivo;
 
