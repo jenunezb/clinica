@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.controladores;
 
+import co.edu.uniquindio.proyecto.dto.HorarioDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
@@ -53,7 +54,7 @@ public class PacienteController {
     public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody  MedicosDisponiblesDTO medicosDisponiblesDTO){
         System.out.println("pasa");
         try {
-            List<MedicoPostDTO> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO.hora(), medicosDisponiblesDTO.especialidad());
+            List<String> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK,
                     false, medicoPostDTOList ));
         } catch (Exception e) {

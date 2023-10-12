@@ -5,7 +5,8 @@ import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import java.time.LocalDateTime;
 
 public record MedicosDisponiblesDTO(
-    LocalDateTime hora,
+
+    LocalDateTime fecha,
     Especialidad especialidad
 ) {
 }

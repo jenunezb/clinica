@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
+import co.edu.uniquindio.proyecto.dto.HorarioDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
 import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
@@ -223,39 +224,23 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<MedicoPostDTO> mostrarMedicosDisponibles(LocalDateTime fecha, Especialidad especialidad) throws Exception{
+    public List<String> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
 
-        List<MedicoPostDTO> medicoPostDTOList = new ArrayList<>();
+        List<String> nombreMedicos = medicoRepo.findMedicosByEspecialidadAndHorario(
+                medicosDisponiblesDTO.especialidad(),
+                medicosDisponiblesDTO.fecha().toLocalTime());
 
-        //Traigo la lista de horarios de los médicos
-        List<Horario> listaHorariosMedicos = horarioRepo.findAll();
+        System.out.println(medicosDisponiblesDTO.especialidad().ordinal());
 
-        //Convierto la fecha de la cita médica a un LocalTime
-        LocalTime time = fecha.toLocalTime();
-        LocalDate fechaPaciente = fecha.toLocalDate();
+        if(nombreMedicos.isEmpty()){
+            throw new Excepciones("no hay médicos disponibles");
+        }
 
-            //Hago variables para comparar si la hora está fuera del rango para registrarla
-        List<DiaLibre> listaDiasLibresMedicos = diaLibreRepo.findAll();
+        nombreMedicos.forEach(nombreMedico -> {
+            System.out.println(nombreMedico);
+        });
 
-        for (int i=0; i<listaDiasLibresMedicos.size();i++){
-            for(int j=0; j<listaHorariosMedicos.size();j++){
-                if(listaDiasLibresMedicos.get(i).getMedico().getCedula()!=listaHorariosMedicos.get(j).getMedico().getCedula() && !fechaPaciente.isEqual(listaDiasLibresMedicos.get(i).getDia())){
-                    int comparacion1 = time.compareTo(listaHorariosMedicos.get(i).getHoraInicio());
-                    int comparacion2 = time.compareTo(listaHorariosMedicos.get(i).getHoraFin());
-
-                    if (comparacion1 > 0 && comparacion2 <0) {
-                        System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+" está disponible");
-                        MedicoPostDTO medicoPostDTO = new MedicoPostDTO(listaHorariosMedicos.get(i).getMedico().getNombre(), especialidad);
-                        medicoPostDTOList.add(medicoPostDTO);
-                    } else {
-                        System.out.println(listaHorariosMedicos.get(i).getMedico().getCedula()+ " no está disponible");
-                    }
-
-                }
-                }
-            }
-
-        return medicoPostDTOList;
+        return nombreMedicos;
     }
 
     public boolean estaRepetidaCedula(int id) {

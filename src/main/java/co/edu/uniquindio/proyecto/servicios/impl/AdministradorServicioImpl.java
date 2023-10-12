@@ -11,6 +11,7 @@ import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,13 +150,13 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                         medico.getCedula(),
                         medico.getNombre(),
                         medico.getFoto(),
-                        medico.getEspecialidad()));
+                        medico.getEspecialidad(),
+                        medico.getHorario().getHoraInicio(),
+                        medico.getHorario().getHoraFin()));
             }
         }
         return respuesta;
     }
-
-
 
     @Override
     public List<ItemPQRSDTO> listarPQRS() throws Exception {
@@ -220,7 +221,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         }
 
         Mensaje mensaje = new Mensaje();
-        mensaje.setFecha(LocalDateTime.now());
+        mensaje.setFecha(LocalDate.now());
         mensaje.setContenido(registroRespuestaDTO.mensaje());
         mensaje.setPqrs(opcional.get());
 

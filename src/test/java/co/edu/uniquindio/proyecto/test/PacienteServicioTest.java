@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.test;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Eps;
+import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.TipoSangre;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,7 @@ public class PacienteServicioTest {
         RegistroCitaDTO registroCitaDTO = new RegistroCitaDTO(
                 LocalDateTime.of(2023,9,18,5,00),
                 "Odontologia",
-                8,
+                7,
                 5
         );
         int codigo=pacienteServicio.agendarCita(registroCitaDTO);
@@ -100,5 +101,14 @@ public class PacienteServicioTest {
                 4
         );
         pacienteServicio.crearPQRS(registroPQRSDTO);
+    }
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void ListarMedicos() throws Exception{
+MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
+        LocalDateTime.of(2023,10,11,7,00),
+        Especialidad.ENDOCRINOLOGIA
+);
+pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
     }
 }

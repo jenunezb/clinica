@@ -48,7 +48,7 @@ public class AdministradorServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void modificarMedicoTest() throws Exception{
-        DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1094275);
+        DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1);
 
         DetalleMedicoDTO modificado = new DetalleMedicoDTO(
                 detalleMedicoDTO.nombre(),
@@ -62,7 +62,7 @@ public class AdministradorServicioTest {
 
         administradorServicio.actualizarMedico(modificado);
 
-        DetalleMedicoDTO objetoModificado = administradorServicio.obtenerMedico(1094275);
+        DetalleMedicoDTO objetoModificado = administradorServicio.obtenerMedico(1);
 
         Assertions.assertEquals("julianstebann8@gmail.com", objetoModificado.correo());
     }
@@ -70,9 +70,9 @@ public class AdministradorServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void buscarMedicoTest() throws Exception{
-        DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1094275);
+        DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1);
 
-        Assertions.assertEquals(detalleMedicoDTO.cedula(), 1094275);
+        Assertions.assertEquals(detalleMedicoDTO.cedula(), 1);
     }
 
     @Test
@@ -81,13 +81,13 @@ public class AdministradorServicioTest {
         List<ItemMedicoDTO> medicos = administradorServicio.listarMedicos();
         medicos.forEach(System.out::println);
 
-        Assertions.assertEquals(2, medicos.size());
+        Assertions.assertEquals(5, medicos.size());
     }
 
     @Test
     @Sql("classpath:dataset.sql" )
     public void eliminarMedicoTest() throws Exception{
-        administradorServicio.eliminarMedico(1094927538);
-        Assertions.assertThrows(Exception.class, () -> administradorServicio.obtenerMedico(1094927538));
+        administradorServicio.eliminarMedico(1);
+        Assertions.assertThrows(Exception.class, () -> administradorServicio.obtenerMedico(1));
     }
 }
