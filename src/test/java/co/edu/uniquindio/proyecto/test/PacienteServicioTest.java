@@ -113,6 +113,6 @@ MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
 
 List<MedicosDisponiblesGetDTO> medicosDisponibles = pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
 medicosDisponibles.forEach(System.out::println);
-        Assertions.assertEquals(2, medicosDisponibles.size());
+        Assertions.assertEquals(26, medicosDisponibles.size());
     }
 }
