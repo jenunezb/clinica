@@ -106,7 +106,7 @@ public class PacienteServicioTest {
     @Sql("classpath:dataset.sql" )
     public void ListarMedicos() throws Exception{
 MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
-        LocalDateTime.of(2023,10,11,7,00),
+        LocalDate.of(2023,10,11),
         Especialidad.ENDOCRINOLOGIA
 );
 pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);

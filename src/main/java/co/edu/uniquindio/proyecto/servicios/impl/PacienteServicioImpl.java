@@ -232,8 +232,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     public List<String> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
 
         List<String> nombreMedicos = medicoRepo.findMedicosByEspecialidadAndHorario(
-                medicosDisponiblesDTO.especialidad(),
-                medicosDisponiblesDTO.fecha().toLocalTime());
+                medicosDisponiblesDTO.especialidad());
 
         System.out.println(medicosDisponiblesDTO.especialidad().ordinal());
 
