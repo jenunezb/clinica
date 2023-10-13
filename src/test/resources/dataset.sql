@@ -14,12 +14,12 @@ insert into paciente values(10, 'josehernandez@gmail.com', '10', 1, true, 'url_f
 
 insert into medico values(1, 'juanfigueroa@clinicadelcarmen.com', '12345', 4, true, 'foto', 'juan figueroa', '315454578', 1 );
 insert into medico values(2, 'carlosruiz@clinicadelcarmen.com', 'abcde', 10, true, 'carlos.jpg', 'Carlos Ruiz', '318888999', 1 );
-insert into medico values(3, 'ganudi@clinicadelcarmen.com', 'password123', 18, true, 'gabi.jpg', 'Gabriela Nunez', '312345678', 1 );
+insert into medico values(3, 'ganudi@clinicadelcarmen.com', 'password123', 18, true, 'gabi.jpg', 'Gabriela Nunez', '312345678', 4 );
 insert into medico values(4, 'andresramirez@clinicadelcarmen.com', 'securepass', 7, true, 'andres.jpg', 'Andres Ramirez', '311234567', 8 );
 insert into medico values(5, 'monicavargas@clinicadelcarmen.com', 'mysecretpw', 12, true, 'monica.jpg', 'Monica Vargas', '317890123', 9 );
 
 insert into horario values(1, '08:00:00', '07:00:00', 1);
-insert into horario values(2, '08:00:00', '07:00:00', 2);
+insert into horario values(2, '08:30:00', '07:00:00', 2);
 insert into horario values(3, '09:00:00', '07:00:00', 3);
 insert into horario values(4, '17:00:00', '07:00:00', 4);
 insert into horario values(5, '17:00:00', '07:00:00', 5);
@@ -29,8 +29,8 @@ insert into horario values(5, '17:00:00', '07:00:00', 5);
 # el motivo de la cita // Cédula del medico // Cédula del paciente
 insert into cita value (4, '0', '2023-10-12 09:30', '2023-10-10 23:44', 'Esta cita es la que debo de quitar de la lista', 1, 4 );
 insert into cita values (5, '1', '2023-10-11 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
-insert into cita values (6, '0', '2023-10-12 09:00', '2023-10-15 17:00', 'dermatología', 1, 8);
-insert into cita values (7, '0', '2023-10-12 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
+insert into cita values (6, '2', '2023-10-12 09:00', '2023-10-15 17:00', 'dermatología', 1, 8);
+insert into cita values (7, '2', '2023-10-12 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
 insert into cita values (8, '1', '2023-10-11 07:30', '2023-10-20 13:45', 'neurología', 2, 8);
 
 # el pqrs contiene: Código del pqr // estado del pqrs // motivo del pqrs // codigo de la cita
@@ -49,4 +49,7 @@ insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, 3);
 
 insert into dia_libre values (1, '2023-10-11', 3);
 insert into dia_libre values (2, '2023-11-12', 1);
+insert into dia_libre values (3, '2023-12-01', 2);
+insert into dia_libre values (4, '2023-12-04', 2);
+insert into dia_libre values (5, '2023-12-05', 2);
 

@@ -254,7 +254,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         }
     for (int i=0; i<citas.size();i++){
         if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
-            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
+//            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
                 for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
                     if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
                     && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){

@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
+import co.edu.uniquindio.proyecto.dto.admin.HistorialConsultas;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
@@ -264,4 +265,30 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         return medico != null;
     }
 
+    public List<HistorialConsultas> verHistorialDeConsultas(){
+        List<Cita> citas = citaRepo.listarCitasFinalizadas();
+        List<HistorialConsultas> historialConsultas = new ArrayList<>();
+        for (Cita cita: citas) {
+            historialConsultas.add(new HistorialConsultas(
+                    cita.getFechaCita(),
+                    cita.getMedico().getCedula(),
+                    cita.getMedico().getNombre(),
+                    cita.getPaciente().getCedula(),
+                    cita.getPaciente().getNombre()));
+        }
+        return  historialConsultas;
+    }
+    public List<HistorialConsultas> verHistorialDeConsultasMedico(int codigoMedico){
+        List<Cita> citas = citaRepo.listarCitasFinalizadasPorMedico(codigoMedico);
+        List<HistorialConsultas> historialConsultas = new ArrayList<>();
+        for (Cita cita: citas) {
+            historialConsultas.add(new HistorialConsultas(
+                    cita.getFechaCita(),
+                    cita.getMedico().getCedula(),
+                    cita.getMedico().getNombre(),
+                    cita.getPaciente().getCedula(),
+                    cita.getPaciente().getNombre()));
+        }
+        return  historialConsultas;
+    }
 }

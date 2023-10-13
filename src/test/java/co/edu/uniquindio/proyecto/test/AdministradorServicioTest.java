@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.DetallePQRSDTO;
 import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
+import co.edu.uniquindio.proyecto.dto.admin.HistorialConsultas;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
@@ -124,5 +125,24 @@ public class AdministradorServicioTest {
     @Sql("classpath:dataset.sql" )
     public void finalizarPqrs() throws Exception{
         administradorServicio.cambiarEstadoPQRS(2, EstadoPQRS.CERRADA);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void verHistorialConsultas(){
+        List<HistorialConsultas> historialConsultas = administradorServicio.verHistorialDeConsultas();
+
+        historialConsultas.forEach(System.out::println);
+
+        Assertions.assertEquals(2, historialConsultas.size());
+
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void verHistorialConsultasMedico(){
+        List<HistorialConsultas> historialConsultas = administradorServicio.verHistorialDeConsultasMedico(4);
+        historialConsultas.forEach(System.out::println);
+        Assertions.assertEquals(1, historialConsultas.size());
     }
 }

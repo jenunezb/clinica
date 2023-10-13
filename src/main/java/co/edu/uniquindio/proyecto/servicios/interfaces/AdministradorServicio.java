@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
+import co.edu.uniquindio.proyecto.dto.admin.HistorialConsultas;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.modelo.entidades.Pqrs;
@@ -36,5 +37,9 @@ public interface AdministradorServicio {
     boolean estaRepetidaCedula(int id);
 
     boolean estaRepetidoCorreo(String correo);
+
+    public List<HistorialConsultas> verHistorialDeConsultas();
+
+    public List<HistorialConsultas> verHistorialDeConsultasMedico(int codigoMedico);
 
 }
