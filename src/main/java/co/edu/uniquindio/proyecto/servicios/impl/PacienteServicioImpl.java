@@ -229,21 +229,22 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<String> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
+    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
 
-        List<String> nombreMedicos = medicoRepo.findMedicosByEspecialidadAndHorario(
+        List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
                 medicosDisponiblesDTO.especialidad());
 
-        System.out.println(medicosDisponiblesDTO.especialidad().ordinal());
-
-        if(nombreMedicos.isEmpty()){
+        if(medicos.isEmpty()){
             throw new Excepciones("no hay médicos disponibles");
         }
-        nombreMedicos.forEach(nombreMedico -> {
-            System.out.println(nombreMedico);
-        });
 
-        return nombreMedicos;
+        List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
+
+        for (Medico medico: medicos) {
+            medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), medico.getHorario().getHoraInicio()));
+        }
+
+        return medicosDisponiblesGetDTOS;
     }
 
     public boolean estaRepetidaCedula(int id) {

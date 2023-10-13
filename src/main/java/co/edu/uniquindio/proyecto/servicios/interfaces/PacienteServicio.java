@@ -37,5 +37,5 @@ public interface PacienteServicio {
 
     DetalleAtencionMedicaDTO verDetalleCita(); // Método para ver el detalle de una cita médica.
 
-    List<String> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Exception;
+    List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Exception;
 }

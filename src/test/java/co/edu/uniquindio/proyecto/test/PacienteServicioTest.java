@@ -105,10 +105,14 @@ public class PacienteServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void ListarMedicos() throws Exception{
+
 MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
         LocalDate.of(2023,10,11),
-        Especialidad.ENDOCRINOLOGIA
+        Especialidad.DERMATOLOGIA
 );
-pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
+
+List<MedicosDisponiblesGetDTO> medicosDisponibles = pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
+medicosDisponibles.forEach(System.out::println);
+        Assertions.assertEquals(2, medicosDisponibles.size());
     }
 }

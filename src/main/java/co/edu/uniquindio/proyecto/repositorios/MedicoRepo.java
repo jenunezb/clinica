@@ -16,6 +16,6 @@ public interface MedicoRepo extends JpaRepository<Medico, Integer> {
 
     Medico findByCorreo(String correo);
 
-    @Query("SELECT m.nombre FROM Medico m JOIN m.horario h WHERE m.especialidad = :especialidad ")
-    List<String> findMedicosByEspecialidadAndHorario(@Param("especialidad") Especialidad especialidad);
+    @Query("SELECT m FROM Medico m JOIN m.horario h WHERE m.especialidad = :especialidad ")
+    List<Medico> findMedicosByEspecialidadAndHorario(@Param("especialidad") Especialidad especialidad);
 }
