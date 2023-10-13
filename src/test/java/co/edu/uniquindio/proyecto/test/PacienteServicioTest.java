@@ -82,10 +82,10 @@ public class PacienteServicioTest {
     @Sql("classpath:dataset.sql" )
     public void agendarCita() throws Exception{
         RegistroCitaDTO registroCitaDTO = new RegistroCitaDTO(
-                LocalDateTime.of(2023,9,18,5,00),
+                LocalDateTime.of(2023,10,11,7,00),
                 "Odontologia",
                 7,
-                5
+                8
         );
         int codigo=pacienteServicio.agendarCita(registroCitaDTO);
 

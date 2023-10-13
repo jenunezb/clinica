@@ -240,6 +240,8 @@ public class PacienteServicioImpl implements PacienteServicio {
             throw new Excepciones("no hay médicos disponibles");
         }
 
+        List<Cita> citas = citaRepo.findAll();
+
         List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
 
         for (Medico medico: medicos) {
@@ -250,6 +252,17 @@ public class PacienteServicioImpl implements PacienteServicio {
                 horaInicio = horaInicio.plusMinutes(30);
             }
         }
+    for (int i=0; i<citas.size();i++){
+        if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
+            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
+                for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
+                    if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
+                    && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){
+                                medicosDisponiblesGetDTOS.remove(j);
+                    }
+                }
+        }
+    }
 
         return medicosDisponiblesGetDTOS;
     }
