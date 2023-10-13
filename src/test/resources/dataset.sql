@@ -24,14 +24,25 @@ insert into horario values(3, '17:00:00', '07:00:00', 3);
 insert into horario values(4, '17:00:00', '07:00:00', 4);
 insert into horario values(5, '17:00:00', '07:00:00', 5);
 
-insert into cita value (4, '1', '2023-11-12 14:30', '2023-10-10 23:44', 'odontología', 3, 4 );
+# la cita contiene: el código de la cita // el estado de la cita //
+# la fecha de la cita // la fecha de creación de la cita //
+# el motivo de la cita // Cédula del medico // Cédula del paciente
+insert into cita value (4, '0', '2023-11-12 14:30', '2023-10-10 23:44', 'odontología', 3, 4 );
 insert into cita values (5, '1', '2023-11-15 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
-insert into cita values (6, '1', '2023-11-20 09:00', '2023-10-15 17:00', 'dermatología', 3, 8);
-insert into cita values (7, '1', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
+insert into cita values (6, '0', '2023-11-20 09:00', '2023-10-15 17:00', 'dermatología', 3, 8);
+insert into cita values (7, '0', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
 insert into cita values (8, '1', '2023-11-25 11:30', '2023-10-20 13:45', 'neurología', 2, 8);
 
-insert into pqrs values (1, 1, '2023-11-10', 'El doctor fue grosero 1', 6);
-insert into pqrs values (2, 3, '2023-11-10', 'El doctor fue grosero 2', 7);
-insert into pqrs values (3, 4, '2023-11-10', 'El doctor fue grosero 3', 8);
-insert into pqrs values (4, 8, '2023-11-10', 'El doctor fue grosero 4', 4);
-insert into pqrs values (5, 9, '2023-11-10', 'El doctor fue grosero 5', 5);
+# el pqrs contiene: Código del pqr // estado del pqrs // motivo del pqrs // codigo de la cita
+insert into pqrs values (1, 0, '2023-11-10', 'El doctor fue grosero 1', 6);
+insert into pqrs values (2, 0, '2023-11-10', 'El doctor fue grosero 2', 7);
+insert into pqrs values (3, 2, '2023-11-10', 'El doctor fue grosero 3', 8);
+insert into pqrs values (5, 0, '2023-11-10', 'El doctor fue grosero 5', 5);
+
+# Un mensaje contiene: codigoMensaje // ContenidoMensaje // fecha del mensaje // mensaje si hay que contestar a otro con anterioridad // codigo del pqr
+insert into mensaje value (1, 'aquí escribo todas las razones para responder el pqr', '2023-11-10', null, 1);
+insert into mensaje values (2, 'respuesta al mensaje 1', '2023-11-11', null, 3);
+insert into mensaje values (3, 'mensaje independiente', '2023-11-12', null, 2);
+insert into mensaje values (4, 'respuesta al mensaje 3', '2023-11-13', null, 2);
+insert into mensaje values (5, 'otro mensaje independiente', '2023-11-14', null, 2);
+insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, 3);

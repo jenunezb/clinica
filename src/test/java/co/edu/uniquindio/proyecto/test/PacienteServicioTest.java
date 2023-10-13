@@ -36,7 +36,6 @@ public class PacienteServicioTest {
 //Comprobamos que sí haya quedado guardado. Si se guardó debe retornar el código (no 0).
         Assertions.assertNotEquals(0, nuevo);
     }
-
     @Test
     @Sql("classpath:dataset.sql" )
     public void actualizarPacienteTest() throws Exception{
@@ -98,7 +97,8 @@ public class PacienteServicioTest {
         RegistroPQRSDTO registroPQRSDTO = new RegistroPQRSDTO(
                 4,
                 "El doctor fue muy grosero",
-                4
+                4,
+                "En la atención el doctor fue muy grosero y no me dio la formula médica"
         );
         pacienteServicio.crearPQRS(registroPQRSDTO);
     }

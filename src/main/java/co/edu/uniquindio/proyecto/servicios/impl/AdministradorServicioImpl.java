@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
+import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
@@ -189,7 +190,6 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
         return new
                 DetallePQRSDTO(
-
                 pqrs.getCodigo(),
                 pqrs.getEstado(),
                 pqrs.getMotivo(),
@@ -197,35 +197,26 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                 pqrs.getCita().getMedico().getNombre(),
                 pqrs.getCita().getMedico().getEspecialidad(),
                 pqrs.getFechaCreacion(),
-                new ArrayList<>()
+                new ArrayList<>() //Falta meter los mensajes del pqrs
         );
     }
 
     @Override
-    public String responderPQRS(int codigo) throws Exception {
-        return null;
+    public void responderPQRS(RespuestaDTO respuestaDTO) throws Exception {
+
+        Mensaje mensajeNuevo = new Mensaje();
+        Mensaje mensajeAnterior = mensajeRepo.getById(respuestaDTO.codigoMensaje());
+        mensajeNuevo.setFecha(LocalDate.now());
+        mensajeNuevo.setContenido(respuestaDTO.mensaje());
+        mensajeNuevo.setMensaje(mensajeAnterior);
+        mensajeNuevo.setPqrs(mensajeAnterior.getPqrs());
+
+        mensajeRepo.save(mensajeNuevo);
     }
 
     @Override
     public PQRSDTOAdmin verDetallePQRS() throws Exception {
         return null;
-    }
-
-    @Override
-    public int responderPQRS(RegistroRespuestaDTO registroRespuestaDTO) throws Exception {
-
-        Optional<Pqrs> opcional = pqrsRepo.findById(registroRespuestaDTO.codigoPQRS());
-
-        if(opcional.isEmpty()){
-            throw new Exception("El código" +registroRespuestaDTO.codigoPQRS()+" no está asociado a ningún PQRS");
-        }
-
-        Mensaje mensaje = new Mensaje();
-        mensaje.setFecha(LocalDate.now());
-        mensaje.setContenido(registroRespuestaDTO.mensaje());
-        mensaje.setPqrs(opcional.get());
-
-        return mensajeRepo.save(mensaje).getCodigo();
     }
 
     @Override
@@ -259,6 +250,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         Pqrs pqrs = opcional.get();
         pqrs.setEstado(estadoPQRS);
         pqrsRepo.save(pqrs);
+
     }
 
     public boolean estaRepetidaCedula(int id) {

@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
-import co.edu.uniquindio.proyecto.dto.DetalleAtencionMedicaDTO;
-import co.edu.uniquindio.proyecto.dto.HorarioDTO;
-import co.edu.uniquindio.proyecto.dto.MedicoPostDTO;
-import co.edu.uniquindio.proyecto.dto.NuevaPasswordDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +30,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final HorarioRepo horarioRepo;
     private final DiaLibreRepo diaLibreRepo;
     private final PqrsRepo pqrsRepo;
+    private final MensajeRepo mensajeRepo;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -169,6 +166,8 @@ public class PacienteServicioImpl implements PacienteServicio {
     public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception{
 
         Pqrs pqrsNuevo = new Pqrs();
+        Mensaje mensajeNuevo = new Mensaje();
+
         Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.CodigoCita());
 
         if( citaBuscada.isEmpty() ){
@@ -179,13 +178,19 @@ public class PacienteServicioImpl implements PacienteServicio {
         if(pqrsPacienteList.size()==3){
             throw new Excepciones("Usted ya tiene 3 PQRS en el sistema, no es posible crear otro");
         }
+
         Cita cita = citaBuscada.get();
         pqrsNuevo.setFechaCreacion(LocalDate.now());
-        pqrsNuevo.setEstado(EstadoPQRS.ASIGNADA);
+        pqrsNuevo.setEstado(EstadoPQRS.EN_PROCESO);
         pqrsNuevo.setMotivo(registroPQRSDTO.movito());
         pqrsNuevo.setCita(cita);
 
         pqrsRepo.save(pqrsNuevo);
+
+        mensajeNuevo.setPqrs(pqrsNuevo);
+        mensajeNuevo.setContenido(registroPQRSDTO.Detalle());
+        mensajeNuevo.setFecha(LocalDate.now());
+        mensajeRepo.save(mensajeNuevo);
 
     }
 
@@ -235,7 +240,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         if(nombreMedicos.isEmpty()){
             throw new Excepciones("no hay médicos disponibles");
         }
-
         nombreMedicos.forEach(nombreMedico -> {
             System.out.println(nombreMedico);
         });

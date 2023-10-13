@@ -1,10 +1,14 @@
 package co.edu.uniquindio.proyecto.test;
 
+import co.edu.uniquindio.proyecto.dto.DetallePQRSDTO;
+import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
+import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
+import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -89,5 +93,36 @@ public class AdministradorServicioTest {
     public void eliminarMedicoTest() throws Exception{
         administradorServicio.eliminarMedico(1);
         Assertions.assertThrows(Exception.class, () -> administradorServicio.obtenerMedico(1));
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void ListarPqrsTest() throws Exception{
+        List<ItemPQRSDTO> listaPqrs = administradorServicio.listarPQRS();
+        listaPqrs.forEach(System.out::println);
+        Assertions.assertEquals(4, listaPqrs.size());
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void verDetallePqrs()throws Exception{
+        DetallePQRSDTO detallePQRSDTO = administradorServicio.verDetallePQRS(2);
+        System.out.println(detallePQRSDTO.toString());
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void responderPqrs() throws Exception{
+        RespuestaDTO respuestaDTO = new RespuestaDTO(
+               3,
+               "Lamentamos lo sucedido, hablaremos con el doctor y lo mantendremos al tanto"
+        );
+        administradorServicio.responderPQRS(respuestaDTO);
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void finalizarPqrs() throws Exception{
+        administradorServicio.cambiarEstadoPQRS(2, EstadoPQRS.CERRADA);
     }
 }

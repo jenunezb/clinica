@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public record RegistroPQRSDTO(
         int CodigoCita,
         String movito,
-        int codigoPaciente
+        int codigoPaciente,
+        String Detalle
 ) {
 }
