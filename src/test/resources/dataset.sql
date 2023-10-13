@@ -19,7 +19,7 @@ insert into medico values(4, 'andresramirez@clinicadelcarmen.com', 'securepass',
 insert into medico values(5, 'monicavargas@clinicadelcarmen.com', 'mysecretpw', 12, true, 'monica.jpg', 'Monica Vargas', '317890123', 9 );
 
 insert into horario values(1, '08:00:00', '07:00:00', 1);
-insert into horario values(2, '17:00:00', '07:00:00', 2);
+insert into horario values(2, '08:00:00', '07:00:00', 2);
 insert into horario values(3, '09:00:00', '07:00:00', 3);
 insert into horario values(4, '17:00:00', '07:00:00', 4);
 insert into horario values(5, '17:00:00', '07:00:00', 5);
@@ -27,11 +27,11 @@ insert into horario values(5, '17:00:00', '07:00:00', 5);
 # la cita contiene: el código de la cita // el estado de la cita //
 # la fecha de la cita // la fecha de creación de la cita //
 # el motivo de la cita // Cédula del medico // Cédula del paciente
-insert into cita value (4, '0', '2023-11-12 14:30', '2023-10-10 23:44', 'odontología', 3, 4 );
-insert into cita values (5, '1', '2023-11-15 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
-insert into cita values (6, '0', '2023-11-20 09:00', '2023-10-15 17:00', 'dermatología', 3, 8);
-insert into cita values (7, '0', '2023-11-22 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
-insert into cita values (8, '1', '2023-11-25 11:30', '2023-10-20 13:45', 'neurología', 2, 8);
+insert into cita value (4, '0', '2023-10-11 07:30', '2023-10-10 23:44', 'Esta cita es la que debo de quitar de la lista', 1, 4 );
+insert into cita values (5, '1', '2023-10-11 10:30', '2023-10-10 12:45', 'cardiología', 2, 5);
+insert into cita values (6, '0', '2023-10-11 09:00', '2023-10-15 17:00', 'dermatología', 3, 8);
+insert into cita values (7, '0', '2023-10-11 16:45', '2023-10-17 19:30', 'ginecología', 4, 8);
+insert into cita values (8, '1', '2023-10-11 11:30', '2023-10-20 13:45', 'neurología', 2, 8);
 
 # el pqrs contiene: Código del pqr // estado del pqrs // motivo del pqrs // codigo de la cita
 insert into pqrs values (1, 0, '2023-11-10', 'El doctor fue grosero 1', 6);
