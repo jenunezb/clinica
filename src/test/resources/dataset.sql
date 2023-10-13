@@ -18,9 +18,9 @@ insert into medico values(3, 'lauragonzalez@clinicadelcarmen.com', 'password123'
 insert into medico values(4, 'andresramirez@clinicadelcarmen.com', 'securepass', 7, true, 'andres.jpg', 'Andres Ramirez', '311234567', 8 );
 insert into medico values(5, 'monicavargas@clinicadelcarmen.com', 'mysecretpw', 12, true, 'monica.jpg', 'Monica Vargas', '317890123', 9 );
 
-insert into horario values(1, '17:00:00', '07:00:00', 1);
+insert into horario values(1, '08:00:00', '07:00:00', 1);
 insert into horario values(2, '17:00:00', '07:00:00', 2);
-insert into horario values(3, '17:00:00', '07:00:00', 3);
+insert into horario values(3, '09:00:00', '07:00:00', 3);
 insert into horario values(4, '17:00:00', '07:00:00', 4);
 insert into horario values(5, '17:00:00', '07:00:00', 5);
 

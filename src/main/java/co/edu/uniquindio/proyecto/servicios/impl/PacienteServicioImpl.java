@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -241,7 +242,11 @@ public class PacienteServicioImpl implements PacienteServicio {
         List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
 
         for (Medico medico: medicos) {
-            medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), medico.getHorario().getHoraInicio()));
+            LocalTime horaInicio = medico.getHorario().getHoraInicio();
+            while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
+                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
+                horaInicio = horaInicio.plusMinutes(30);
+            }
         }
 
         return medicosDisponiblesGetDTOS;
