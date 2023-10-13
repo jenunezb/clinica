@@ -47,4 +47,6 @@ insert into mensaje values (4, 'respuesta al mensaje 3', '2023-11-13', null, 2);
 insert into mensaje values (5, 'otro mensaje independiente', '2023-11-14', null, 2);
 insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, 3);
 
-insert into dia_libre values (1, '2023-10-13', 3);
+insert into dia_libre values (1, '2023-10-11', 3);
+insert into dia_libre values (2, '2023-11-12', 1);
+

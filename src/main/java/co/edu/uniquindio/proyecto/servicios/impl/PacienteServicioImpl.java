@@ -233,7 +233,8 @@ public class PacienteServicioImpl implements PacienteServicio {
     public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
 
         List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
-                medicosDisponiblesDTO.especialidad());
+                medicosDisponiblesDTO.especialidad(),
+                medicosDisponiblesDTO.fecha());
 
         if(medicos.isEmpty()){
             throw new Excepciones("no hay médicos disponibles");
@@ -242,6 +243,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
 
         for (Medico medico: medicos) {
+
             LocalTime horaInicio = medico.getHorario().getHoraInicio();
             while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
                 medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
