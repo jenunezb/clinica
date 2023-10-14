@@ -1,10 +1,10 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
-import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;

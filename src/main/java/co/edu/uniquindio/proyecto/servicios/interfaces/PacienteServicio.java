@@ -1,12 +1,9 @@
 package co.edu.uniquindio.proyecto.servicios.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
-import co.edu.uniquindio.proyecto.modelo.entidades.Medico;
-import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 public interface PacienteServicio {

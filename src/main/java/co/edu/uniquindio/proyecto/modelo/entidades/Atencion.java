@@ -21,8 +21,7 @@ public class Atencion implements Serializable {
 
     @Column(nullable = false)
     private String tratamiento, notasMedicas, diagnostico;
-//
-//    @OneToOne
-//    @Column(nullable = false)
-//    private Cita cita;
+
+    @OneToOne
+    private Cita cita;
 }
