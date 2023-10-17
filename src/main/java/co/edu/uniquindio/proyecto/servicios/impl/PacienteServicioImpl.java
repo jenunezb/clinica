@@ -31,8 +31,9 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final MedicoRepo medicoRepo;
     private final PqrsRepo pqrsRepo;
     private final MensajeRepo mensajeRepo;
-    private BCryptPasswordEncoder passwordEncoder;
     private final AtencionRepo atencionRepo;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -47,8 +48,8 @@ public class PacienteServicioImpl implements PacienteServicio {
         Paciente paciente = new Paciente();
 //Datos de la Cuenta
         paciente.setCorreo( registroPacienteDTO.correo() );
-//        paciente.setPassword( passwordEncoder.encode(registroPacienteDTO.password()));
-        paciente.setPassword(registroPacienteDTO.password());
+        String passwordEncriptada = passwordEncoder.encode( registroPacienteDTO.password() );
+        paciente.setPassword(passwordEncriptada);
         paciente.setEstado(true);
 //Datos del Usuario
         paciente.setNombre( registroPacienteDTO.nombre() );

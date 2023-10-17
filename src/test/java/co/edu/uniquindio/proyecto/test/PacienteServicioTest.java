@@ -35,6 +35,7 @@ public class PacienteServicioTest {
                 Ciudad.BARRANQUILLA,LocalDate.of(1992,05,19), "Alergias", Eps.NUEVA_EPS, TipoSangre.A_NEGATIVO);
 //Guardamos el registro usando el método del servicio
         int nuevo = pacienteServicio.registrarse(pacienteDTO);
+
 //Comprobamos que sí haya quedado guardado. Si se guardó debe retornar el código (no 0).
         Assertions.assertNotEquals(0, nuevo);
     }

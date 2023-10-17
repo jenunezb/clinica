@@ -11,6 +11,7 @@ import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +29,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     private final CitaRepo citaRepo;
     private final MensajeRepo mensajeRepo;
     private final HorarioRepo horarioRepo;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
@@ -48,7 +51,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setNombre(medicoDTO.nombre());
         medico.setEspecialidad(medicoDTO.especialidad());
         medico.setCiudad(medicoDTO.ciudad());
-        medico.setPassword(medicoDTO.password());
+        String passwordEncriptada = passwordEncoder.encode( medicoDTO.password() );
+        medico.setPassword(passwordEncriptada);
         medico.setFoto(medicoDTO.urlFoto());
         medico.setCorreo(medicoDTO.correo());
         medico.setEstado(true);
