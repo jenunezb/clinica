@@ -31,10 +31,10 @@ public class PacienteController {
     public ResponseEntity<MensajeDTO> crearPaciente(@Valid @RequestBody RegistroPacienteDTO registroPacienteDTO) {
         try {
             pacienteServicio.registrarse(registroPacienteDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Paciente creado correctamente"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -43,10 +43,10 @@ public class PacienteController {
     public ResponseEntity<MensajeDTO> agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO){
         try {
             pacienteServicio.agendarCita(registroCitaDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Cita agendada correctamente"));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -56,10 +56,10 @@ public class PacienteController {
         System.out.println("pasa");
         try {
             List<MedicosDisponiblesGetDTO> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK,
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, medicoPostDTOList ));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }

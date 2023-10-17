@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @ToString
 public class MensajeDTO<T> {
-    private HttpStatus estado;
     private boolean error;
     private T respuesta;
 }

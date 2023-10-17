@@ -24,10 +24,10 @@ public class AdministradorController {
     public ResponseEntity<MensajeDTO> crearMedico(@Valid @RequestBody MedicoDTO medico) {
         try {
             administradorServicio.crearMedico(medico);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Médico creado correctamente"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -36,10 +36,10 @@ public class AdministradorController {
     public ResponseEntity<MensajeDTO> obtenerMedico (@RequestParam int codigo){
         try {
             DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(codigo);
-            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK,
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, detalleMedicoDTO ));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -48,11 +48,11 @@ public class AdministradorController {
     public ResponseEntity<MensajeDTO> actualizarMedico(@Valid @RequestBody DetalleMedicoDTO medico, int codigo) {
         try {
             int codigon=administradorServicio.actualizarMedico(medico);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(HttpStatus.CREATED,
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Médico "+ codigon+" modificado correctamente"));
         } catch (Exception e) {
             // Maneja la excepción aquí y crea una respuesta adecuada
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -61,10 +61,10 @@ public class AdministradorController {
     public ResponseEntity<MensajeDTO> eliminarMedico(@RequestParam int codigo) {
         try {
             administradorServicio.eliminarMedico(codigo);
-            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK,
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, "Médico eliminado correctamente"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
@@ -73,10 +73,10 @@ public class AdministradorController {
     public ResponseEntity<MensajeDTO> listarMedicos (){
         try {
             List<ItemMedicoDTO> lista = administradorServicio.listarMedicos();
-            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(HttpStatus.OK,
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, lista ));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(HttpStatus.BAD_REQUEST,
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
     }
