@@ -16,12 +16,7 @@ public record DetalleAtencionMedicaDTO(
 
         Especialidad especialidad,
         String nombreMedico,
-        String Motivo,
-
-        String diagnostico,
-        String notasMedicas,
-        String tratamiento,
-        String sintomas
+        String Motivo
 
 ) {
 }

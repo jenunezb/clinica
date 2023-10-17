@@ -19,7 +19,7 @@ public class Atencion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String tratamiento, notasMedicas, diagnostico;
 
     @OneToOne
