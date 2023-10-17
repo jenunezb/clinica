@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
+@Component
 public class JWTUtils {
     @Value("${jwt.secret}")
     private String claveSecreta;
@@ -23,7 +24,6 @@ public class JWTUtils {
                 .setExpiration(Date.from(now.plus(5L, ChronoUnit.MINUTES)))
                 .signWith( getKey() )
                 .compact();
-
     }
     public Jws<Claims> parseJwt(String jwtString) throws ExpiredJwtException,
             UnsupportedJwtException, MalformedJwtException, IllegalArgumentException {
