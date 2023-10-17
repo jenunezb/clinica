@@ -82,7 +82,7 @@ public class PacienteServicioTest {
     }
     @Test
     @Sql("classpath:dataset.sql" )
-    public void agendarCita() throws Exception{
+    public void agendarCitaTest() throws Exception{
         RegistroCitaDTO registroCitaDTO = new RegistroCitaDTO(
                 LocalDateTime.of(2023,10,11,7,00),
                 "Odontologia",
@@ -95,7 +95,7 @@ public class PacienteServicioTest {
     }
     @Test
     @Sql("classpath:dataset.sql" )
-    public void crearPQRS() throws Exception{
+    public void crearPQRSTest() throws Exception{
         RegistroPQRSDTO registroPQRSDTO = new RegistroPQRSDTO(
                 4,
                 "El doctor fue muy grosero",
@@ -104,10 +104,9 @@ public class PacienteServicioTest {
         );
         pacienteServicio.crearPQRS(registroPQRSDTO);
     }
-
     @Test
     @Sql("classpath:dataset.sql" )
-    public void ListarMedicos() throws Exception{
+    public void ListarMedicosTest() throws Exception{
 
 MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
         LocalDate.of(2023,10,11),
@@ -117,5 +116,26 @@ List<MedicosDisponiblesGetDTO> medicosDisponibles = pacienteServicio.mostrarMedi
 medicosDisponibles.forEach(System.out::println);
         Assertions.assertEquals(3, medicosDisponibles.size());
     }
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void verHistorialMedicoTest(){
+        List<DetalleCita> detalleCitas = pacienteServicio.verHistorialMedico(8);
+        detalleCitas.forEach(System.out::println);
+    }
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void filtrarCitasPorFechaTest(){
+        List<DetalleCita> detalleCitas = pacienteServicio.filtrarCitasPorFecha(8, LocalDate.of(2023,10,11));
+        detalleCitas.forEach(System.out::println);
+    }
+
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void filtrarCitasPorMedicoTest(){
+        List<DetalleCita> detalleCitas = pacienteServicio.filtrarCitasPorMedico(8,2);
+        detalleCitas.forEach(System.out::println);
+    }
+
 
 }

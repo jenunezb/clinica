@@ -2,8 +2,10 @@ package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.medico.*;
+import co.edu.uniquindio.proyecto.dto.paciente.DetalleCita;
 import co.edu.uniquindio.proyecto.modelo.entidades.Atencion;
 import co.edu.uniquindio.proyecto.servicios.interfaces.MedicoServicio;
+import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class MedicoServicioTest {
     @Sql("classpath:dataset.sql" )
     public void atenderCita() throws Exception{
         DetalleAtencionMedicaDTO detalleAtencionMedicaDTO = medicoServicio.atenderCita(5);
-        System.out.println(detalleAtencionMedicaDTO.toString());
+        System.out.println(detalleAtencionMedicaDTO);
     }
 
     @Test
@@ -73,5 +75,12 @@ public class MedicoServicioTest {
              hitorialDeAtenciones) {
             System.out.println(atencionMedica);
         }
+    }
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void verHistorialMedicoTest(){
+        List<DetalleCita> detalleCitas = medicoServicio.listarHistorialMedico(8);
+        detalleCitas.forEach(System.out::println);
     }
 }

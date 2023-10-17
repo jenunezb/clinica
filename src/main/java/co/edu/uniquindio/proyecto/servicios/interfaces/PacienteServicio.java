@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PacienteServicio {
@@ -28,11 +29,11 @@ public interface PacienteServicio {
 
     List<ItemPacienteDTO> listarTodos(); // Método para listar las citas médicas agendadas por el paciente.
 
-    void filtrarCitasPorFecha(); // Método para filtrar las citas médicas por fecha.
+    List<DetalleCita> filtrarCitasPorFecha(int codigoPaciente, LocalDate fecha); // Método para filtrar las citas médicas por fecha.
 
-    void filtrarCitasPorMedico(); // Método para filtrar las citas médicas por médico.
+    List<DetalleCita> filtrarCitasPorMedico(int codigoPaciente, int codigoMedico); // Método para filtrar las citas médicas por médico.
 
-    DetalleAtencionMedicaDTO verDetalleCita(); // Método para ver el detalle de una cita médica.
+    List<DetalleCita> verHistorialMedico(int codigoPaciente); // Método para ver el detalle de una cita médica.
 
     List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Exception;
 }

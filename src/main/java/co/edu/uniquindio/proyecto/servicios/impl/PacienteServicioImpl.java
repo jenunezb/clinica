@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
-import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
+import co.edu.uniquindio.proyecto.dto.medico.FinalizarCitaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
@@ -32,6 +32,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final PqrsRepo pqrsRepo;
     private final MensajeRepo mensajeRepo;
     private BCryptPasswordEncoder passwordEncoder;
+    private final AtencionRepo atencionRepo;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -144,7 +145,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         //Debo validar que el paciente no tenga mas de 3 citas activas
 
-        List<Cita> citasPorPaciente= citaRepo.findCitasByClienteId(registroCitaDTO.idPaciente());
+        List<Cita> citasPorPaciente= citaRepo.findCitasByPacienteId(registroCitaDTO.idPaciente());
 
         if(citasPorPaciente.size()==3){
             throw new Excepciones("No es posible agendar más citas, puesto que ya tiene 3 citas activas");
@@ -215,19 +216,121 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void filtrarCitasPorFecha() {
+    public List<DetalleCita> filtrarCitasPorFecha(int codigoPaciente, LocalDate fecha) {
 
+        List<Cita> citas = citaRepo.listaCitasPorFecha(codigoPaciente, fecha);
+
+        List<DetalleCita> detalleCitas = new ArrayList<>();
+
+        for (Cita cita:
+                citas) {
+            Optional<Atencion> atencion = atencionRepo.buscarAtencionPorCodigoCita(cita.getCodigo());
+            if(atencion.isEmpty()){
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        "",
+                        "",
+                        ""
+                ));
+            }else {
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        atencion.get().getNotasMedicas(),
+                        atencion.get().getDiagnostico(),
+                        atencion.get().getTratamiento()));
+            }
+
+        }
+
+        return detalleCitas;
     }
 
     @Override
-    public void filtrarCitasPorMedico() {
+    public List<DetalleCita> filtrarCitasPorMedico(int codigoPaciente, int codigoMedico) {
+        List<Cita> citas = citaRepo.listaFechasPorMedico(codigoPaciente, codigoMedico);
+        System.out.println(citas.size());
+        List<DetalleCita> detalleCitas = new ArrayList<>();
 
+        for (Cita cita:
+                citas) {
+            Optional<Atencion> atencion = atencionRepo.buscarAtencionPorCodigoCita(cita.getCodigo());
+            if(atencion.isEmpty()){
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        "",
+                        "",
+                        ""
+                ));
+            }else {
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        atencion.get().getNotasMedicas(),
+                        atencion.get().getDiagnostico(),
+                        atencion.get().getTratamiento()));
+            }
+
+        }
+
+        return detalleCitas;
     }
 
     @Override
-    public DetalleAtencionMedicaDTO verDetalleCita() {
+    public List<DetalleCita> verHistorialMedico(int codigoPaciente) {
 
-        return null;
+        List<Cita> citas = citaRepo.findCitasByPacienteId(codigoPaciente);
+        List<DetalleCita> detalleCitas = new ArrayList<>();
+
+        for (Cita cita:
+             citas) {
+            Optional<Atencion> atencion = atencionRepo.buscarAtencionPorCodigoCita(cita.getCodigo());
+            if(atencion.isEmpty()){
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        "",
+                        "",
+                        ""
+                ));
+            }else {
+                detalleCitas.add(new DetalleCita(
+                        cita.getCodigo(),
+                        cita.getEstadoCita(),
+                        cita.getFechaCita(),
+                        cita.getMotivo(),
+                        cita.getMedico().getNombre(),
+                        cita.getMedico().getEspecialidad(),
+                        atencion.get().getNotasMedicas(),
+                        atencion.get().getDiagnostico(),
+                        atencion.get().getTratamiento()));
+            }
+
+        }
+
+        return detalleCitas;
     }
 
     @Override

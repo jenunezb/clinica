@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.medico.*;
+import co.edu.uniquindio.proyecto.dto.paciente.DetalleCita;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.Atencion;
 import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
@@ -11,6 +12,7 @@ import co.edu.uniquindio.proyecto.repositorios.AtencionRepo;
 import co.edu.uniquindio.proyecto.repositorios.CitaRepo;
 import co.edu.uniquindio.proyecto.repositorios.DiaLibreRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.MedicoServicio;
+import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ public class MedicoServicioImpl implements MedicoServicio {
     private final CitaRepo citaRepo;
     private final AtencionRepo atencionRepo;
     private final DiaLibreRepo diaLibreRepo;
+    private final PacienteServicio pacienteServicio;
 
     @Override
     public List<ItemCitaDTO> listarCitasPendientesDia(CitasFechaDTO listaCitasFechaDTO) {
@@ -134,7 +137,11 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    public void listarCitasPaciente() {
+    public List<DetalleCita> listarHistorialMedico(int codigoPaciente) {
+
+        List<DetalleCita> detalleCitas = pacienteServicio.verHistorialMedico(codigoPaciente);
+
+        return detalleCitas;
 
     }
 

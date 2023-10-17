@@ -46,9 +46,10 @@ insert into mensaje values (4, 'respuesta al mensaje 3', '2023-11-13', null, 2);
 insert into mensaje values (5, 'otro mensaje independiente', '2023-11-14', null, 2);
 insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, 3);
 
-
 insert into dia_libre values (1, '2023-10-11', 3);
 insert into dia_libre values (2, '2023-10-12', 1);
 insert into dia_libre values (3, '2023-12-01', 2);
 insert into dia_libre values (4, '2023-12-04', 2);
 insert into dia_libre values (5, '2023-12-05', 2);
+
+insert into atencion values (1, 'Aquí va el diagnostico', 'Aqui van las notas medicas', 'Aqui va el tratamiento', 7);
