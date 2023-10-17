@@ -1,10 +1,7 @@
 package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.AgendarDiaLibre;
-import co.edu.uniquindio.proyecto.dto.medico.CitasFechaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.FinalizarCitaDTO;
+import co.edu.uniquindio.proyecto.dto.medico.*;
 import co.edu.uniquindio.proyecto.modelo.entidades.Atencion;
 import co.edu.uniquindio.proyecto.servicios.interfaces.MedicoServicio;
 import org.junit.jupiter.api.Assertions;
@@ -60,14 +57,21 @@ public class MedicoServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void registrarDiaLibre() throws Exception{
-
         //Si al médico del código 1 le asigno un dia libre el 20 no me va a dejar porque ya tiene citas agendadas
         AgendarDiaLibre agendarDiaLibre= new AgendarDiaLibre(
                 1,
                 LocalDate.of(2023,10,21)
         );
-
         medicoServicio.agendarDiaLibre(agendarDiaLibre);
     }
 
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void listarHistorialDeAtenciones(){
+        List<AtencionMedica> hitorialDeAtenciones = medicoServicio.listarCitasRealizadasMedico(4);
+        for (AtencionMedica atencionMedica:
+             hitorialDeAtenciones) {
+            System.out.println(atencionMedica);
+        }
+    }
 }

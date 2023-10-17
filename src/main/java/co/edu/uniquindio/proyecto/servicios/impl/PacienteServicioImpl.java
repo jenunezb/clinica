@@ -11,6 +11,7 @@ import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,10 +29,9 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final PacienteRepo pacienteRepo;
     private final CitaRepo citaRepo;
     private final MedicoRepo medicoRepo;
-    private final HorarioRepo horarioRepo;
-    private final DiaLibreRepo diaLibreRepo;
     private final PqrsRepo pqrsRepo;
     private final MensajeRepo mensajeRepo;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
@@ -46,7 +46,8 @@ public class PacienteServicioImpl implements PacienteServicio {
         Paciente paciente = new Paciente();
 //Datos de la Cuenta
         paciente.setCorreo( registroPacienteDTO.correo() );
-        paciente.setPassword( registroPacienteDTO.password() );
+//        paciente.setPassword( passwordEncoder.encode(registroPacienteDTO.password()));
+        paciente.setPassword(registroPacienteDTO.password());
         paciente.setEstado(true);
 //Datos del Usuario
         paciente.setNombre( registroPacienteDTO.nombre() );

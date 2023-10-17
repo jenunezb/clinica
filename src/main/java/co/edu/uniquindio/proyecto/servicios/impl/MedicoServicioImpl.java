@@ -1,10 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.AgendarDiaLibre;
-import co.edu.uniquindio.proyecto.dto.medico.CitasFechaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
-import co.edu.uniquindio.proyecto.dto.medico.FinalizarCitaDTO;
+import co.edu.uniquindio.proyecto.dto.medico.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.Atencion;
 import co.edu.uniquindio.proyecto.modelo.entidades.Cita;
@@ -47,15 +44,16 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
+    //todo: Aquí envío Este método es utilizado para cuando quiera asignar un día libre, envío todas las citas que tengo pendientes
+    // de esta manera se si puedo o no asignar el día libre
     public List<Cita> listarCitasPendientes(int codigoMedico) {
         List<Cita> citas = citaRepo.listarCitasAFuturo(codigoMedico);
-
         System.out.println(citas.size());
-
         return citas;
     }
 
     @Override
+    //todo: Aquí envío todo lo que requiere el médico para ver los detalles del paciente
     public DetalleAtencionMedicaDTO atenderCita(int codigoCita) throws Exception{
             Optional <Cita> citaBuscada = citaRepo.findById(codigoCita);
 
@@ -75,11 +73,6 @@ public class MedicoServicioImpl implements MedicoServicio {
                     citaBuscada.get().getMotivo());
 
         return detalleAtencionMedicaDTO;
-    }
-
-    @Override
-    public void listarCitasPaciente() {
-
     }
 
     @Override
@@ -116,11 +109,6 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    public void listarCitasRealizadasMedico() {
-
-    }
-
-    @Override
     public void finalizarCita(FinalizarCitaDTO finalizarCitaDTO) throws Exception{
         Optional <Cita> citaBuscada = citaRepo.findById(finalizarCitaDTO.codigoCita());
 
@@ -143,5 +131,28 @@ public class MedicoServicioImpl implements MedicoServicio {
             throw new Excepciones("La cita "+citaBuscada.get().getCodigo()+" no está asignada");
         }
 
+    }
+
+    @Override
+    public void listarCitasPaciente() {
+
+    }
+
+    @Override
+    public List<AtencionMedica> listarCitasRealizadasMedico(int codigoMedico) {
+        List<Cita> citas = citaRepo.historialDeAtenciones(codigoMedico);
+        System.out.println(citas.size());
+        List<AtencionMedica> respuesta = new ArrayList<>();
+        for (Cita cita:
+             citas) {
+            respuesta.add(new AtencionMedica(
+                    cita.getCodigo(),
+                    cita.getPaciente().getNombre(),
+                    cita.getFechaCita(),
+                    cita.getMotivo()
+            ));
+        }
+
+        return respuesta;
     }
 }
