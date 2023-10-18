@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.*;
-import co.edu.uniquindio.proyecto.dto.medico.DetalleAtencionMedicaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 
 import java.time.LocalDate;
@@ -19,7 +18,7 @@ public interface PacienteServicio {
 
     void enviarLinkRecuperacion( String email) throws Exception; // Método para enviar un enlace de recuperación de contraseña al paciente.
 
-    void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO); // Método para que un paciente cambie su contraseña.
+    void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO) throws Exception; // Método para que un paciente cambie su contraseña.
 
     int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception; // Método para que un paciente agende una cita médica.
 

@@ -145,7 +145,17 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO) {
+    public void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO) throws Exception {
+            Optional<Paciente> pacienteBuscado = pacienteRepo.findById(nuevaPasswordDTO.codigoPaciente());
+
+            if(pacienteBuscado.isEmpty()){
+                throw new Excepciones("El paciente no fue encontrado");
+            }
+        String passwordEncriptada = passwordEncoder.encode( nuevaPasswordDTO.password() );
+        Paciente paciente = pacienteBuscado.get();
+        paciente.setPassword(passwordEncriptada);
+
+        pacienteRepo.save(paciente);
 
     }
 
