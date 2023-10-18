@@ -1,13 +1,13 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
-import co.edu.uniquindio.proyecto.dto.medico.FinalizarCitaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
+import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public class PacienteServicioImpl implements PacienteServicio {
     private final PqrsRepo pqrsRepo;
     private final MensajeRepo mensajeRepo;
     private final AtencionRepo atencionRepo;
+    private final CuentaRepo cuentaRepo;
+    private final EmailServicio emailServicio;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -65,6 +68,8 @@ public class PacienteServicioImpl implements PacienteServicio {
 
 //Guardo el paciente
         Paciente pacienteCreado = pacienteRepo.save( paciente );
+
+//        emailServicio.enviarCorreo(new EmailDTO( "Correo destino","Asunto", "Cuerpo mensaje"));
 
         return pacienteCreado.getCedula();
     }
@@ -121,6 +126,22 @@ public class PacienteServicioImpl implements PacienteServicio {
     @Override
     public void enviarLinkRecuperacion(String email) throws Exception {
 
+        Optional<Cuenta> optionalCuenta = cuentaRepo.findByCorreo(email);
+
+        if(optionalCuenta.isEmpty()){
+            throw new Excepciones("No existe una cuenta con el correo "+email);
+        }
+
+        LocalTime fecha = LocalTime.now();
+
+        String parametro = Base64.getEncoder().encodeToString((optionalCuenta.get().getCedula()+": "+fecha).getBytes());
+
+        emailServicio.enviarCorreo( new EmailDTO(
+                optionalCuenta.get().getCorreo(),
+                "Recuperacion de contraseña",
+                "Hola, para recuperar tu contraseña ingresa al siquiente link: https://xxxxxx/recuperar-password/"+parametro
+
+        ));
     }
 
     @Override
