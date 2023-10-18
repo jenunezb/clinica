@@ -230,9 +230,17 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void responderPQRS(int codigoPQRS)
+    public void responderPQRS(int codigoMensajeAdmin) throws Exception
     {
-        pqrsRepo.findById(codigoPQRS);
+        Optional<Mensaje> mensajeAdminBuscado = mensajeRepo.findById(codigoMensajeAdmin);
+
+        if(mensajeAdminBuscado.isEmpty()){
+            throw new Excepciones("el Mensaje no puede ser respondido, debido a que no existe un mensaje del administrador");
+        }
+
+        Mensaje mensaje = new Mensaje();
+
+
     }
 
     @Override
@@ -414,7 +422,8 @@ public class PacienteServicioImpl implements PacienteServicio {
         return paciente != null;
     }
 
-    void listarPQRSPaciente(){
+    @Override
+    public void listarPQRSPaciente(){
 
     }
 }
