@@ -42,7 +42,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     @Override
     public int registrarse(RegistroPacienteDTO registroPacienteDTO) throws Exception{
         if( estaRepetidaCedula(registroPacienteDTO.cedula()) ){
-            throw new Excepciones("La cédula ya se encuentra registrada");
+            throw new Excepciones("La cédula "+ registroPacienteDTO.cedula()+" ya se encuentra registrada");
         }
 
         if( estaRepetidoCorreo(registroPacienteDTO.correo()) ) {

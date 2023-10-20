@@ -30,8 +30,8 @@ public class AdministradorServicioTest {
     private AdministradorServicio administradorServicio;
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void registrarMedicoTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void registrarMedicoTest() throws Exception {
 
         MedicoDTO medicoDTO = new MedicoDTO(
                 "Gabriela Nuñez Díaz",
@@ -41,19 +41,19 @@ public class AdministradorServicioTest {
                 "3117567564",
                 "ganudi@gmail.com",
                 "123456",
-                LocalTime.of(8,00),
-                LocalTime.of(17,00),
+                LocalTime.of(8, 00),
+                LocalTime.of(17, 00),
                 "Url_Foto"
         );
 
         int nuevo = administradorServicio.crearMedico(medicoDTO);
 
-        Assertions.assertNotEquals(0,nuevo);
+        Assertions.assertNotEquals(0, nuevo);
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void modificarMedicoTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void modificarMedicoTest() throws Exception {
         DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1);
 
         DetalleMedicoDTO modificado = new DetalleMedicoDTO(
@@ -74,16 +74,16 @@ public class AdministradorServicioTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void buscarMedicoTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void buscarMedicoTest() throws Exception {
         DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(1);
 
         Assertions.assertEquals(detalleMedicoDTO.cedula(), 1);
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void listarMedicosTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void listarMedicosTest() throws Exception {
         List<ItemMedicoDTO> medicos = administradorServicio.listarMedicos();
         medicos.forEach(System.out::println);
 
@@ -91,46 +91,46 @@ public class AdministradorServicioTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void eliminarMedicoTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void eliminarMedicoTest() throws Exception {
         administradorServicio.eliminarMedico(1);
         Assertions.assertThrows(Exception.class, () -> administradorServicio.obtenerMedico(1));
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void ListarPqrsTest() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void ListarPqrsTest() throws Exception {
         List<ItemPQRSDTO> listaPqrs = administradorServicio.listarPQRS();
         listaPqrs.forEach(System.out::println);
         Assertions.assertEquals(3, listaPqrs.size());
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void verDetallePqrs()throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void verDetallePqrs() throws Exception {
         DetallePQRSDTO detallePQRSDTO = administradorServicio.verDetallePQRS(2);
         System.out.println(detallePQRSDTO.toString());
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void responderPqrs() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void responderPqrs() throws Exception {
         RespuestaDTO respuestaDTO = new RespuestaDTO(
-               3,
-               "Lamentamos lo sucedido, hablaremos con el doctor y lo mantendremos al tanto"
+                3,
+                "Lamentamos lo sucedido, hablaremos con el doctor y lo mantendremos al tanto"
         );
         administradorServicio.responderPQRS(respuestaDTO);
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void finalizarPqrs() throws Exception{
+    @Sql("classpath:dataset.sql")
+    public void finalizarPqrs() throws Exception {
         administradorServicio.cambiarEstadoPQRS(2, EstadoPQRS.CERRADA);
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void verHistorialConsultas(){
+    @Sql("classpath:dataset.sql")
+    public void verHistorialConsultas() {
         List<HistorialConsultas> historialConsultas = administradorServicio.verHistorialDeConsultas();
 
         historialConsultas.forEach(System.out::println);
@@ -140,17 +140,16 @@ public class AdministradorServicioTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void verHistorialConsultasMedico(){
+    @Sql("classpath:dataset.sql")
+    public void verHistorialConsultasMedico() {
         List<HistorialConsultas> historialConsultas = administradorServicio.verHistorialDeConsultasMedico(4);
         historialConsultas.forEach(System.out::println);
         Assertions.assertEquals(1, historialConsultas.size());
     }
 
-
     @Test
-    @Sql("classpath:dataset.sql" )
-    public void listarPacientesTest(){
+    @Sql("classpath:dataset.sql")
+    public void listarPacientesTest() {
 //Obtenemos la lista de todos los pacientes
         List<ItemPacienteDTO> lista = administradorServicio.listarTodos();
         lista.forEach(System.out::println);
