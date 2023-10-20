@@ -24,11 +24,9 @@ public interface PacienteServicio {
 
     void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception; // Método para que un paciente cree una PQRS (Peticiones, Quejas, Reclamos y Sugerencias).
 
-    void responderPQRS(int codigoPQRS) throws Exception; // Método para que un paciente responda a una PQRS.
+    List<ItemPQRSDTO> listarPQRSPaciente(int codigoPaciente);//
 
-    void listarPQRSPaciente();//
-
-    List<ItemPacienteDTO> listarTodos(); // Método para listar las citas médicas agendadas por el paciente.
+    DetallePQRSDTO responderPQRS(ResponderPqrsPaciente responderPqrsPaciente) throws Exception; // Método para que un paciente responda a una PQRS.
 
     List<DetalleCita> filtrarCitasPorFecha(int codigoPaciente, LocalDate fecha); // Método para filtrar las citas médicas por fecha.
 

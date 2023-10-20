@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
@@ -69,7 +70,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 //Guardo el paciente
         Paciente pacienteCreado = pacienteRepo.save( paciente );
 
-//        emailServicio.enviarCorreo(new EmailDTO( "Correo destino","Asunto", "Cuerpo mensaje"));
+       // emailServicio.enviarCorreo(new EmailDTO( pacienteCreado.getCorreo(),"Asunto", "Cuerpo mensaje"));
 
         return pacienteCreado.getCedula();
     }
@@ -106,21 +107,9 @@ public class PacienteServicioImpl implements PacienteServicio {
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+codigo);
         }
-        pacienteRepo.delete( pacienteBuscado.get() );
-    }
-
-    @Override
-    public DetallePacienteDTO verDetallePaciente(int codigo) throws Exception {
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
-        if( pacienteBuscado.isEmpty() ){
-            throw new Exception("No existe un paciente con el código "+codigo);
-        }
         Paciente paciente = pacienteBuscado.get();
-//Hacemos un mapeo de un objeto de tipo Paciente a un objeto de tipo DetallePacienteDTO
-        return new DetallePacienteDTO( paciente.getCedula(),
-                paciente.getNombre(), paciente.getTelefono(), paciente.getFoto(), paciente.getCiudad(),
-                paciente.getFechaNacimiento(), paciente.getAlergias(), paciente.getEps(),
-                paciente.getTipoSangre(), paciente.getCorreo() );
+        paciente.setEstado(false);
+        pacienteRepo.save(paciente);
     }
 
     @Override
@@ -142,21 +131,6 @@ public class PacienteServicioImpl implements PacienteServicio {
                 "Hola, para recuperar tu contraseña ingresa al siquiente link: https://xxxxxx/recuperar-password/"+parametro
 
         ));
-    }
-
-    @Override
-    public void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO) throws Exception {
-            Optional<Paciente> pacienteBuscado = pacienteRepo.findById(nuevaPasswordDTO.codigoPaciente());
-
-            if(pacienteBuscado.isEmpty()){
-                throw new Excepciones("El paciente no fue encontrado");
-            }
-        String passwordEncriptada = passwordEncoder.encode( nuevaPasswordDTO.password() );
-        Paciente paciente = pacienteBuscado.get();
-        paciente.setPassword(passwordEncriptada);
-
-        pacienteRepo.save(paciente);
-
     }
 
     @Override
@@ -198,6 +172,44 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
+    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
+
+        List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
+                medicosDisponiblesDTO.especialidad(),
+                medicosDisponiblesDTO.fecha());
+
+        if(medicos.isEmpty()){
+            throw new Excepciones("no hay médicos disponibles");
+        }
+
+        List<Cita> citas = citaRepo.findAll();
+
+        List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
+
+        for (Medico medico: medicos) {
+
+            LocalTime horaInicio = medico.getHorario().getHoraInicio();
+            while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
+                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
+                horaInicio = horaInicio.plusMinutes(30);
+            }
+        }
+        for (int i=0; i<citas.size();i++){
+            if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
+//            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
+                for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
+                    if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
+                            && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){
+                        medicosDisponiblesGetDTOS.remove(j);
+                    }
+                }
+            }
+        }
+
+        return medicosDisponiblesGetDTOS;
+    }
+
+    @Override
     public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception{
 
         Pqrs pqrsNuevo = new Pqrs();
@@ -230,29 +242,33 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void responderPQRS(int codigoMensajeAdmin) throws Exception
+    public DetallePQRSDTO responderPQRS(ResponderPqrsPaciente responderPqrsPaciente) throws Exception
     {
-        Optional<Mensaje> mensajeAdminBuscado = mensajeRepo.findById(codigoMensajeAdmin);
-
+        Optional<Mensaje> mensajeAdminBuscado = mensajeRepo.findById(responderPqrsPaciente.codigoMensajeAdmin());
         if(mensajeAdminBuscado.isEmpty()){
             throw new Excepciones("el Mensaje no puede ser respondido, debido a que no existe un mensaje del administrador");
         }
-
         Mensaje mensaje = new Mensaje();
-
-
-    }
-
-    @Override
-    public List<ItemPacienteDTO> listarTodos(){
-        List<Paciente> pacientes = pacienteRepo.findAll();
-        List<ItemPacienteDTO> repuesta = new ArrayList<>();
-//Hacemos un mapeo de cada uno de los objetos de tipo Paciente a objetos de tipo ItemPacienteDTO
-        for (Paciente paciente : pacientes) {
-            repuesta.add( new ItemPacienteDTO( paciente.getCedula(),
-                    paciente.getNombre(), paciente.getCiudad() ) );
+        mensaje.setPqrs(mensajeAdminBuscado.get().getPqrs());
+        mensaje.setMensaje(mensajeAdminBuscado.get());
+        mensaje.setContenido(responderPqrsPaciente.mensajeRespuesta());
+        mensaje.setFecha(LocalDate.now());
+        mensajeRepo.save(mensaje);
+        List<Mensaje> mensajeList = mensajeRepo.findByIdPqrs(mensaje.getPqrs().getCodigo());
+        List<RespuestaDTO> respuestaDTOS = new ArrayList<>();
+        for (Mensaje mensaje1:
+             mensajeList) {
+            respuestaDTOS.add(new RespuestaDTO(mensaje1.getCodigo(),mensaje1.getContenido()));
         }
-        return repuesta;
+        DetallePQRSDTO detallePQRSDTO = new DetallePQRSDTO(mensaje.getPqrs().getCodigo(),
+                mensaje.getPqrs().getEstado(), mensaje.getPqrs().getMotivo(),
+                mensaje.getPqrs().getCita().getPaciente().getNombre(),
+                mensaje.getPqrs().getCita().getMedico().getNombre(),
+                mensaje.getPqrs().getCita().getMedico().getEspecialidad(),
+                mensaje.getPqrs().getFechaCreacion(),
+                respuestaDTOS);
+
+        return detallePQRSDTO;
     }
 
     @Override
@@ -373,44 +389,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         return detalleCitas;
     }
 
-    @Override
-    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
-
-        List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
-                medicosDisponiblesDTO.especialidad(),
-                medicosDisponiblesDTO.fecha());
-
-        if(medicos.isEmpty()){
-            throw new Excepciones("no hay médicos disponibles");
-        }
-
-        List<Cita> citas = citaRepo.findAll();
-
-        List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
-
-        for (Medico medico: medicos) {
-
-            LocalTime horaInicio = medico.getHorario().getHoraInicio();
-            while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
-                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
-                horaInicio = horaInicio.plusMinutes(30);
-            }
-        }
-    for (int i=0; i<citas.size();i++){
-        if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
-//            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
-                for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
-                    if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
-                    && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){
-                                medicosDisponiblesGetDTOS.remove(j);
-                    }
-                }
-        }
-    }
-
-        return medicosDisponiblesGetDTOS;
-    }
-
     public boolean estaRepetidaCedula(int id) {
         return pacienteRepo.existsById(id);
     }
@@ -423,7 +401,46 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void listarPQRSPaciente(){
+    public List<ItemPQRSDTO> listarPQRSPaciente(int codigoPaciente){
+        List<Pqrs> pqrsList = pqrsRepo.findByCodigoPaciente(codigoPaciente);
+        List<ItemPQRSDTO> itemPQRSDTOS = new ArrayList<>();
+        for (Pqrs pqrs:
+             pqrsList) {
+            itemPQRSDTOS.add(new ItemPQRSDTO(pqrs.getCodigo(),
+                    pqrs.getEstado(),
+                    pqrs.getMotivo(),
+                    pqrs.getFechaCreacion(),
+                    pqrs.getCita().getPaciente().getNombre()));
+        }
+        return itemPQRSDTOS;
+    }
+
+    @Override
+    public DetallePacienteDTO verDetallePaciente(int codigo) throws Exception {
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
+        if( pacienteBuscado.isEmpty() ){
+            throw new Exception("No existe un paciente con el código "+codigo);
+        }
+        Paciente paciente = pacienteBuscado.get();
+//Hacemos un mapeo de un objeto de tipo Paciente a un objeto de tipo DetallePacienteDTO
+        return new DetallePacienteDTO( paciente.getCedula(),
+                paciente.getNombre(), paciente.getTelefono(), paciente.getFoto(), paciente.getCiudad(),
+                paciente.getFechaNacimiento(), paciente.getAlergias(), paciente.getEps(),
+                paciente.getTipoSangre(), paciente.getCorreo() );
+    }
+
+    @Override
+    public void cambiarPassword(NuevaPasswordDTO nuevaPasswordDTO) throws Exception {
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(nuevaPasswordDTO.codigoPaciente());
+
+        if(pacienteBuscado.isEmpty()){
+            throw new Excepciones("El paciente no fue encontrado");
+        }
+        String passwordEncriptada = passwordEncoder.encode( nuevaPasswordDTO.password() );
+        Paciente paciente = pacienteBuscado.get();
+        paciente.setPassword(passwordEncriptada);
+
+        pacienteRepo.save(paciente);
 
     }
 }

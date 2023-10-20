@@ -47,7 +47,8 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    //todo: Aquí envío Este método es utilizado para cuando quiera asignar un día libre, envío todas las citas que tengo pendientes
+    //todo: Aquí envío Este método es utilizado para cuando quiera asignar un día libre,
+    // envío todas las citas que tengo pendientes
     // de esta manera se si puedo o no asignar el día libre
     public List<Cita> listarCitasPendientes(int codigoMedico) {
         List<Cita> citas = citaRepo.listarCitasAFuturo(codigoMedico);

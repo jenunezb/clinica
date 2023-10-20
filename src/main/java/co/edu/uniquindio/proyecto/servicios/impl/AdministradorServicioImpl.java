@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.HistorialConsultas;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
+import co.edu.uniquindio.proyecto.dto.paciente.ItemPacienteDTO;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
@@ -29,12 +30,12 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     private final CitaRepo citaRepo;
     private final MensajeRepo mensajeRepo;
     private final HorarioRepo horarioRepo;
+    private final PacienteRepo pacienteRepo;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
-
 
         if( estaRepetidaCedula(medicoDTO.cedula()) ){
             throw new Excepciones("La cédula ya se encuentra registrada");
@@ -45,7 +46,6 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         }
 
         Medico medico = new Medico();
-
         medico.setCedula(medicoDTO.cedula());
         medico.setTelefono(medicoDTO.telefono());
         medico.setNombre(medicoDTO.nombre());
@@ -220,11 +220,6 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     }
 
     @Override
-    public PQRSDTOAdmin verDetallePQRS() throws Exception {
-        return null;
-    }
-
-    @Override
     public List<ItemCitaAdminDTO> listarCitas() throws Exception {
         List<Cita> listaCitas = citaRepo.findAll();
         List<ItemCitaAdminDTO> respuesta = new ArrayList<>();
@@ -267,6 +262,18 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         Medico medico = medicoRepo.findByCorreo(correo);
 
         return medico != null;
+    }
+
+    @Override
+    public List<ItemPacienteDTO> listarTodos(){
+        List<Paciente> pacientes = pacienteRepo.findAll();
+        List<ItemPacienteDTO> repuesta = new ArrayList<>();
+//Hacemos un mapeo de cada uno de los objetos de tipo Paciente a objetos de tipo ItemPacienteDTO
+        for (Paciente paciente : pacientes) {
+            repuesta.add( new ItemPacienteDTO( paciente.getCedula(),
+                    paciente.getNombre(), paciente.getCiudad() ) );
+        }
+        return repuesta;
     }
 
     public List<HistorialConsultas> verHistorialDeConsultas(){

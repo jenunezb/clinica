@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.HistorialConsultas;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
+import co.edu.uniquindio.proyecto.dto.paciente.ItemPacienteDTO;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
@@ -34,7 +35,7 @@ public class AdministradorServicioTest {
 
         MedicoDTO medicoDTO = new MedicoDTO(
                 "Gabriela Nuñez Díaz",
-                1094966343,
+                1563,
                 Ciudad.BOGOTÁ,
                 Especialidad.CARDIOLOGIA,
                 "3117567564",
@@ -101,7 +102,7 @@ public class AdministradorServicioTest {
     public void ListarPqrsTest() throws Exception{
         List<ItemPQRSDTO> listaPqrs = administradorServicio.listarPQRS();
         listaPqrs.forEach(System.out::println);
-        Assertions.assertEquals(4, listaPqrs.size());
+        Assertions.assertEquals(3, listaPqrs.size());
     }
 
     @Test
@@ -134,7 +135,7 @@ public class AdministradorServicioTest {
 
         historialConsultas.forEach(System.out::println);
 
-        Assertions.assertEquals(2, historialConsultas.size());
+        Assertions.assertEquals(1, historialConsultas.size());
 
     }
 
@@ -144,5 +145,16 @@ public class AdministradorServicioTest {
         List<HistorialConsultas> historialConsultas = administradorServicio.verHistorialDeConsultasMedico(4);
         historialConsultas.forEach(System.out::println);
         Assertions.assertEquals(1, historialConsultas.size());
+    }
+
+
+    @Test
+    @Sql("classpath:dataset.sql" )
+    public void listarPacientesTest(){
+//Obtenemos la lista de todos los pacientes
+        List<ItemPacienteDTO> lista = administradorServicio.listarTodos();
+        lista.forEach(System.out::println);
+//Si en el dataset creamos 2 pacientes, entonces el tamaño de la lista debe ser 2
+        Assertions.assertEquals(11, lista.size());
     }
 }

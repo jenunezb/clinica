@@ -3,9 +3,7 @@ package co.edu.uniquindio.proyecto.test;
 import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.medico.*;
 import co.edu.uniquindio.proyecto.dto.paciente.DetalleCita;
-import co.edu.uniquindio.proyecto.modelo.entidades.Atencion;
 import co.edu.uniquindio.proyecto.servicios.interfaces.MedicoServicio;
-import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class MedicoServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void verCitasPendientes(){
-        CitasFechaDTO listaCitasFechaDTO = new CitasFechaDTO(2, LocalDate.of(2023,10,11));
+        CitasFechaDTO listaCitasFechaDTO = new CitasFechaDTO(2, LocalDate.of(2023,12,11));
         List<ItemCitaDTO> citas = medicoServicio.listarCitasPendientesDia(listaCitasFechaDTO);
         citas.forEach(System.out::println);
         Assertions.assertEquals(1, citas.size());

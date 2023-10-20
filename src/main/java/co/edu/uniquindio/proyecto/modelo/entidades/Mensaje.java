@@ -32,4 +32,7 @@ public class Mensaje implements Serializable {
 
     private LocalDate fecha;
 
+    @ManyToOne
+    private Administrador administrador;
+
 }
