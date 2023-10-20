@@ -18,5 +18,8 @@ public interface HorarioRepo extends JpaRepository<Horario, Integer> {
 
     @Modifying
     @Query("DELETE FROM Horario h WHERE h.medico.cedula = :codigoMedico")
-    void deleteByMedicoId(@Param("codigoMedico") int codigoMedico);
+    Horario deleteByMedicoId(@Param("codigoMedico") int codigoMedico);
+
+    @Query("select h FROM Horario h WHERE h.medico.cedula = :codigoMedico")
+    Horario findByMedicoId(@Param("codigoMedico") int codigoMedico);
 }

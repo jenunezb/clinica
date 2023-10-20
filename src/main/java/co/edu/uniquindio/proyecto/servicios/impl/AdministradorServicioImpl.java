@@ -64,31 +64,35 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     }
 
     @Override
-    public int actualizarMedico(DetalleMedicoDTO detalleMedicoDTO) throws Exception {
-        Optional<Medico> buscado = medicoRepo.findById(detalleMedicoDTO.cedula());
+    public int actualizarMedico(MedicoDTO medicoDTO) throws Exception {
+        Optional<Medico> buscado = medicoRepo.findById(medicoDTO.cedula());
+        Horario horarioBuscado = horarioRepo.findByMedicoId(medicoDTO.cedula());
 
         if (buscado.isEmpty()) {
-            throw new Exception("El código " + detalleMedicoDTO.cedula() + " no existe");
+            throw new Exception("El código " + medicoDTO.cedula() + " no existe");
         }
 
         if (!buscado.get().isEstado()) {
-            throw new Exception("El cóodigo " + detalleMedicoDTO.cedula() + " no existe");
+            throw new Exception("El cóodigo " + medicoDTO.cedula() + " no existe");
         }
 
         Medico medico = buscado.get();
-        medico.setCedula(detalleMedicoDTO.cedula());
-        medico.setTelefono(detalleMedicoDTO.telefono());
-        medico.setNombre(detalleMedicoDTO.nombre());
-        medico.setEspecialidad(detalleMedicoDTO.especialidad());
-        medico.setCiudad(detalleMedicoDTO.ciudad());
-        medico.setCorreo(detalleMedicoDTO.correo());
-        medico.setFoto(detalleMedicoDTO.urlFoto());
+        medico.setCedula(medicoDTO.cedula());
+        medico.setTelefono(medicoDTO.telefono());
+        medico.setNombre(medicoDTO.nombre());
+        medico.setEspecialidad(medicoDTO.especialidad());
+        medico.setCiudad(medicoDTO.ciudad());
+        medico.setCorreo(medicoDTO.correo());
+        medico.setFoto(medicoDTO.urlFoto());
+        horarioBuscado.setHoraInicio(medicoDTO.horaInicioJornada());
+        horarioBuscado.setHoraFin(medicoDTO.horaFinJornada());
 
-        Medico medicoNuevo = medicoRepo.save(medico);
+        Medico medicoEditado = medicoRepo.save(medico);
+        horarioRepo.save(horarioBuscado);
 
         // emailServicio.enviarCorreo(new EmailDTO("Asunto", "Cuerpo mensaje", "Correo destino"));
 
-        return medicoNuevo.getCedula();
+        return medicoEditado.getCedula();
 
     }
 

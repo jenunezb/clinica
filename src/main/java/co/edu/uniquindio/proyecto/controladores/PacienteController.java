@@ -75,6 +75,18 @@ public class PacienteController {
         }
     }
 
+    @GetMapping("/listaMedicosDisponibles")
+    public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody  MedicosDisponiblesDTO medicosDisponiblesDTO){
+        try {
+            List<MedicosDisponiblesGetDTO> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, medicoPostDTOList ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
+
     @PostMapping("/cita")
     public ResponseEntity<MensajeDTO> agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO){
         try {
@@ -87,16 +99,5 @@ public class PacienteController {
         }
     }
 
-    @GetMapping("/listaMedicosDisponibles")
-    public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody  MedicosDisponiblesDTO medicosDisponiblesDTO){
-        System.out.println("pasa");
-        try {
-            List<MedicosDisponiblesGetDTO> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
-                    false, medicoPostDTOList ));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
-                    true, e.getMessage()));
-        }
-    }
+
 }

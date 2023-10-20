@@ -134,6 +134,48 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
+    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
+
+        if(medicosDisponiblesDTO.fecha().isBefore(LocalDate.now())){
+            throw new Excepciones("la fecha ingresada es incorrecta, verifique que la fecha sea de hoy o a futuro");
+        }
+
+        List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
+                medicosDisponiblesDTO.especialidad(),
+                medicosDisponiblesDTO.fecha());
+
+        if(medicos.isEmpty()){
+            throw new Excepciones("no hay médicos disponibles");
+        }
+
+        List<Cita> citas = citaRepo.findAll();
+
+        List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
+
+        for (Medico medico: medicos) {
+
+            LocalTime horaInicio = medico.getHorario().getHoraInicio();
+            while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
+                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
+                horaInicio = horaInicio.plusMinutes(30);
+            }
+        }
+        for (int i=0; i<citas.size();i++){
+            if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
+//            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
+                for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
+                    if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
+                            && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){
+                        medicosDisponiblesGetDTOS.remove(j);
+                    }
+                }
+            }
+        }
+
+        return medicosDisponiblesGetDTOS;
+    }
+
+    @Override
     public int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception {
 
         Cita cita = new Cita();
@@ -171,43 +213,6 @@ public class PacienteServicioImpl implements PacienteServicio {
         return cita.getCodigo();
     }
 
-    @Override
-    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
-
-        List<Medico> medicos = medicoRepo.findMedicosByEspecialidadAndHorario(
-                medicosDisponiblesDTO.especialidad(),
-                medicosDisponiblesDTO.fecha());
-
-        if(medicos.isEmpty()){
-            throw new Excepciones("no hay médicos disponibles");
-        }
-
-        List<Cita> citas = citaRepo.findAll();
-
-        List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = new ArrayList<>();
-
-        for (Medico medico: medicos) {
-
-            LocalTime horaInicio = medico.getHorario().getHoraInicio();
-            while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
-                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
-                horaInicio = horaInicio.plusMinutes(30);
-            }
-        }
-        for (int i=0; i<citas.size();i++){
-            if(citas.get(i).getFechaCita().toLocalDate().equals(medicosDisponiblesDTO.fecha() )){
-//            System.out.println(citas.get(i).getCodigo() +" "+ citas.get(i).getMedico().getNombre()+" hora de cita "+citas.get(i).getFechaCita().toLocalTime());
-                for (int j=0;j<medicosDisponiblesGetDTOS.size();j++){
-                    if(citas.get(i).getMedico().getNombre()==medicosDisponiblesGetDTOS.get(j).nombreMedico()
-                            && citas.get(i).getFechaCita().toLocalTime().equals(medicosDisponiblesGetDTOS.get(j).horaDisponible())){
-                        medicosDisponiblesGetDTOS.remove(j);
-                    }
-                }
-            }
-        }
-
-        return medicosDisponiblesGetDTOS;
-    }
 
     @Override
     public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception{
