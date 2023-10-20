@@ -39,12 +39,12 @@ insert into pqrs values (3, 2, '2023-11-10', 'El doctor fue grosero 3', 8);
 insert into pqrs values (5, 0, '2023-11-10', 'El doctor fue grosero 5', 5);
 
 # Un mensaje contiene: codigoMensaje // ContenidoMensaje // fecha del mensaje // mensaje si hay que contestar a otro con anterioridad // codigo del pqr
-insert into mensaje value (1, 'aquí escribo todas las razones para responder el pqr', '2023-11-10', null, 1,1);
-insert into mensaje values (2, 'respuesta al mensaje 1', '2023-11-11', null, 3,1);
-insert into mensaje values (3, 'mensaje independiente', '2023-11-12', null, 2,1);
-insert into mensaje values (4, 'respuesta al mensaje 3', '2023-11-13', null, 2,2);
-insert into mensaje values (5, 'otro mensaje independiente', '2023-11-14', null, 2,2);
-insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, 3,1);
+insert into mensaje value (1, 'aquí escribo todas las razones para responder el pqr', '2023-11-10', null, null,1);
+# insert into mensaje values (2, 'respuesta al mensaje 1', '2023-11-11', null, 1,1);
+# insert into mensaje values (3, 'mensaje independiente', '2023-11-12', null, 2,1);
+# insert into mensaje values (4, 'respuesta al mensaje 3', '2023-11-13', null, 3,2);
+# insert into mensaje values (5, 'otro mensaje independiente', '2023-11-14', null,5,2);
+# insert into mensaje values (6, 'respuesta al mensaje 5', '2023-11-15', 2, null,1);
 
 insert into dia_libre values (1, '2023-10-11', 3);
 insert into dia_libre values (2, '2023-10-12', 1);

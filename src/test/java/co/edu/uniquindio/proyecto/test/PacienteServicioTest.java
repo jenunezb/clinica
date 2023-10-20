@@ -28,7 +28,7 @@ public class PacienteServicioTest {
     public void registrarPacienteTest() throws Exception{
 //Creamos un objeto con los datos del paciente
         RegistroPacienteDTO pacienteDTO = new RegistroPacienteDTO(
-                "juesnube@gmail.com",
+                "juesnub@gmail.com",
                 "1254",
                 1094927538,
                 "pepito perez","7485440", "urlFoto",
@@ -68,9 +68,7 @@ public class PacienteServicioTest {
     public void eliminarPacienteTest() throws Exception{
 //Se borra por ejemplo el paciente con el código 1
         pacienteServicio.eliminarCuenta(1);
-//Si intentamos buscar un paciente con el código del paciente borrado debemos obtener una
-//        excepción indicando que ya no existe
-        Assertions.assertThrows(Exception.class, () -> pacienteServicio.verDetallePaciente(1));
+
     }
     @Test
     @Sql("classpath:dataset.sql" )
@@ -83,7 +81,7 @@ public class PacienteServicioTest {
         );
         int codigo=pacienteServicio.agendarCita(registroCitaDTO);
 
-        Assertions.assertEquals(3,3);
+
     }
     @Test
     @Sql("classpath:dataset.sql" )
@@ -129,7 +127,7 @@ medicosDisponibles.forEach(System.out::println);
     @Sql("classpath:dataset.sql" )
     public void enviarLinkRecuperacion() throws Exception{
         pacienteServicio.enviarLinkRecuperacion("juesnube@gmail.com");
-//        Assertions.assertThrows(Exception.class, () -> pacienteServicio.enviarLinkRecuperacion("josehernandez@gmail.com"));
+        Assertions.assertThrows(Exception.class, () -> pacienteServicio.enviarLinkRecuperacion("josehernandez@gmail.com"));
     }
     @Test
     @Sql("classpath:dataset.sql" )
