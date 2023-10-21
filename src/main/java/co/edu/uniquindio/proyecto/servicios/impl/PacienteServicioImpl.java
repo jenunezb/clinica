@@ -223,6 +223,9 @@ public class PacienteServicioImpl implements PacienteServicio {
         if(!pqrsRepo.findByCodigoCita(registroPQRSDTO.codigoCita(), citaBuscada.get().getPaciente().getCedula()).isEmpty()){
             throw new Excepciones("Usted ya tiene asignado un PQRS a la cita actual");
         }
+        if (!citaBuscada.get().getEstadoCita().equals(EstadoCita.FINALIZADA)){
+            throw new Excepciones("Su cita debe estar finalizada para poder crear un PQRS");
+        }
         if( citaBuscada.isEmpty() ){
             throw new Excepciones("No existe una cita con el código ");
         }
