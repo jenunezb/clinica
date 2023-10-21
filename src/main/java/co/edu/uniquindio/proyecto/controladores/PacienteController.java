@@ -37,7 +37,7 @@ public class PacienteController {
     }
 
     @PutMapping
-    public ResponseEntity<MensajeDTO> editarPerfil (@Valid @RequestBody DetallePacienteDTO detallePacienteDTO) throws Exception{
+    public ResponseEntity<MensajeDTO> editarPerfil(@Valid @RequestBody DetallePacienteDTO detallePacienteDTO) throws Exception {
         try {
             int codigon = pacienteServicio.editarPerfil(detallePacienteDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
@@ -51,7 +51,7 @@ public class PacienteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<MensajeDTO> eliminarCuenta (@RequestParam int codigo){
+    public ResponseEntity<MensajeDTO> eliminarCuenta(@RequestParam int codigo) {
         try {
             pacienteServicio.eliminarCuenta(codigo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
@@ -63,7 +63,7 @@ public class PacienteController {
     }
 
     @GetMapping
-    public ResponseEntity<MensajeDTO> enviarLinkRecuperacion (@RequestParam String correo){
+    public ResponseEntity<MensajeDTO> enviarLinkRecuperacion(@RequestParam String correo) {
         try {
             pacienteServicio.enviarLinkRecuperacion(correo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
@@ -76,11 +76,11 @@ public class PacienteController {
     }
 
     @GetMapping("/listaMedicosDisponibles")
-    public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody  MedicosDisponiblesDTO medicosDisponiblesDTO){
+    public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody MedicosDisponiblesDTO medicosDisponiblesDTO) {
         try {
-            List<MedicosDisponiblesGetDTO> medicoPostDTOList=pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
+            List<MedicosDisponiblesGetDTO> medicoPostDTOList = pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
-                    false, medicoPostDTOList ));
+                    false, medicoPostDTOList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
@@ -88,12 +88,24 @@ public class PacienteController {
     }
 
     @PostMapping("/cita")
-    public ResponseEntity<MensajeDTO> agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO){
+    public ResponseEntity<MensajeDTO> agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO) {
         try {
             pacienteServicio.agendarCita(registroCitaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Cita agendada correctamente"));
-        }catch (Exception e){
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/pqrs")
+    public ResponseEntity<MensajeDTO> crearPQRS(@Valid @RequestBody RegistroPQRSDTO registroPQRSDTO) {
+        try {
+            pacienteServicio.crearPQRS(registroPQRSDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
+                    false, "Su PQRS se ha creado exitosamente"));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }

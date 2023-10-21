@@ -15,4 +15,8 @@ public interface PqrsRepo extends JpaRepository<Pqrs, Integer> {
 
     @Query("SELECT pq FROM Pqrs pq JOIN pq.cita c WHERE c.paciente.cedula = :codigoPaciente")
     List<Pqrs> findByCodigoPaciente(@Param("codigoPaciente") int codigoPaciente);
+
+    @Query("SELECT pq FROM Pqrs pq WHERE pq.cita.codigo = :codigoCita and pq.cita.paciente.cedula=:codigoPaciente")
+    List<Pqrs>findByCodigoCita(@Param("codigoCita")int codigoCita, @Param("codigoPaciente")int codigoPaciente );
+
 }

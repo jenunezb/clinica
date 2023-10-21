@@ -1,11 +1,8 @@
 package co.edu.uniquindio.proyecto.dto.paciente;
 
-import java.time.LocalDate;
-
 public record RegistroPQRSDTO(
-        int CodigoCita,
+        int codigoCita,
         String movito,
-        int codigoPaciente,
-        String Detalle
+        String detalle
 ) {
 }

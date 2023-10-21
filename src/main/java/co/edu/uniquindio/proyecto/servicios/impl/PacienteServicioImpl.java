@@ -213,20 +213,21 @@ public class PacienteServicioImpl implements PacienteServicio {
         return cita.getCodigo();
     }
 
-
     @Override
     public void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception{
 
         Pqrs pqrsNuevo = new Pqrs();
         Mensaje mensajeNuevo = new Mensaje();
 
-        Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.CodigoCita());
-
+        Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.codigoCita());
+        if(!pqrsRepo.findByCodigoCita(registroPQRSDTO.codigoCita(), citaBuscada.get().getPaciente().getCedula()).isEmpty()){
+            throw new Excepciones("Usted ya tiene asignado un PQRS a la cita actual");
+        }
         if( citaBuscada.isEmpty() ){
             throw new Excepciones("No existe una cita con el código ");
         }
 
-        List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(registroPQRSDTO.codigoPaciente());
+        List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(citaBuscada.get().getPaciente().getCedula());
         if(pqrsPacienteList.size()==3){
             throw new Excepciones("Usted ya tiene 3 PQRS en el sistema, no es posible crear otro");
         }
@@ -240,7 +241,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         pqrsRepo.save(pqrsNuevo);
 
         mensajeNuevo.setPqrs(pqrsNuevo);
-        mensajeNuevo.setContenido(registroPQRSDTO.Detalle());
+        mensajeNuevo.setContenido(registroPQRSDTO.detalle());
         mensajeNuevo.setFecha(LocalDate.now());
         mensajeRepo.save(mensajeNuevo);
 
