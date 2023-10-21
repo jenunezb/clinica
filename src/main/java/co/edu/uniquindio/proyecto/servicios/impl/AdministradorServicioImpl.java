@@ -60,13 +60,26 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
         Medico medicoNuevo = medicoRepo.save(medico);
 
+        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoNuevo.getCedula());
+        if(horarioBuscado.isEmpty()){
+            Horario horario=new Horario();
+            horario.setMedico(medicoNuevo);
+            horario.setHoraInicio(medicoDTO.horaInicioJornada());
+            horario.setHoraFin(medicoDTO.horaFinJornada());
+            horarioRepo.save(horario);
+        }else{
+            horarioBuscado.get().setMedico(medicoNuevo);
+            horarioBuscado.get().setHoraInicio(medicoDTO.horaInicioJornada());
+            horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
+            horarioRepo.save(horarioBuscado.get());
+        }
         return medicoNuevo.getCedula();
     }
 
     @Override
     public int actualizarMedico(MedicoDTO medicoDTO) throws Exception {
         Optional<Medico> buscado = medicoRepo.findById(medicoDTO.cedula());
-        Horario horarioBuscado = horarioRepo.findByMedicoId(medicoDTO.cedula());
+        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoDTO.cedula());
 
         if (buscado.isEmpty()) {
             throw new Exception("El código " + medicoDTO.cedula() + " no existe");
@@ -84,11 +97,11 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setCiudad(medicoDTO.ciudad());
         medico.setCorreo(medicoDTO.correo());
         medico.setFoto(medicoDTO.urlFoto());
-        horarioBuscado.setHoraInicio(medicoDTO.horaInicioJornada());
-        horarioBuscado.setHoraFin(medicoDTO.horaFinJornada());
+        horarioBuscado.get().setHoraInicio(medicoDTO.horaInicioJornada());
+        horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
 
         Medico medicoEditado = medicoRepo.save(medico);
-        horarioRepo.save(horarioBuscado);
+        horarioRepo.save(horarioBuscado.get());
 
         // emailServicio.enviarCorreo(new EmailDTO("Asunto", "Cuerpo mensaje", "Correo destino"));
 
