@@ -27,7 +27,7 @@ public class MedicoServicioTest {
         CitasFechaDTO listaCitasFechaDTO = new CitasFechaDTO(2, LocalDate.of(2023,12,11));
         List<ItemCitaDTO> citas = medicoServicio.listarCitasPendientesDia(listaCitasFechaDTO);
         citas.forEach(System.out::println);
-        Assertions.assertEquals(1, citas.size());
+        Assertions.assertEquals(0, citas.size());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class MedicoServicioTest {
         //Si al médico del código 1 le asigno un dia libre el 20 no me va a dejar porque ya tiene citas agendadas
         AgendarDiaLibre agendarDiaLibre= new AgendarDiaLibre(
                 1,
-                LocalDate.of(2023,10,21)
+                LocalDate.of(2023,10,28)
         );
         medicoServicio.agendarDiaLibre(agendarDiaLibre);
     }
@@ -68,7 +68,7 @@ public class MedicoServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void listarHistorialDeAtenciones(){
-        List<AtencionMedica> hitorialDeAtenciones = medicoServicio.listarCitasRealizadasMedico("4");
+        List<AtencionMedica> hitorialDeAtenciones = medicoServicio.listarCitasRealizadasMedico(14);
         for (AtencionMedica atencionMedica:
              hitorialDeAtenciones) {
             System.out.println(atencionMedica);

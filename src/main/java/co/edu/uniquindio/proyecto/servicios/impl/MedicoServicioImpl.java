@@ -147,7 +147,7 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    public List<AtencionMedica> listarCitasRealizadasMedico(String codigoMedico) {
+    public List<AtencionMedica> listarCitasRealizadasMedico(int codigoMedico) {
         List<Cita> citas = citaRepo.historialDeAtenciones(codigoMedico);
         System.out.println(citas.size());
         List<AtencionMedica> respuesta = new ArrayList<>();

@@ -38,9 +38,9 @@ public class PacienteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<MensajeDTO> eliminarCuenta(@RequestParam String cedula) {
+    public ResponseEntity<MensajeDTO> eliminarCuenta(@RequestParam int codigo) {
         try {
-            pacienteServicio.eliminarCuenta(cedula);
+            pacienteServicio.eliminarCuenta(codigo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, "Paciente eliminado correctamente"));
         } catch (Exception e) {

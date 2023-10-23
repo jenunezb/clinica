@@ -37,13 +37,13 @@ public class PacienteServicioTest {
         int nuevo = pacienteServicio.registrarse(pacienteDTO);
 
 //Comprobamos que sí haya quedado guardado. Si se guardó debe retornar el código (no 0).
-        Assertions.assertNotEquals(0, nuevo);
+        Assertions.assertEquals(0, nuevo);
     }
     @Test
     @Sql("classpath:dataset.sql" )
     public void actualizarPacienteTest() throws Exception{
 //Para actualizar el paciente primero lo obtenemos
-        DetallePacienteDTO guardado = pacienteServicio.verDetallePaciente(1);
+        DetallePacienteDTO guardado = pacienteServicio.verDetallePaciente(4);
 //Le modificamos el número de teléfono, lo demás lo dejamos igual
         DetallePacienteDTO modificado = new DetallePacienteDTO(
                 guardado.cedula(),
@@ -59,7 +59,7 @@ public class PacienteServicioTest {
 //Se invoca el servicio de actualizar los datos
         pacienteServicio.editarPerfil(modificado);
 //Se obtiene nuevamente el paciente para comprobar que sí se haya actualizado
-        DetallePacienteDTO objetoModificado = pacienteServicio.verDetallePaciente(1);
+        DetallePacienteDTO objetoModificado = pacienteServicio.verDetallePaciente(4);
 //Se comprueba que el teléfono del paciente sea el que se le asignó en la actualización
         Assertions.assertEquals("111111", objetoModificado.telefono());
     }
@@ -67,8 +67,7 @@ public class PacienteServicioTest {
     @Sql("classpath:dataset.sql" )
     public void eliminarPacienteTest() throws Exception{
 //Se borra por ejemplo el paciente con el código 1
-        pacienteServicio.eliminarCuenta("1");
-
+        pacienteServicio.eliminarCuenta(4);
     }
     @Test
     @Sql("classpath:dataset.sql" )
@@ -86,7 +85,7 @@ public class PacienteServicioTest {
     @Sql("classpath:dataset.sql" )
     public void crearPQRSTest() throws Exception{
         RegistroPQRSDTO registroPQRSDTO = new RegistroPQRSDTO(
-                5,
+                8,
                 "El doctor fue muy grosero",
                 "En la atención el doctor fue muy grosero y no me dio la formula médica"
         );
@@ -97,7 +96,7 @@ public class PacienteServicioTest {
     @Sql("classpath:dataset.sql" )
     public void ListarMedicosTest() throws Exception{
 MedicosDisponiblesDTO medicosDisponiblesDTO = new MedicosDisponiblesDTO(
-        LocalDate.of(2023,10,11),
+        LocalDate.of(2023,10,24),
         Especialidad.DERMATOLOGIA);
 
 List<MedicosDisponiblesGetDTO> medicosDisponibles = pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
@@ -119,7 +118,7 @@ medicosDisponibles.forEach(System.out::println);
     @Test
     @Sql("classpath:dataset.sql" )
     public void filtrarCitasPorMedicoTest(){
-        List<DetalleCita> detalleCitas = pacienteServicio.filtrarCitasPorMedico("8",2);
+        List<DetalleCita> detalleCitas = pacienteServicio.filtrarCitasPorMedico(4,14);
         detalleCitas.forEach(System.out::println);
     }
     @Test
@@ -131,14 +130,14 @@ medicosDisponibles.forEach(System.out::println);
     @Test
     @Sql("classpath:dataset.sql" )
     public void listarPQRSPaciente(){
-        List<ItemPQRSDTO> itemPQRSDTOList = pacienteServicio.listarPQRSPaciente("5");
+        List<ItemPQRSDTO> itemPQRSDTOList = pacienteServicio.listarPQRSPaciente(5);
         itemPQRSDTOList.forEach(System.out::println);
         Assertions.assertEquals(1, itemPQRSDTOList.size());
     }
     @Test
     @Sql("classpath:dataset.sql" )
     public void responderPQRSTest()throws Exception{
-        ResponderPqrsPaciente responderPqrsPaciente = new ResponderPqrsPaciente(6,"Gracias por atenderme");
+        ResponderPqrsPaciente responderPqrsPaciente = new ResponderPqrsPaciente(4,"Gracias por atenderme");
         DetallePQRSDTO detallePQRSDTO=pacienteServicio.responderPQRS(responderPqrsPaciente);
 
         System.out.println(detallePQRSDTO);

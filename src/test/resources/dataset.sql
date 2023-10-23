@@ -90,9 +90,10 @@ values (5, '17:00:00', '07:00:00', 17);
 # # la cita contiene: el código de la cita // el estado de la cita //
 # # la fecha de la cita // la fecha de creación de la cita //
 # # el motivo de la cita // Cédula del medico // Cédula del paciente
-insert into cita value (4, '0', '2023-10-12 09:30', '2023-10-10 23:44',
-                        'Realizar un chequeo cardíaco anual debido a antecedentes familiares de enfermedades cardíacas',
-                        14, 4);
+insert into cita
+values (4, '0', '2023-10-12 09:30', '2023-10-10 23:44',
+        'Realizar un chequeo cardíaco anual debido a antecedentes familiares de enfermedades cardíacas',
+        14, 4);
 insert into cita
 values (5, '0', '2023-10-20 10:30', '2023-12-10 12:45', 'cardiología', 13, 5);
 insert into cita
@@ -119,7 +120,7 @@ values (2, 'respuesta al mensaje 1', '2023-11-11', null, null, 3);
 insert into mensaje
 values (3, 'mensaje independiente', '2023-11-12', null, null, 2);
 insert into mensaje
-values (4, 'respuesta al mensaje 3', '2023-11-13', null, null, 3);
+values (4, 'respuesta al mensaje 3', '2023-11-13', 1, 3, 2);
 insert into mensaje
 values (5, 'otro mensaje independiente', '2023-11-14', null, null, 5);
 

@@ -12,7 +12,7 @@ public interface PacienteServicio {
 
     int editarPerfil(DetallePacienteDTO pacienteDTO) throws Exception;
 
-    void eliminarCuenta(String codigoPaciente) throws Exception; // Método para que un paciente elimine su cuenta.
+    void eliminarCuenta(int codigoPaciente) throws Exception; // Método para que un paciente elimine su cuenta.
 
     DetallePacienteDTO verDetallePaciente(int codigo) throws Exception; //Ver los detalles del paciente. para hacer modificaciones
 
@@ -24,13 +24,13 @@ public interface PacienteServicio {
 
     void crearPQRS(RegistroPQRSDTO registroPQRSDTO) throws Exception; // Método para que un paciente cree una PQRS (Peticiones, Quejas, Reclamos y Sugerencias).
 
-    List<ItemPQRSDTO> listarPQRSPaciente(String codigoPaciente);//
+    List<ItemPQRSDTO> listarPQRSPaciente(int codigoPaciente);//
 
     DetallePQRSDTO responderPQRS(ResponderPqrsPaciente responderPqrsPaciente) throws Exception; // Método para que un paciente responda a una PQRS.
 
     List<DetalleCita> filtrarCitasPorFecha(String codigoPaciente, LocalDate fecha); // Método para filtrar las citas médicas por fecha.
 
-    List<DetalleCita> filtrarCitasPorMedico(String codigoPaciente, int codigoMedico); // Método para filtrar las citas médicas por médico.
+    List<DetalleCita> filtrarCitasPorMedico(int codigoPaciente, int codigoMedico); // Método para filtrar las citas médicas por médico.
 
     List<DetalleCita> verHistorialMedico(String codigoPaciente); // Método para ver el detalle de una cita médica.
 

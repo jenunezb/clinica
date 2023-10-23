@@ -19,7 +19,7 @@ public interface MedicoServicio {
 
     void agendarDiaLibre(AgendarDiaLibre agendarDiaLibre) throws Exception;
 
-    List<AtencionMedica> listarCitasRealizadasMedico(String codigoMedico);
+    List<AtencionMedica> listarCitasRealizadasMedico(int codigoMedico);
 
     void finalizarCita(FinalizarCitaDTO finalizarCitaDTO) throws Exception;
 }

@@ -102,8 +102,8 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public void eliminarCuenta(String codigo) throws Exception {
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findByCedula(codigo);
+    public void eliminarCuenta(int codigo) throws Exception {
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+codigo);
         }
@@ -230,7 +230,7 @@ public class PacienteServicioImpl implements PacienteServicio {
             throw new Excepciones("No existe una cita con el código ");
         }
 
-        List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(citaBuscada.get().getPaciente().getCedula());
+        List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(citaBuscada.get().getPaciente().getCodigo());
         if(pqrsPacienteList.size()==3){
             throw new Excepciones("Usted ya tiene 3 PQRS en el sistema, no es posible crear otro");
         }
@@ -321,7 +321,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<DetalleCita> filtrarCitasPorMedico(String codigoPaciente, int codigoMedico) {
+    public List<DetalleCita> filtrarCitasPorMedico(int codigoPaciente, int codigoMedico) {
         List<Cita> citas = citaRepo.listaFechasPorMedico(codigoPaciente, codigoMedico);
         System.out.println(citas.size());
         List<DetalleCita> detalleCitas = new ArrayList<>();
@@ -410,7 +410,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<ItemPQRSDTO> listarPQRSPaciente(String codigoPaciente){
+    public List<ItemPQRSDTO> listarPQRSPaciente(int codigoPaciente){
         List<Pqrs> pqrsList = pqrsRepo.findByCodigoPaciente(codigoPaciente);
         List<ItemPQRSDTO> itemPQRSDTOS = new ArrayList<>();
         for (Pqrs pqrs:
