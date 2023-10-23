@@ -138,16 +138,16 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    public List<DetalleCita> listarHistorialMedico(int codigoPaciente) {
+    public List<DetalleCita> listarHistorialMedico(String cedulaPaciente) {
 
-        List<DetalleCita> detalleCitas = pacienteServicio.verHistorialMedico(codigoPaciente);
+        List<DetalleCita> detalleCitas = pacienteServicio.verHistorialMedico(cedulaPaciente);
 
         return detalleCitas;
 
     }
 
     @Override
-    public List<AtencionMedica> listarCitasRealizadasMedico(int codigoMedico) {
+    public List<AtencionMedica> listarCitasRealizadasMedico(String codigoMedico) {
         List<Cita> citas = citaRepo.historialDeAtenciones(codigoMedico);
         System.out.println(citas.size());
         List<AtencionMedica> respuesta = new ArrayList<>();

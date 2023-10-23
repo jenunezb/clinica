@@ -7,7 +7,7 @@ import co.edu.uniquindio.proyecto.modelo.enums.TipoSangre;
 
 public record DetalleAtencionMedicaDTO(
 
-        int cedulaPaciente,
+        String cedulaPaciente,
         String nombrePaciente,
         String telefono,
         Eps eps,

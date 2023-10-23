@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public record RegistroCitaDTO(
         LocalDateTime fechaCita,
         String motivo,
-        int idPaciente,
-        int idMedico
+        String idPaciente,
+        String idMedico
 ) {
 }

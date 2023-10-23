@@ -72,12 +72,12 @@ public class PacienteServicioImpl implements PacienteServicio {
 
        // emailServicio.enviarCorreo(new EmailDTO( pacienteCreado.getCorreo(),"Asunto", "Cuerpo mensaje"));
 
-        return pacienteCreado.getCedula();
+        return pacienteCreado.getCodigo();
     }
 
     @Override
     public int editarPerfil(DetallePacienteDTO pacienteDTO) throws Exception {
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(pacienteDTO.cedula());
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findByCedula(pacienteDTO.cedula());
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+pacienteDTO.cedula());
         }
@@ -98,12 +98,12 @@ public class PacienteServicioImpl implements PacienteServicio {
 //Como el objeto paciente ya tiene un id, el save() no crea un nuevo registro sino que
 //        actualiza el que ya existe
         pacienteRepo.save( paciente );
-        return paciente.getCedula();
+        return paciente.getCodigo();
     }
 
     @Override
-    public void eliminarCuenta(int codigo) throws Exception {
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(codigo);
+    public void eliminarCuenta(String codigo) throws Exception {
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findByCedula(codigo);
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+codigo);
         }
@@ -123,7 +123,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         LocalTime fecha = LocalTime.now();
 
-        String parametro = Base64.getEncoder().encodeToString((optionalCuenta.get().getCedula()+": "+fecha).getBytes());
+        String parametro = Base64.getEncoder().encodeToString((optionalCuenta.get().getCodigo()+": "+fecha).getBytes());
 
         emailServicio.enviarCorreo( new EmailDTO(
                 optionalCuenta.get().getCorreo(),
@@ -181,12 +181,12 @@ public class PacienteServicioImpl implements PacienteServicio {
         Cita cita = new Cita();
 
         //Verifico que el paciente esté en el sistema
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(registroCitaDTO.idPaciente());
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findByCedula(registroCitaDTO.idPaciente());
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+registroCitaDTO.idPaciente());
         }
 
-        Optional<Medico> medicoBuscado = medicoRepo.findById(registroCitaDTO.idMedico());
+        Optional<Medico> medicoBuscado = medicoRepo.findByCedula(registroCitaDTO.idMedico());
         if( medicoBuscado.isEmpty() ){
             throw new Exception("No existe un medico con el código "+registroCitaDTO.idMedico());
         }
@@ -281,7 +281,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<DetalleCita> filtrarCitasPorFecha(int codigoPaciente, LocalDate fecha) {
+    public List<DetalleCita> filtrarCitasPorFecha(String codigoPaciente, LocalDate fecha) {
 
         List<Cita> citas = citaRepo.listaCitasPorFecha(codigoPaciente, fecha);
 
@@ -321,7 +321,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<DetalleCita> filtrarCitasPorMedico(int codigoPaciente, int codigoMedico) {
+    public List<DetalleCita> filtrarCitasPorMedico(String codigoPaciente, int codigoMedico) {
         List<Cita> citas = citaRepo.listaFechasPorMedico(codigoPaciente, codigoMedico);
         System.out.println(citas.size());
         List<DetalleCita> detalleCitas = new ArrayList<>();
@@ -360,7 +360,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<DetalleCita> verHistorialMedico(int codigoPaciente) {
+    public List<DetalleCita> verHistorialMedico(String codigoPaciente) {
 
         List<Cita> citas = citaRepo.findCitasByPacienteId(codigoPaciente);
         List<DetalleCita> detalleCitas = new ArrayList<>();
@@ -398,8 +398,8 @@ public class PacienteServicioImpl implements PacienteServicio {
         return detalleCitas;
     }
 
-    public boolean estaRepetidaCedula(int id) {
-        return pacienteRepo.existsById(id);
+    public boolean estaRepetidaCedula(String id) {
+        return pacienteRepo.existsByCedula(id);
     }
 
     public boolean estaRepetidoCorreo(String correo){
@@ -410,7 +410,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<ItemPQRSDTO> listarPQRSPaciente(int codigoPaciente){
+    public List<ItemPQRSDTO> listarPQRSPaciente(String codigoPaciente){
         List<Pqrs> pqrsList = pqrsRepo.findByCodigoPaciente(codigoPaciente);
         List<ItemPQRSDTO> itemPQRSDTOS = new ArrayList<>();
         for (Pqrs pqrs:

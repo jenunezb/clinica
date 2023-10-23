@@ -31,7 +31,6 @@ public class JWTUtils {
                 .setSigningKey( getKey() )
                 .build()
                 .parseClaimsJws(jwtString);
-
     }
     private Key getKey(){
         return new SecretKeySpec(Base64.getDecoder().decode(claveSecreta),

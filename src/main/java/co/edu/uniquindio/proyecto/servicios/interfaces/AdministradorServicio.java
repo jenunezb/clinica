@@ -15,7 +15,7 @@ public interface AdministradorServicio {
 
     int crearMedico(MedicoDTO medicoDTO)throws Exception;
 
-    int actualizarMedico(MedicoDTO medicoDTO)throws Exception;
+    int actualizarMedico(DetalleMedicoDTO detalleMedicoDTO)throws Exception;
 
     void eliminarMedico(int codigo)throws Exception;
 

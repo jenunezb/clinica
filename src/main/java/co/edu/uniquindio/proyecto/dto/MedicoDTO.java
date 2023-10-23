@@ -12,9 +12,7 @@ public record MedicoDTO(
         String nombre,
 
         @NotNull
-        @Positive
-        @Min(10000000)
-        int cedula,
+        String cedula,
 
         @NotNull
         Ciudad ciudad,

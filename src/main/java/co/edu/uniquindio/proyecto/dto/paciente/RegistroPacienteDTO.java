@@ -21,9 +21,7 @@ public record RegistroPacienteDTO(
         String password,
 
         //Datos del Usuario
-        @Min(value = 1, message = "El valor debe ser mayor que cero")
-        @Max(value = 1999999999, message = "El valor debe ser menor que 1999999999")
-        int cedula,
+        String cedula,
 
         @NotBlank
         @Length(max = 200, message = "El nombre debe tener máximo 200 caracteres")

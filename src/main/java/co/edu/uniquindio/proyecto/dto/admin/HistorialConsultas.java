@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public record HistorialConsultas(
         LocalDateTime fecha,
-        int codigoMedico,
+        String codigoMedico,
         String medico,
-        int codigoPaciente,
+        String codigoPaciente,
         String Nombrepaciente
 ) {
 }

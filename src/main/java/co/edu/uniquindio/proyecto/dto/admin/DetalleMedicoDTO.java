@@ -8,7 +8,7 @@ import java.util.List;
 
 public record DetalleMedicoDTO(
         String nombre,
-        int cedula,
+        String cedula,
         Ciudad ciudad,
         Especialidad especialidad,
         String telefono,

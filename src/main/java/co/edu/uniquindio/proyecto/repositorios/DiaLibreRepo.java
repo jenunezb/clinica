@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface DiaLibreRepo extends JpaRepository<DiaLibre, Integer> {
 
-    @Query("SELECT d from DiaLibre d where d.medico.cedula=:codigoMedico and d.dia > current_date ")
+    @Query("SELECT d from DiaLibre d where d.medico.codigo=:codigoMedico and d.dia > current_date ")
     Optional<DiaLibre> findByMedico(int codigoMedico);
 }

@@ -5,7 +5,7 @@ import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 import java.time.LocalTime;
 
 public record ItemMedicoDTO(
-        int cedula,
+        String cedula,
         String nombre,
         String urlFoto,
         Especialidad especialidad,

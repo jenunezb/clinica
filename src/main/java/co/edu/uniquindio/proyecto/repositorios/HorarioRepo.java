@@ -18,9 +18,9 @@ import java.util.Optional;
 public interface HorarioRepo extends JpaRepository<Horario, Integer> {
 
     @Modifying
-    @Query("DELETE FROM Horario h WHERE h.medico.cedula = :codigoMedico")
-    Horario deleteByMedicoId(@Param("codigoMedico") int codigoMedico);
+    @Query("DELETE FROM Horario h WHERE h.medico.codigo = :codigoMedico")
+    void deleteByMedicoId(@Param("codigoMedico") int codigoMedico);
 
-    @Query("select h FROM Horario h WHERE h.medico.cedula = :codigoMedico")
+    @Query("select h FROM Horario h WHERE h.medico.codigo = :codigoMedico")
     Optional<Horario> findByMedicoId(@Param("codigoMedico") int codigoMedico);
 }

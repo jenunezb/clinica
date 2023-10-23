@@ -68,7 +68,7 @@ public class MedicoServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void listarHistorialDeAtenciones(){
-        List<AtencionMedica> hitorialDeAtenciones = medicoServicio.listarCitasRealizadasMedico(4);
+        List<AtencionMedica> hitorialDeAtenciones = medicoServicio.listarCitasRealizadasMedico("4");
         for (AtencionMedica atencionMedica:
              hitorialDeAtenciones) {
             System.out.println(atencionMedica);
@@ -78,7 +78,7 @@ public class MedicoServicioTest {
     @Test
     @Sql("classpath:dataset.sql" )
     public void verHistorialMedicoTest(){
-        List<DetalleCita> detalleCitas = medicoServicio.listarHistorialMedico(8);
+        List<DetalleCita> detalleCitas = medicoServicio.listarHistorialMedico("8");
         detalleCitas.forEach(System.out::println);
     }
 }

@@ -8,7 +8,6 @@ import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.ItemPacienteDTO;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.*;
-import co.edu.uniquindio.proyecto.modelo.enums.Estado;
 import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.repositorios.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +44,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
             throw new Excepciones("El correo ya se encuentra registrado");
         }
 
+
         Medico medico = new Medico();
         medico.setCedula(medicoDTO.cedula());
         medico.setTelefono(medicoDTO.telefono());
@@ -60,7 +59,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
         Medico medicoNuevo = medicoRepo.save(medico);
 
-        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoNuevo.getCedula());
+        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoNuevo.getCodigo());
         if(horarioBuscado.isEmpty()){
             Horario horario=new Horario();
             horario.setMedico(medicoNuevo);
@@ -73,39 +72,39 @@ public class AdministradorServicioImpl implements AdministradorServicio {
             horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
             horarioRepo.save(horarioBuscado.get());
         }
-        return medicoNuevo.getCedula();
+        return medicoNuevo.getCodigo();
     }
 
     @Override
-    public int actualizarMedico(MedicoDTO medicoDTO) throws Exception {
-        Optional<Medico> buscado = medicoRepo.findById(medicoDTO.cedula());
-        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoDTO.cedula());
+    public int actualizarMedico(DetalleMedicoDTO detalleMedicoDTO) throws Exception {
+        Optional<Medico> buscado = medicoRepo.findByCedula(detalleMedicoDTO.cedula());
+        Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(buscado.get().getCodigo());
 
         if (buscado.isEmpty()) {
-            throw new Exception("El código " + medicoDTO.cedula() + " no existe");
+            throw new Exception("El código " + detalleMedicoDTO.cedula() + " no existe");
         }
 
         if (!buscado.get().isEstado()) {
-            throw new Exception("El cóodigo " + medicoDTO.cedula() + " no existe");
+            throw new Exception("El cóodigo " + detalleMedicoDTO.cedula() + " no existe");
         }
 
         Medico medico = buscado.get();
-        medico.setCedula(medicoDTO.cedula());
-        medico.setTelefono(medicoDTO.telefono());
-        medico.setNombre(medicoDTO.nombre());
-        medico.setEspecialidad(medicoDTO.especialidad());
-        medico.setCiudad(medicoDTO.ciudad());
-        medico.setCorreo(medicoDTO.correo());
-        medico.setFoto(medicoDTO.urlFoto());
-        horarioBuscado.get().setHoraInicio(medicoDTO.horaInicioJornada());
-        horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
+        medico.setCedula(detalleMedicoDTO.cedula());
+        medico.setTelefono(detalleMedicoDTO.telefono());
+        medico.setNombre(detalleMedicoDTO.nombre());
+        medico.setEspecialidad(detalleMedicoDTO.especialidad());
+        medico.setCiudad(detalleMedicoDTO.ciudad());
+        medico.setCorreo(detalleMedicoDTO.correo());
+        medico.setFoto(detalleMedicoDTO.urlFoto());
+//        horarioBuscado.get().setHoraInicio(detalleMedicoDTO.horaInicioJornada());
+//        horarioBuscado.get().setHoraFin(detalleMedicoDTO.horaFinJornada());
 
         Medico medicoEditado = medicoRepo.save(medico);
         horarioRepo.save(horarioBuscado.get());
 
         // emailServicio.enviarCorreo(new EmailDTO("Asunto", "Cuerpo mensaje", "Correo destino"));
 
-        return medicoEditado.getCedula();
+        return medicoEditado.getCodigo();
 
     }
 
@@ -153,7 +152,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         obtenido.setEstado(false);
         obtenido.setCorreo(Integer.toString(codigo) + "@inexistente.com");
         medicoRepo.save(obtenido);
-        horarioRepo.deleteByMedicoId(obtenido.getCedula());
+        horarioRepo.deleteByMedicoId(obtenido.getCodigo());
 
     }
 
@@ -181,11 +180,20 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     public void responderPQRS(RespuestaDTO respuestaDTO) throws Exception {
 
         Mensaje mensajeNuevo = new Mensaje();
-        Mensaje mensajeAnterior = mensajeRepo.getById(respuestaDTO.codigoMensaje());
+        Optional<Mensaje> mensajeAnterior = mensajeRepo.findById(respuestaDTO.codigoMensaje());
+
+        List<Mensaje> todos = mensajeRepo.findAll();
+
+        System.out.println(todos.get(0).getCodigo());
+
+        if (mensajeAnterior.isEmpty()){
+            throw new Excepciones("No se encontró el mensaje anterior");
+        }
+        System.out.println("pasa" + mensajeAnterior.get().getCodigo());
         mensajeNuevo.setFecha(LocalDate.now());
         mensajeNuevo.setContenido(respuestaDTO.mensaje());
-        mensajeNuevo.setMensaje(mensajeAnterior);
-        mensajeNuevo.setPqrs(mensajeAnterior.getPqrs());
+        mensajeNuevo.setMensaje(mensajeAnterior.get());
+        mensajeNuevo.setPqrs(mensajeAnterior.get().getPqrs());
 
         mensajeRepo.save(mensajeNuevo);
     }
@@ -306,20 +314,20 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         return historialConsultas;
     }
 
-    public boolean estaRepetidaCedula(int id) {
-        Optional<Medico> medicoBuscado = medicoRepo.findById(id);
+    public boolean estaRepetidaCedula(String cedula) {
+        Optional<Medico> medicoBuscado = medicoRepo.findByCedula(cedula);
         if (!medicoBuscado.isEmpty()) {
             if (!medicoBuscado.get().isEstado()) {
                 return false;
             }
             return true;
         }
-        return medicoRepo.existsById(id);
+        return medicoRepo.existsByCedula(cedula);
     }
 
     public boolean estaRepetidoCorreo(String correo) {
-        Medico medico = medicoRepo.findByCorreo(correo);
+        Optional<Medico> medico = medicoRepo.findByCorreo(correo);
 
-        return medico != null;
+        return medico.isPresent();
     }
 }

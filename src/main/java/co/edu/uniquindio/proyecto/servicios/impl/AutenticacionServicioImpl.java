@@ -46,7 +46,7 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         Map<String, Object> map = new HashMap<>();
         map.put("rol", rol);
         map.put("nombre", nombre);
-        map.put("id", cuenta.getCedula());
+        map.put("id", cuenta.getCodigo());
 
         return jwtUtils.generarToken(cuenta.getCorreo(), map);
     }

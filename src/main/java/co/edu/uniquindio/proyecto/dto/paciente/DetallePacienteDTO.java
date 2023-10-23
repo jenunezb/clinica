@@ -8,7 +8,7 @@ import co.edu.uniquindio.proyecto.modelo.enums.TipoSangre;
 import java.time.LocalDate;
 
 public record DetallePacienteDTO(
-        int cedula,
+        String cedula,
         String nombre,
         String telefono,
         String urlFoto,

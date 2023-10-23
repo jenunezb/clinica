@@ -15,11 +15,11 @@ public interface MedicoServicio {
 
     DetalleAtencionMedicaDTO atenderCita(int codigoCita)throws Exception;
 
-    List<DetalleCita> listarHistorialMedico(int codigoPaciente); //Historial médico
+    List<DetalleCita> listarHistorialMedico(String codigoPaciente); //Historial médico
 
     void agendarDiaLibre(AgendarDiaLibre agendarDiaLibre) throws Exception;
 
-    List<AtencionMedica> listarCitasRealizadasMedico(int codigoMedico);
+    List<AtencionMedica> listarCitasRealizadasMedico(String codigoMedico);
 
     void finalizarCita(FinalizarCitaDTO finalizarCitaDTO) throws Exception;
 }

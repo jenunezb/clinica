@@ -15,6 +15,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Usuario extends Cuenta{
 
+    @Column(nullable = false, unique = true)
+    private String cedula;
+
     @Column(nullable = false)
     private String nombre, telefono, foto;
 
