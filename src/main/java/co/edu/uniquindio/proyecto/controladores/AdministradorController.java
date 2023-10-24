@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("api/admins")
 @AllArgsConstructor
 public class AdministradorController {

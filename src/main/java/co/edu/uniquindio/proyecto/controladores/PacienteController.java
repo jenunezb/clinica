@@ -5,6 +5,8 @@ import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
 import co.edu.uniquindio.proyecto.servicios.interfaces.PacienteServicio;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("api/pacientes")
 @RequiredArgsConstructor
 public class PacienteController {
@@ -58,6 +61,7 @@ public class PacienteController {
             pacienteServicio.crearPQRS(registroPQRSDTO);
     }
 
+    @Operation(summary = "Detalle paciente", description = "Permite acceder a todos los atributos del paciente dado su código")
     @GetMapping("/detalle/{codigo}")
     public DetallePacienteDTO verDetallePaciente(@PathVariable int codigo) throws Exception{
         return pacienteServicio.verDetallePaciente(codigo);
