@@ -15,6 +15,7 @@ import lombok.*;
 public class Cuenta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
     @Email

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/paciente")
+@RequestMapping("api/pacientes")
 @RequiredArgsConstructor
 public class PacienteController {
 
@@ -28,9 +28,11 @@ public class PacienteController {
     }
 
     @DeleteMapping("/eliminar/{codigo}")
-    public ResponseEntity<MensajeDTO<String>> eliminarCuenta(@RequestParam int codigo) throws Exception {
+    public ResponseEntity<MensajeDTO<String>> eliminarCuenta(@PathVariable int codigo) throws
+            Exception{
         pacienteServicio.eliminarCuenta(codigo);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Paciente eliminado correctamente") );
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Paciente eliminado correctamete")
+        );
     }
 
     @GetMapping
@@ -56,5 +58,9 @@ public class PacienteController {
             pacienteServicio.crearPQRS(registroPQRSDTO);
     }
 
-
+    @GetMapping("/detalle/{codigo}")
+    public DetallePacienteDTO verDetallePaciente(@PathVariable int codigo) throws Exception{
+        return pacienteServicio.verDetallePaciente(codigo);
+    }
+    
 }

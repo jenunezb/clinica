@@ -20,7 +20,7 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
     @Override
     public TokenDTO login(LoginDTO loginDTO) throws Exception {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Optional<Cuenta> cuentaOptional = cuentaRepo.findByCorreo(loginDTO.Email());
+        Optional<Cuenta> cuentaOptional = cuentaRepo.findByCorreo(loginDTO.email());
         if(cuentaOptional.isEmpty()){
             throw new Exception("No existe el correo ingresado");
         }
