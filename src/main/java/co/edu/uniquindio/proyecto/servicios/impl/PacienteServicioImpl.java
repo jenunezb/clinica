@@ -134,7 +134,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Exception{
+    public List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO) throws Excepciones{
 
         if(medicosDisponiblesDTO.fecha().isBefore(LocalDate.now())){
             throw new Excepciones("la fecha ingresada es incorrecta, verifique que la fecha sea de hoy o a futuro");

@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
+import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,5 +35,5 @@ public interface PacienteServicio {
 
     List<DetalleCita> verHistorialMedico(String codigoPaciente); // Método para ver el detalle de una cita médica.
 
-    List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Exception;
+    List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Excepciones;
 }
