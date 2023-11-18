@@ -8,7 +8,6 @@ values (1);
 insert into administrador
 values (2);
 
--- Cuentas de correo para pacientes
 insert into cuenta
 values (11, 'juanitalopez@gmail.com', '1');
 insert into cuenta
@@ -40,8 +39,6 @@ values (16, 'andresr@gmail.com', '10');
 insert into cuenta
 values (17, 'monicav@gmail.com', '10');
 
-
-#el paciente contiene: la cédula // ciudad // estado // foto // nombre // telefono // alergias // eps // fecha_nacimiento // tipo_sangre // codigo
 insert into paciente
 values ('1', 5, false, 'url_fot', 'juanita lopez', '345154888', 'Sin alergias', 2, '1995-11-28', 1, 11);
 insert into paciente
@@ -87,9 +84,6 @@ values (4, '17:00:00', '07:00:00', 16);
 insert into horario
 values (5, '17:00:00', '07:00:00', 17);
 
-# # la cita contiene: el código de la cita // el estado de la cita //
-# # la fecha de la cita // la fecha de creación de la cita //
-# # el motivo de la cita // Cédula del medico // Cédula del paciente
 insert into cita
 values (4, '0', '2023-10-12 09:30', '2023-10-10 23:44',
         'Realizar un chequeo cardíaco anual debido a antecedentes familiares de enfermedades cardíacas',
@@ -100,8 +94,6 @@ insert into cita
 values (7, '2', '2023-10-12 16:45', '2023-10-17 19:30', 'ginecología', 15, 8);
 insert into cita
 values (8, '0', '2023-12-11 07:30', '2023-10-20 13:45', 'neurología', 16, 8);
-
-# # el pqrs contiene: Código del pqr // estado del pqrs // motivo del pqrs // codigo de la cita
 insert into pqrs
 values (1, 0, '2023-11-10', 'El doctor fue grosero 1', 4);
 insert into pqrs
@@ -110,9 +102,6 @@ insert into pqrs
 values (3, 2, '2023-11-10', 'El doctor fue grosero 3', 8);
 insert into pqrs
 values (5, 0, '2023-11-10', 'El doctor fue grosero 5', 5);
-
-
-# Un mensaje contiene: codigoMensaje // ContenidoMensaje // fecha del mensaje // mensaje si hay que contestar a otro con anterioridad // codigo del pqr
 insert into mensaje
 values (1, 'aquí escribo todas las razones para responder el pqr', '2023-11-10', null, null, 2);
 insert into mensaje

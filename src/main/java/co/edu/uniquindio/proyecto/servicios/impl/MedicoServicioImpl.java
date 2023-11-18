@@ -122,6 +122,7 @@ public class MedicoServicioImpl implements MedicoServicio {
 
         if(citaBuscada.get().getEstadoCita()==EstadoCita.ASIGNADA){
             Cita cita = citaBuscada.get();
+
             Atencion atencion = new Atencion();
             atencion.setCita(cita);
             atencion.setDiagnostico(finalizarCitaDTO.diagnostico());
