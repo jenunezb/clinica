@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.controladores;
 
+import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
@@ -66,5 +67,9 @@ public class PacienteController {
     public DetallePacienteDTO verDetallePaciente(@PathVariable int codigo) throws Exception{
         return pacienteServicio.verDetallePaciente(codigo);
     }
-    
+    @GetMapping("/listar-pqrs/{codigo}")
+    public List<ItemPQRSDTO> listarPQRSPaciente(@PathVariable int codigo) throws Exception{
+        return pacienteServicio.listarPQRSPaciente(codigo);
+    }
+
 }

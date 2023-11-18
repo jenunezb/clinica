@@ -8,19 +8,29 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 @Component
 @RequiredArgsConstructor
-public class FiltroToken implements Filter {
+public class FiltroToken extends OncePerRequestFilter {
     private final JWTUtils jwtUtils;
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        String requestURI = req.getRequestURI();
-        String token = getToken(req);
-        boolean error = true;
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain
+            chain) throws ServletException, IOException {
+
+        // Configuración de cabeceras para CORS
+        res.addHeader("Access-Control-Allow-Origin", "*");
+        res.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.addHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
+                res.addHeader("Access-Control-Allow-Credentials", "true");
+        if (req.getMethod().equals("OPTIONS")) {
+            res.setStatus(HttpServletResponse.SC_OK);
+        }else {
+            String requestURI = req.getRequestURI();
+            String token = getToken(req);
+            boolean error = true;
         try{
             if (requestURI.startsWith("/api/pacientes") || requestURI.startsWith("/api/medicos")
 
@@ -68,7 +78,8 @@ public class FiltroToken implements Filter {
                     res);
         }
         if(!error){
-            chain.doFilter(request, response);
+            chain.doFilter(req, res);
+        }
         }
     }
     private String getToken(HttpServletRequest req) {
