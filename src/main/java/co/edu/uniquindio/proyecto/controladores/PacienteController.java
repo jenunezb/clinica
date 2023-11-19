@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.controladores;
 
 import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
+import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
 import co.edu.uniquindio.proyecto.modelo.entidades.Paciente;
@@ -70,6 +71,18 @@ public class PacienteController {
     @GetMapping("/listar-pqrs/{codigo}")
     public List<ItemPQRSDTO> listarPQRSPaciente(@PathVariable int codigo) throws Exception{
         return pacienteServicio.listarPQRSPaciente(codigo);
+    }
+
+    @GetMapping("/obtener/{codigo}")
+    public ResponseEntity<MensajeDTO> obtenerPaciente(@PathVariable int codigo) {
+        try {
+            DetallePacienteDTO detallePacienteDTO = pacienteServicio.obtenerPaciente(codigo);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, detallePacienteDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
@@ -173,6 +174,34 @@ public class PacienteServicioImpl implements PacienteServicio {
         }
 
         return medicosDisponiblesGetDTOS;
+    }
+
+    @Override
+    public DetallePacienteDTO obtenerPaciente(int codigo) throws Exception {
+        Optional<Paciente> buscado = pacienteRepo.findById(codigo);
+
+        if (buscado.isEmpty()) {
+            throw new Exception("El código " + codigo + " no existe");
+        }
+        if (!buscado.get().isEstado()) {
+            throw new Exception("El cóodigo " + codigo + " no existe");
+        }
+        Paciente obtenido = buscado.get();
+
+        DetallePacienteDTO detallePacienteDTO = new DetallePacienteDTO(
+                obtenido.getCedula(),
+                obtenido.getNombre(),
+                obtenido.getTelefono(),
+                obtenido.getFoto(),
+                obtenido.getCiudad(),
+                obtenido.getFechaNacimiento(),
+                obtenido.getAlergias(),
+                obtenido.getEps(),
+                obtenido.getTipoSangre(),
+                obtenido.getCorreo()
+        );
+
+        return detallePacienteDTO;
     }
 
     @Override

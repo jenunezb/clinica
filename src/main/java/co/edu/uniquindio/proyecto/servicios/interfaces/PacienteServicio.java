@@ -36,4 +36,6 @@ public interface PacienteServicio {
     List<DetalleCita> verHistorialMedico(String codigoPaciente); // Método para ver el detalle de una cita médica.
 
     List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Excepciones;
+
+    DetallePacienteDTO obtenerPaciente (int codigo) throws Exception;
 }
