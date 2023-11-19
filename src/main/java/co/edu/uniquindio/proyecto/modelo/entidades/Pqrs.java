@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +24,7 @@ public class Pqrs implements Serializable {
     private int codigo;
 
     @Column(nullable = false)
-    private LocalDateTime fechaCreacion, tipo;
+    private LocalDate fechaCreacion;
 
     private String motivo;
 
@@ -32,7 +34,7 @@ public class Pqrs implements Serializable {
     @ManyToOne
     private Cita cita;
 
-//    @Column(nullable = false)
-//    private EstadoPQRS estadoPQRS;
+    @OneToMany(mappedBy = "pqrs")
+    private List<Mensaje> mensaje;
 
 }

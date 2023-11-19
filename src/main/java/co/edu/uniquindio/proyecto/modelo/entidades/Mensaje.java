@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +30,9 @@ public class Mensaje implements Serializable {
     @OneToOne
     private Mensaje mensaje;
 
-    private LocalDateTime fecha;
+    private LocalDate fecha;
+
+    @ManyToOne
+    private Administrador administrador;
 
 }

@@ -38,7 +38,9 @@ public class Cita implements Serializable {
     @OneToMany(mappedBy = "cita")
     private List<Pqrs> pqrs;
 
-
     @Column(nullable = false)
     private EstadoCita estadoCita;
+
+    @OneToOne(mappedBy = "cita")
+    private Atencion atencion;
 }

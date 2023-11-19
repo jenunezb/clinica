@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -20,12 +20,12 @@ public class Horario implements Serializable {
     private int codigo;
 
     @Column(nullable = false)
-    private LocalDate horaInicio;
+    private LocalTime horaInicio;
 
     @Column(nullable = false)
-    private LocalDate horaFin;
+    private LocalTime horaFin;
 
-    @ManyToOne
+    @OneToOne
     private Medico medico;
 
 }

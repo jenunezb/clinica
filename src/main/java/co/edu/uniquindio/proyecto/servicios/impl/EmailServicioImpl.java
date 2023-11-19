@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class EmailServicioImpl implements EmailServicio {
     private final JavaMailSender javaMailSender;
 
-
     @Override
     public void enviarCorreo(EmailDTO emailDTO) throws Exception {
         MimeMessage mensaje = javaMailSender.createMimeMessage();

@@ -4,17 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 @Inheritance(strategy = InheritanceType.JOINED)
-@MappedSuperclass
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cuenta {
 
     @Id
-    private int cedula;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int codigo;
 
     @Email
     @Column(nullable = false)

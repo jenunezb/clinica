@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public record ItemCitaAdminDTO(
 
         int codigoCita,
-        int cedulaPaciente,
+        String cedulaPaciente,
         String nombrePaciente,
         String nombreMedico,
         Especialidad especialidad,

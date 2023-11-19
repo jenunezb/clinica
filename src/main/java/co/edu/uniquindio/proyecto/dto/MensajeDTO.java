@@ -6,12 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@ToString
-public class MensajeDTO<T> {
-    private HttpStatus estado;
-    private boolean error;
-    private T respuesta;
+
+public record MensajeDTO<T>(
+        boolean error,
+        T respuesta
+) {
+
 }
