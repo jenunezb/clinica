@@ -14,6 +14,8 @@ import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,9 +38,29 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
 
-        if (estaRepetidaCedula(medicoDTO.cedula())) {
-            throw new Excepciones("La cédula ya se encuentra registrada");
-        }
+        if (!estaRepetidaCedula(medicoDTO.cedula())) {
+            Medico medicoBuscado = medicoRepo.findByCedula(medicoDTO.cedula()).get();
+                medicoBuscado.setEstado(true);
+                medicoBuscado.setCodigo(medicoBuscado.getCodigo());
+                medicoBuscado.setCedula(medicoBuscado.getCedula());
+
+                Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoBuscado.getCodigo());
+                if(horarioBuscado.isEmpty()){
+                    Horario horario=new Horario();
+                    horario.setMedico(medicoBuscado);
+                    horario.setHoraInicio(medicoDTO.horaInicioJornada());
+                    horario.setHoraFin(medicoDTO.horaFinJornada());
+                    horarioRepo.save(horario);
+                }else{
+                    horarioBuscado.get().setMedico(medicoBuscado);
+                    horarioBuscado.get().setHoraInicio(medicoDTO.horaInicioJornada());
+                    horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
+                    horarioRepo.save(horarioBuscado.get());
+                }
+
+                medicoRepo.save(medicoBuscado);
+                return medicoBuscado.getCodigo();
+            }
 
         if (estaRepetidoCorreo(medicoDTO.correo())) {
             throw new Excepciones("El correo ya se encuentra registrado");
@@ -134,7 +156,7 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         return detalleMedicoDTO;
 
     }
-
+    @Transactional
     @Override
     public void eliminarMedico(int codigo) throws Exception {
 
@@ -152,7 +174,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         obtenido.setEstado(false);
         obtenido.setCorreo(Integer.toString(codigo) + "@inexistente.com");
         medicoRepo.save(obtenido);
-        horarioRepo.deleteByMedicoId(obtenido.getCodigo());
+        horarioRepo.deleteHorarioByMedico_Codigo(obtenido.getCodigo());
+
 
     }
 
