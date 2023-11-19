@@ -267,8 +267,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         Cita cita = citaBuscada.get();
         pqrsNuevo.setFechaCreacion(LocalDate.now());
         pqrsNuevo.setEstado(EstadoPQRS.EN_PROCESO);
-        pqrsNuevo.setMotivo(registroPQRSDTO.movito());
-        System.out.println(registroPQRSDTO.movito());
+        pqrsNuevo.setMotivo(registroPQRSDTO.motivo());
         pqrsNuevo.setCita(cita);
 
         pqrsRepo.save(pqrsNuevo);
