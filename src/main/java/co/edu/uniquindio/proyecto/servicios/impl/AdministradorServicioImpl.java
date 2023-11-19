@@ -170,7 +170,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                         medico.getFoto(),
                         medico.getEspecialidad(),
                         medico.getHorario().getHoraInicio(),
-                        medico.getHorario().getHoraFin()));
+                        medico.getHorario().getHoraFin(),
+                        medico.getCodigo()));
             }
         }
         return respuesta;

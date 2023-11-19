@@ -10,6 +10,7 @@ public record ItemMedicoDTO(
         String urlFoto,
         Especialidad especialidad,
         LocalTime horaInicio,
-        LocalTime horaFin) {
+        LocalTime horaFin,
+        int codigo) {
 }
 
