@@ -1,27 +1,33 @@
 package co.edu.uniquindio.proyecto.controladores;
-import co.edu.uniquindio.proyecto.dto.ImagenDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
-import co.edu.uniquindio.proyecto.servicios.interfaces.ImagenServicio;
-import lombok.RequiredArgsConstructor;
+import co.edu.uniquindio.proyecto.servicios.interfaces.CloudinaryServicio;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.List;
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api/imagenes")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ImagenesController {
-    private final ImagenServicio imagenesServicio;
-    @PostMapping("/subir")
-    public ResponseEntity<MensajeDTO<Map>> subir(@RequestParam("file") MultipartFile imagen)
-            throws Exception{
-        Map respuesta = imagenesServicio.subirImagen(imagen);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
+    public List<String> url;
+    private CloudinaryServicio cloudinaryServicio;
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestParam MultipartFile multipartFile)throws Exception {
+
+        File file=cloudinaryServicio.convertir(multipartFile);
+        if(file == null){
+            return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, "error al subir la imagen") );
+        }
+        Map datos = cloudinaryServicio.subirImagen(file,"unimarket");
+        return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, datos ) );
+
     }
-    @DeleteMapping("/eliminar")
-    public ResponseEntity<MensajeDTO<Map>> eliminar(@RequestBody ImagenDTO imagenDTO) throws
-            Exception{
-        Map respuesta = imagenesServicio.eliminarImagen( imagenDTO.id() );
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
-    }
+
 }
