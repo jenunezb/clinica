@@ -38,20 +38,21 @@ public class AdministradorServicioImpl implements AdministradorServicio {
     @Override
     public int crearMedico(MedicoDTO medicoDTO) throws Exception {
 
-        if (!estaRepetidaCedula(medicoDTO.cedula())) {
+        if (estaRepetidaCedula_2(medicoDTO.cedula())) {
             Medico medicoBuscado = medicoRepo.findByCedula(medicoDTO.cedula()).get();
+            if(!medicoBuscado.isEstado()) {
                 medicoBuscado.setEstado(true);
                 medicoBuscado.setCodigo(medicoBuscado.getCodigo());
                 medicoBuscado.setCedula(medicoBuscado.getCedula());
 
                 Optional<Horario> horarioBuscado = horarioRepo.findByMedicoId(medicoBuscado.getCodigo());
-                if(horarioBuscado.isEmpty()){
-                    Horario horario=new Horario();
+                if (horarioBuscado.isEmpty()) {
+                    Horario horario = new Horario();
                     horario.setMedico(medicoBuscado);
                     horario.setHoraInicio(medicoDTO.horaInicioJornada());
                     horario.setHoraFin(medicoDTO.horaFinJornada());
                     horarioRepo.save(horario);
-                }else{
+                } else {
                     horarioBuscado.get().setMedico(medicoBuscado);
                     horarioBuscado.get().setHoraInicio(medicoDTO.horaInicioJornada());
                     horarioBuscado.get().setHoraFin(medicoDTO.horaFinJornada());
@@ -60,6 +61,9 @@ public class AdministradorServicioImpl implements AdministradorServicio {
 
                 medicoRepo.save(medicoBuscado);
                 return medicoBuscado.getCodigo();
+
+            }
+            throw new Excepciones("La cédula ya se encuentra registrado");
             }
 
         if (estaRepetidoCorreo(medicoDTO.correo())) {
@@ -347,6 +351,14 @@ public class AdministradorServicioImpl implements AdministradorServicio {
             return true;
         }
         return medicoRepo.existsByCedula(cedula);
+    }
+
+    public boolean estaRepetidaCedula_2(String cedula) {
+        Optional<Medico> medicoBuscado = medicoRepo.findByCedula(cedula);
+        if (!medicoBuscado.isEmpty()) {
+                return true;
+        }
+        return false;
     }
 
     public boolean estaRepetidoCorreo(String correo) {
