@@ -97,7 +97,7 @@ public class AdministradorController {
         }
     }
 
-    @GetMapping("/listarPQRS")
+    @GetMapping("/listar-pqrs")
     public ResponseEntity<MensajeDTO> listarPQRS(){
         try {
             List<ItemPQRSDTO> lista = administradorServicio.listarPQRS();

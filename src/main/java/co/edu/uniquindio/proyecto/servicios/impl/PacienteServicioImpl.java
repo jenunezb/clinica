@@ -444,12 +444,15 @@ public class PacienteServicioImpl implements PacienteServicio {
         List<ItemPQRSDTO> itemPQRSDTOS = new ArrayList<>();
         for (Pqrs pqrs:
              pqrsList) {
-            itemPQRSDTOS.add(new ItemPQRSDTO(pqrs.getCodigo(),
+            itemPQRSDTOS.add(new ItemPQRSDTO(
+                    pqrs.getCodigo(),
                     pqrs.getEstado(),
                     pqrs.getMotivo(),
                     pqrs.getFechaCreacion(),
-                    pqrs.getCita().getPaciente().getNombre()));
+                    pqrs.getCita().getPaciente().getNombre(),
+                    pqrs.getCita().getMedico().getNombre()));
         }
+        System.out.println(itemPQRSDTOS);
         return itemPQRSDTOS;
     }
 

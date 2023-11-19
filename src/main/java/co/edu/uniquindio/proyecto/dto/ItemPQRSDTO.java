@@ -8,5 +8,6 @@ public record ItemPQRSDTO(int codigo,
                           EstadoPQRS estado,
                           String motivo,
                           LocalDate fecha,
-                          String nombrePaciente){
+                          String paciente,
+                          String medico){
 }

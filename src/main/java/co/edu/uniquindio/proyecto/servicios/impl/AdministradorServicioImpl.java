@@ -240,7 +240,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                     p.getEstado(),
                     p.getMotivo(),
                     p.getFechaCreacion(),
-                    p.getCita().getPaciente().getNombre()
+                    p.getCita().getPaciente().getNombre(),
+                    p.getCita().getMedico().getNombre()
             ));
         }
 
