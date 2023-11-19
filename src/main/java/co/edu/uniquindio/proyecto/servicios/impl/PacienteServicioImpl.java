@@ -268,6 +268,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         pqrsNuevo.setFechaCreacion(LocalDate.now());
         pqrsNuevo.setEstado(EstadoPQRS.EN_PROCESO);
         pqrsNuevo.setMotivo(registroPQRSDTO.movito());
+        System.out.println(registroPQRSDTO.movito());
         pqrsNuevo.setCita(cita);
 
         pqrsRepo.save(pqrsNuevo);
