@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.HorarioDTO;
 import co.edu.uniquindio.proyecto.modelo.enums.Ciudad;
 import co.edu.uniquindio.proyecto.modelo.enums.Especialidad;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public record DetalleMedicoDTO(
@@ -13,7 +14,9 @@ public record DetalleMedicoDTO(
         Especialidad especialidad,
         String telefono,
         String correo,
-        String urlFoto
+        String urlFoto,
+        LocalTime horaInicio,
+        LocalTime horaFin
 ) {
 }
 

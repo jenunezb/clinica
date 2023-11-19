@@ -36,7 +36,7 @@ public class AdministradorController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/actualizar")
     public ResponseEntity<MensajeDTO> actualizarMedico(@Valid @RequestBody DetalleMedicoDTO medico) {
         try {
             int codigon = administradorServicio.actualizarMedico(medico);
@@ -49,8 +49,8 @@ public class AdministradorController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<MensajeDTO> obtenerMedico(@RequestParam int codigo) {
+    @GetMapping("/{codigo}")
+    public ResponseEntity<MensajeDTO> obtenerMedico(@PathVariable int codigo) {
         try {
             DetalleMedicoDTO detalleMedicoDTO = administradorServicio.obtenerMedico(codigo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(

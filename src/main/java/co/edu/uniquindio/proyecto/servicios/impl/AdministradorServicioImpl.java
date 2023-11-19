@@ -122,8 +122,8 @@ public class AdministradorServicioImpl implements AdministradorServicio {
         medico.setCiudad(detalleMedicoDTO.ciudad());
         medico.setCorreo(detalleMedicoDTO.correo());
         medico.setFoto(detalleMedicoDTO.urlFoto());
-//        horarioBuscado.get().setHoraInicio(detalleMedicoDTO.horaInicioJornada());
-//        horarioBuscado.get().setHoraFin(detalleMedicoDTO.horaFinJornada());
+        horarioBuscado.get().setHoraInicio(detalleMedicoDTO.horaInicio());
+        horarioBuscado.get().setHoraFin(detalleMedicoDTO.horaFin());
 
         Medico medicoEditado = medicoRepo.save(medico);
         horarioRepo.save(horarioBuscado.get());
@@ -154,7 +154,9 @@ public class AdministradorServicioImpl implements AdministradorServicio {
                 obtenido.getEspecialidad(),
                 obtenido.getTelefono(),
                 obtenido.getCorreo(),
-                obtenido.getFoto()
+                obtenido.getFoto(),
+                obtenido.getHorario().getHoraInicio(),
+                obtenido.getHorario().getHoraFin()
         );
 
         return detalleMedicoDTO;
