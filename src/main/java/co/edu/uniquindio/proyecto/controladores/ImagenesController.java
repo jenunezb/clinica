@@ -25,7 +25,7 @@ public class ImagenesController {
         if(file == null){
             return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, "error al subir la imagen") );
         }
-        Map datos = cloudinaryServicio.subirImagen(file,"unimarket");
+        Map datos = cloudinaryServicio.subirImagen(file,"s");
         return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, datos ) );
 
     }
