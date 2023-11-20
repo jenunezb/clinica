@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyecto.controladores;
 
+import co.edu.uniquindio.proyecto.dto.ItemCitaAdminDTO;
+import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
@@ -96,6 +98,18 @@ public class PacienteController {
             DetallePacienteDTO detallePacienteDTO = pacienteServicio.obtenerPaciente(codigo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, detallePacienteDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/listar-citas/{codigo}")
+    public ResponseEntity<MensajeDTO> listarCitas(@PathVariable int codigo){
+        try {
+            List<ItemCitaAdminDTO> lista = pacienteServicio.listarCitas(codigo);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, lista));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));

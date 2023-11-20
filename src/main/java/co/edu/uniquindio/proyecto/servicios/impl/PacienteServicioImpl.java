@@ -205,6 +205,26 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
+    public List<ItemCitaAdminDTO> listarCitas(int codigo) throws Exception{
+        DetallePacienteDTO paciente = obtenerPaciente(codigo);
+        List<Cita> listaCitas = citaRepo.findCitasByPacienteId(paciente.cedula());
+        List<ItemCitaAdminDTO> respuesta = new ArrayList<>();
+        for (Cita c : listaCitas
+        ) {
+            respuesta.add(new ItemCitaAdminDTO(
+                    c.getCodigo(),
+                    c.getPaciente().getCedula(),
+                    c.getPaciente().getNombre(),
+                    c.getMedico().getNombre(),
+                    c.getMedico().getEspecialidad(),
+                    c.getEstadoCita(),
+                    c.getFechaCreacion()
+            ));
+        }
+        return respuesta;
+    }
+
+    @Override
     public int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception {
 
         Cita cita = new Cita();

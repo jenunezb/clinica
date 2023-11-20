@@ -38,4 +38,6 @@ public interface PacienteServicio {
     List<MedicosDisponiblesGetDTO> mostrarMedicosDisponibles(MedicosDisponiblesDTO medicosDisponiblesDTO)throws Excepciones;
 
     DetallePacienteDTO obtenerPaciente (int codigo) throws Exception;
+
+    List<ItemCitaAdminDTO> listarCitas(int codigo)throws Exception;
 }
