@@ -74,9 +74,12 @@ public class PacienteController {
         }
     }
 
-    @PostMapping("/pqrs")
-    public void crearPQRS(@Valid @RequestBody RegistroPQRSDTO registroPQRSDTO) throws Exception{
+    @PostMapping("/crear-pqrs/")
+    public ResponseEntity<MensajeDTO>  crearPQRS(@Valid @RequestBody RegistroPQRSDTO registroPQRSDTO) throws Exception{
             pacienteServicio.crearPQRS(registroPQRSDTO);
+        System.out.println("llega hasta aqui 2");
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, "Su cita se ha agendado exitosamente"));
     }
 
     @Operation(summary = "Detalle paciente", description = "Permite acceder a todos los atributos del paciente dado su código")

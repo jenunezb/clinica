@@ -270,13 +270,14 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.codigoCita());
         if(!pqrsRepo.findByCodigoCita(registroPQRSDTO.codigoCita(), citaBuscada.get().getPaciente().getCedula()).isEmpty()){
-            throw new Excepciones("Usted ya tiene asignado un PQRS a la cita actual");
+            throw new Exception("Usted ya tiene asignado un PQRS a la cita actual");
         }
         if (!citaBuscada.get().getEstadoCita().equals(EstadoCita.FINALIZADA)){
-            throw new Excepciones("Su cita debe estar finalizada para poder crear un PQRS");
+            throw new Exception("Su cita debe estar finalizada para poder crear un PQRS");
         }
+
         if( citaBuscada.isEmpty() ){
-            throw new Excepciones("No existe una cita con el código ");
+            throw new Exception("No existe una cita con el código ");
         }
 
         List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(citaBuscada.get().getPaciente().getCodigo());
@@ -293,10 +294,9 @@ public class PacienteServicioImpl implements PacienteServicio {
         pqrsRepo.save(pqrsNuevo);
 
         mensajeNuevo.setPqrs(pqrsNuevo);
-        mensajeNuevo.setContenido(registroPQRSDTO.detalle());
+        mensajeNuevo.setContenido(registroPQRSDTO.motivo());
         mensajeNuevo.setFecha(LocalDate.now());
         mensajeRepo.save(mensajeNuevo);
-
     }
 
     @Override
