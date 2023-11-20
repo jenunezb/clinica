@@ -1,11 +1,13 @@
 package co.edu.uniquindio.proyecto.controladores;
 
+import co.edu.uniquindio.proyecto.dto.EstadoDTO;
 import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MedicoDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
+import co.edu.uniquindio.proyecto.modelo.enums.EstadoPQRS;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AdministradorServicio;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -103,6 +105,19 @@ public class AdministradorController {
             List<ItemPQRSDTO> lista = administradorServicio.listarPQRS();
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
                     false, lista));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
+
+    @PutMapping("/cambiar-estado-pqrs/")
+    public ResponseEntity<MensajeDTO> cambiarEstadoPQRS(@Valid @RequestBody EstadoDTO estadoPQRS){
+        try {
+            administradorServicio.cambiarEstadoPQRS(estadoPQRS.codigoPQRS(), estadoPQRS.estadoPQRS());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
+                    false, "Estado Cambiado"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
