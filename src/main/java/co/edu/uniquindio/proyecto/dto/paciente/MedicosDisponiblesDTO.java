@@ -11,6 +11,7 @@ public record MedicosDisponiblesDTO(
         @NotNull
         LocalDate fecha,
         @NotNull
-        Especialidad especialidad
+        Especialidad especialidad,
+        String cedula
 ) {
 }
