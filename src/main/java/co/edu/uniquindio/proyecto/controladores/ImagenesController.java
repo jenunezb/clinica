@@ -14,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/imagenes")
 @AllArgsConstructor
+
 public class ImagenesController {
     public List<String> url;
     private CloudinaryServicio cloudinaryServicio;

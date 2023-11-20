@@ -25,7 +25,7 @@ public class PacienteController {
 
     private final PacienteServicio pacienteServicio;
 
-    @PutMapping
+    @PutMapping("/editar-perfil")
     public ResponseEntity<MensajeDTO<String>> editarPerfil(@Valid @RequestBody DetallePacienteDTO detallePacienteDTO) throws Exception {
          pacienteServicio.editarPerfil(detallePacienteDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Paciente editado correctamente") );
@@ -47,15 +47,29 @@ public class PacienteController {
 
     }
 
-    @GetMapping("/listaMedicosDisponibles")
-    public ResponseEntity<MensajeDTO<List<MedicosDisponiblesGetDTO>>> medicosDisponibles(@Valid @RequestBody MedicosDisponiblesDTO medicosDisponiblesDTO) throws Excepciones {
+    @PostMapping("/listar-medicos")
+    public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody MedicosDisponiblesDTO medicosDisponiblesDTO) throws Excepciones {
+        try {
             List<MedicosDisponiblesGetDTO> medicosDisponiblesGetDTOS = pacienteServicio.mostrarMedicosDisponibles(medicosDisponiblesDTO);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, medicosDisponiblesGetDTOS));
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, medicosDisponiblesGetDTOS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
     }
 
     @PostMapping("/cita")
-    public int agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO) throws Exception{
-            return  pacienteServicio.agendarCita(registroCitaDTO);
+    public ResponseEntity<MensajeDTO> agendarCita(@Valid @RequestBody RegistroCitaDTO registroCitaDTO) throws Exception{
+
+        try {
+            int paciente = pacienteServicio.agendarCita(registroCitaDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, "Su cita se ha agendado exitosamente"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
     }
 
     @PostMapping("/pqrs")

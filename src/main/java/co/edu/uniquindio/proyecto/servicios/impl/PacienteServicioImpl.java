@@ -157,7 +157,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
             LocalTime horaInicio = medico.getHorario().getHoraInicio();
             while (horaInicio.isBefore(medico.getHorario().getHoraFin())){
-                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio));
+                medicosDisponiblesGetDTOS.add( new MedicosDisponiblesGetDTO(medico.getNombre(), horaInicio, medico.getCodigo()));
                 horaInicio = horaInicio.plusMinutes(30);
             }
         }
@@ -210,19 +210,19 @@ public class PacienteServicioImpl implements PacienteServicio {
         Cita cita = new Cita();
 
         //Verifico que el paciente esté en el sistema
-        Optional<Paciente> pacienteBuscado = pacienteRepo.findByCedula(registroCitaDTO.idPaciente());
+        Optional<Paciente> pacienteBuscado = pacienteRepo.findById(registroCitaDTO.idPaciente());
         if( pacienteBuscado.isEmpty() ){
             throw new Exception("No existe un paciente con el código "+registroCitaDTO.idPaciente());
         }
 
-        Optional<Medico> medicoBuscado = medicoRepo.findByCedula(registroCitaDTO.idMedico());
+        Optional<Medico> medicoBuscado = medicoRepo.findById(registroCitaDTO.idMedico());
         if( medicoBuscado.isEmpty() ){
             throw new Exception("No existe un medico con el código "+registroCitaDTO.idMedico());
         }
 
         //Debo validar que el paciente no tenga mas de 3 citas activas
 
-        List<Cita> citasPorPaciente= citaRepo.findCitasByPacienteId(registroCitaDTO.idPaciente());
+        List<Cita> citasPorPaciente= citaRepo.findCitasByPacienteId(pacienteBuscado.get().getCedula());
 
         if(citasPorPaciente.size()==3){
             throw new Excepciones("No es posible agendar más citas, puesto que ya tiene 3 citas activas");
