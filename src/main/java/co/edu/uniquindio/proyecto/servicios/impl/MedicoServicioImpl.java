@@ -139,7 +139,7 @@ public class MedicoServicioImpl implements MedicoServicio {
     }
 
     @Override
-    public List<DetalleCita> listarHistorialMedico(String cedulaPaciente) {
+    public List<DetalleCita> listarHistorialMedico(int cedulaPaciente) {
 
         List<DetalleCita> detalleCitas = pacienteServicio.verHistorialMedico(cedulaPaciente);
 

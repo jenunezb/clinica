@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface CitaRepo extends JpaRepository<Cita, Integer> {
 
-    @Query("SELECT c FROM Cita c WHERE c.paciente.cedula = :codigoPaciente")
-    List<Cita> findCitasByPacienteId(@Param("codigoPaciente") String codigoPaciente);
+    @Query("SELECT c FROM Cita c WHERE c.paciente.codigo = :codigoPaciente")
+    List<Cita> findCitasByPacienteId(@Param("codigoPaciente") int codigoPaciente);
 
     @Query("SELECT c FROM Cita c WHERE c.estadoCita = 0 and c.medico.codigo=:codigoMedico and DATE(c.fechaCita) = :fecha")
     List<Cita> listarCitasPorEstadoAsignado(@Param("codigoMedico") int codigoMedico, @Param("fecha") LocalDate fecha);

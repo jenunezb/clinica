@@ -118,4 +118,16 @@ public class PacienteController {
                     true, e.getMessage()));
         }
     }
+
+    @GetMapping("/historial/{codigo}")
+    public ResponseEntity<MensajeDTO> historialMedico(@PathVariable int codigo){
+        try {
+            List<DetalleCita> lista = pacienteServicio.verHistorialMedico(codigo);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, lista));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
 }
