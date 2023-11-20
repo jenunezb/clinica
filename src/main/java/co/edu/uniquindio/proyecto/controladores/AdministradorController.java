@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.controladores;
 
-import co.edu.uniquindio.proyecto.dto.EstadoDTO;
-import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
-import co.edu.uniquindio.proyecto.dto.MedicoDTO;
-import co.edu.uniquindio.proyecto.dto.MensajeDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.ItemMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
@@ -124,4 +121,15 @@ public class AdministradorController {
         }
     }
 
+    @GetMapping("/listar-citas")
+    public ResponseEntity<MensajeDTO> listarCitas(){
+        try {
+            List<ItemCitaAdminDTO> lista = administradorServicio.listarCitas();
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, lista));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
 }

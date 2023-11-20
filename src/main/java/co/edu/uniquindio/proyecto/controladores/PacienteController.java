@@ -82,6 +82,7 @@ public class PacienteController {
     public DetallePacienteDTO verDetallePaciente(@PathVariable int codigo) throws Exception{
         return pacienteServicio.verDetallePaciente(codigo);
     }
+
     @GetMapping("/listar-pqrs/{codigo}")
     public ResponseEntity<MensajeDTO> listarPQRSPaciente(@PathVariable int codigo) throws Exception{
         List<ItemPQRSDTO> itemPQRSDTOList = pacienteServicio.listarPQRSPaciente(codigo);
@@ -100,5 +101,4 @@ public class PacienteController {
                     true, e.getMessage()));
         }
     }
-
 }

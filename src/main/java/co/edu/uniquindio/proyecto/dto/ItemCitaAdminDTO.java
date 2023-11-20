@@ -7,7 +7,6 @@ import co.edu.uniquindio.proyecto.modelo.enums.EstadoCita;
 import java.time.LocalDateTime;
 
 public record ItemCitaAdminDTO(
-
         int codigoCita,
         String cedulaPaciente,
         String nombrePaciente,
