@@ -31,7 +31,7 @@ public interface AdministradorServicio {
 
     List<ItemCitaAdminDTO> listarCitas()throws Exception;
 
-    void cambiarEstadoPQRS(int codigoPQRS, EstadoPQRS estadoPQRS)throws Exception;
+    void cambiarEstadoPQRS(EstadoDTO estadoDTO)throws Exception;
 
     public List<HistorialConsultas> verHistorialDeConsultas();
 

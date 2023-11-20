@@ -114,7 +114,7 @@ public class AdministradorController {
     @PutMapping("/cambiar-estado-pqrs/")
     public ResponseEntity<MensajeDTO> cambiarEstadoPQRS(@Valid @RequestBody EstadoDTO estadoPQRS){
         try {
-            administradorServicio.cambiarEstadoPQRS(estadoPQRS.codigoPQRS(), estadoPQRS.estadoPQRS());
+            administradorServicio.cambiarEstadoPQRS(estadoPQRS);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new MensajeDTO(
                     false, "Estado Cambiado"));
