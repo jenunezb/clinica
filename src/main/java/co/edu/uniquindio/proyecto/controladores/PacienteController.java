@@ -36,7 +36,7 @@ public class PacienteController {
     public ResponseEntity<MensajeDTO<String>> eliminarCuenta(@PathVariable int codigo) throws
             Exception{
         pacienteServicio.eliminarCuenta(codigo);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Paciente eliminado correctamete")
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Su cuenta se ha eliminado correctamente, por lo tanto su sesión ya no está activa")
         );
     }
 
