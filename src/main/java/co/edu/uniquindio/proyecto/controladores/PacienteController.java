@@ -42,12 +42,6 @@ public class PacienteController {
         );
     }
 
-    @GetMapping
-    public ResponseEntity<MensajeDTO<String>> enviarLinkRecuperacion(@RequestParam String correo) throws Exception{
-            pacienteServicio.enviarLinkRecuperacion(correo);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Se ha enviado un link a su correo electrónico para recuperar su contraseña") );
-
-    }
 
     @PostMapping("/listar-medicos")
     public ResponseEntity<MensajeDTO> medicosDisponibles(@Valid @RequestBody MedicosDisponiblesDTO medicosDisponiblesDTO) throws Excepciones {
