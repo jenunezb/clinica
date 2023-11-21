@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.impl;
 
 import co.edu.uniquindio.proyecto.dto.*;
-import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
 import co.edu.uniquindio.proyecto.dto.admin.RespuestaDTO;
 import co.edu.uniquindio.proyecto.dto.paciente.*;
 import co.edu.uniquindio.proyecto.excepciones.Excepciones;
@@ -205,6 +204,26 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
+    public List<ItemCitaAdminDTO> listarCitas(int codigo) throws Exception{
+        DetallePacienteDTO paciente = obtenerPaciente(codigo);
+        List<Cita> listaCitas = citaRepo.findCitasByPacienteId(codigo);
+        List<ItemCitaAdminDTO> respuesta = new ArrayList<>();
+        for (Cita c : listaCitas
+        ) {
+            respuesta.add(new ItemCitaAdminDTO(
+                    c.getCodigo(),
+                    c.getPaciente().getCedula(),
+                    c.getPaciente().getNombre(),
+                    c.getMedico().getNombre(),
+                    c.getMedico().getEspecialidad(),
+                    c.getEstadoCita(),
+                    c.getFechaCita()
+            ));
+        }
+        return respuesta;
+    }
+
+    @Override
     public int agendarCita(RegistroCitaDTO registroCitaDTO) throws Exception {
 
         Cita cita = new Cita();
@@ -222,7 +241,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         //Debo validar que el paciente no tenga mas de 3 citas activas
 
-        List<Cita> citasPorPaciente= citaRepo.findCitasByPacienteId(pacienteBuscado.get().getCedula());
+        List<Cita> citasPorPaciente= citaRepo.findCitasByPacienteId(pacienteBuscado.get().getCodigo());
 
         if(citasPorPaciente.size()==3){
             throw new Excepciones("No es posible agendar más citas, puesto que ya tiene 3 citas activas");
@@ -250,13 +269,14 @@ public class PacienteServicioImpl implements PacienteServicio {
 
         Optional<Cita> citaBuscada = citaRepo.findById(registroPQRSDTO.codigoCita());
         if(!pqrsRepo.findByCodigoCita(registroPQRSDTO.codigoCita(), citaBuscada.get().getPaciente().getCedula()).isEmpty()){
-            throw new Excepciones("Usted ya tiene asignado un PQRS a la cita actual");
+            throw new Exception("Usted ya tiene asignado un PQRS a la cita actual");
         }
         if (!citaBuscada.get().getEstadoCita().equals(EstadoCita.FINALIZADA)){
-            throw new Excepciones("Su cita debe estar finalizada para poder crear un PQRS");
+            throw new Exception("Su cita debe estar finalizada para poder crear un PQRS");
         }
+
         if( citaBuscada.isEmpty() ){
-            throw new Excepciones("No existe una cita con el código ");
+            throw new Exception("No existe una cita con el código ");
         }
 
         List<Pqrs> pqrsPacienteList= pqrsRepo.findByCodigoPaciente(citaBuscada.get().getPaciente().getCodigo());
@@ -273,10 +293,9 @@ public class PacienteServicioImpl implements PacienteServicio {
         pqrsRepo.save(pqrsNuevo);
 
         mensajeNuevo.setPqrs(pqrsNuevo);
-        mensajeNuevo.setContenido(registroPQRSDTO.detalle());
+        mensajeNuevo.setContenido(registroPQRSDTO.motivo());
         mensajeNuevo.setFecha(LocalDate.now());
         mensajeRepo.save(mensajeNuevo);
-
     }
 
     @Override
@@ -389,7 +408,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public List<DetalleCita> verHistorialMedico(String codigoPaciente) {
+    public List<DetalleCita> verHistorialMedico(int codigoPaciente) {
 
         List<Cita> citas = citaRepo.findCitasByPacienteId(codigoPaciente);
         List<DetalleCita> detalleCitas = new ArrayList<>();
@@ -397,19 +416,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         for (Cita cita:
              citas) {
             Optional<Atencion> atencion = atencionRepo.buscarAtencionPorCodigoCita(cita.getCodigo());
-            if(atencion.isEmpty()){
-                detalleCitas.add(new DetalleCita(
-                        cita.getCodigo(),
-                        cita.getEstadoCita(),
-                        cita.getFechaCita(),
-                        cita.getMotivo(),
-                        cita.getMedico().getNombre(),
-                        cita.getMedico().getEspecialidad(),
-                        "",
-                        "",
-                        ""
-                ));
-            }else {
+            if(!atencion.isEmpty()){
                 detalleCitas.add(new DetalleCita(
                         cita.getCodigo(),
                         cita.getEstadoCita(),
@@ -421,7 +428,6 @@ public class PacienteServicioImpl implements PacienteServicio {
                         atencion.get().getDiagnostico(),
                         atencion.get().getTratamiento()));
             }
-
         }
 
         return detalleCitas;
@@ -485,4 +491,3 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     }
 }
-

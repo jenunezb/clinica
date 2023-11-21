@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyecto.controladores;
 
+import co.edu.uniquindio.proyecto.dto.ItemCitaAdminDTO;
+import co.edu.uniquindio.proyecto.dto.ItemCitaDTO;
 import co.edu.uniquindio.proyecto.dto.ItemPQRSDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.admin.DetalleMedicoDTO;
@@ -36,7 +38,7 @@ public class PacienteController {
     public ResponseEntity<MensajeDTO<String>> eliminarCuenta(@PathVariable int codigo) throws
             Exception{
         pacienteServicio.eliminarCuenta(codigo);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Paciente eliminado correctamete")
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Su cuenta se ha eliminado correctamente, por lo tanto su sesión ya no está activa")
         );
     }
 
@@ -72,9 +74,12 @@ public class PacienteController {
         }
     }
 
-    @PostMapping("/pqrs")
-    public void crearPQRS(@Valid @RequestBody RegistroPQRSDTO registroPQRSDTO) throws Exception{
+    @PostMapping("/crear-pqrs/")
+    public ResponseEntity<MensajeDTO>  crearPQRS(@Valid @RequestBody RegistroPQRSDTO registroPQRSDTO) throws Exception{
             pacienteServicio.crearPQRS(registroPQRSDTO);
+        System.out.println("llega hasta aqui 2");
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, "Su cita se ha agendado exitosamente"));
     }
 
     @Operation(summary = "Detalle paciente", description = "Permite acceder a todos los atributos del paciente dado su código")
@@ -82,6 +87,7 @@ public class PacienteController {
     public DetallePacienteDTO verDetallePaciente(@PathVariable int codigo) throws Exception{
         return pacienteServicio.verDetallePaciente(codigo);
     }
+
     @GetMapping("/listar-pqrs/{codigo}")
     public ResponseEntity<MensajeDTO> listarPQRSPaciente(@PathVariable int codigo) throws Exception{
         List<ItemPQRSDTO> itemPQRSDTOList = pacienteServicio.listarPQRSPaciente(codigo);
@@ -101,4 +107,27 @@ public class PacienteController {
         }
     }
 
+    @GetMapping("/listar-citas/{codigo}")
+    public ResponseEntity<MensajeDTO> listarCitas(@PathVariable int codigo){
+        try {
+            List<ItemCitaAdminDTO> lista = pacienteServicio.listarCitas(codigo);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, lista));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/historial/{codigo}")
+    public ResponseEntity<MensajeDTO> historialMedico(@PathVariable int codigo){
+        try {
+            List<DetalleCita> lista = pacienteServicio.verHistorialMedico(codigo);
+            return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                    false, lista));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                    true, e.getMessage()));
+        }
+    }
 }
