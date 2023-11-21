@@ -21,14 +21,12 @@ public class ImagenesController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestParam MultipartFile multipartFile)throws Exception {
-
         File file=cloudinaryServicio.convertir(multipartFile);
         if(file == null){
             return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, "error al subir la imagen") );
         }
         Map datos = cloudinaryServicio.subirImagen(file,"s");
         return ResponseEntity.status(HttpStatus.CREATED).body( new MensajeDTO( false, datos ) );
-
     }
 
 }
