@@ -120,7 +120,7 @@ public class PacienteController {
     }
 
     @GetMapping("/historial/{codigo}")
-    public ResponseEntity<MensajeDTO> historialMedico(@PathVariable int codigo){
+    public ResponseEntity<MensajeDTO> historialMedico(@PathVariable int codigo) {
         try {
             List<DetalleCita> lista = pacienteServicio.verHistorialMedico(codigo);
             return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
@@ -129,5 +129,19 @@ public class PacienteController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
                     true, e.getMessage()));
         }
+
+    }
+
+
+        @GetMapping("/historial/detalle/{codigo}")
+        public ResponseEntity<MensajeDTO> detalleHistorialMedico(@PathVariable int codigo){
+            try {
+                DetalleCita detalleCita = pacienteServicio.detalleHistorialMedico(codigo);
+                return ResponseEntity.status(HttpStatus.OK).body(new MensajeDTO(
+                        false, detalleCita));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO(
+                        true, e.getMessage()));
+            }
     }
 }
